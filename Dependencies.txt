@@ -2,3 +2,52 @@ DrawGin Dependencies
 Boost www.boost.org
 Google GLog, http://code.google.com/p/google-glog
 
+===================
+Linux - OS X
+===================
+----------------------------------------------------------------------------
+Step A -
+----------------------------------------------------------------------------
+Build and Install Google Glog
+1) Download the latest version (1.46.1)
+2) Unpack to a directory somewhere in the home directory
+3) 'cd' to the directory
+4) './bootstrap.sh --layout=versioned'
+5) './bjam -j2'          // -j2 compiles with 2 processes
+6) 'sudo ./bjam install' // will install to the /usr/local/include and
+                         // /usr/local/lib
+Step 6 is not required but the lib and include paths must be set specified
+manually for the DrawGin project to compile.
+
+----------------------------------------------------------------------------
+Step B -
+----------------------------------------------------------------------------
+Build and Install Google Glog
+1) Download
+2) unpack to a directory somewhere in the home directory
+3) 'cd' to the directory
+4) './configure'
+5) 'make -j 2'
+6) 'make install' // will install to /usr/local/include and /usr/local/lib
+
+Step 6 is not required but the lib and include paths must be set specified
+manually for the DrawGin project to compile.
+
+----------------------------------------------------------------------------
+Step C -
+----------------------------------------------------------------------------
+If step 6 in A and B are done, then the libraries should automatically be
+findable when compiling DrawLib. If they are not, or the dynamic libraries
+can not be found then perform the follow steps.
+1) 'cd/etc/ld.so.conf.d'
+2) 'sudo ldconfig -v'
+
+This will update the lib search cache using the infomation contained in the
+*.conf files. Check the *.conf files to see if the '/usr/local/lib' string
+is already in one of them (libc.conf). If not then create a 'my_libs.conf'
+and add the path string of '/usr/local/lib'. Then rerun 'ldconfig'.
+
+===================
+MSVC 2008
+===================
+TODO:
