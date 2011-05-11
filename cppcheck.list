@@ -1,0 +1,16 @@
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/DrawGin.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/stdafx.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcBs/DwgInArchive.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcBs/OcBsDwgCrc.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcBs/OcBsDwgFileHeader.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcBs/OcBsDwgPreviewImage.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcBs/OcBsDwgSentinels.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcBs/OcBsStream.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcBs/OcBsStreamIn.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcDb/OcDbDatabase.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcDb/OcDbDwgVersion.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcDb/OcDbHardOwnershipId.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcDb/OcDbHeaderVars.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcDb/OcDbObject.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcDb/OcDbObjectId.cpp
+/Users/paulkohut/CodeliteProjects/DrawGin/DrawGin/src/OcRx/OcRxObject.cpp

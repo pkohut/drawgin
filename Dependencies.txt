@@ -1,0 +1,4 @@
+DrawGin Dependencies
+Boost www.boost.org
+Google GLog, http://code.google.com/p/google-glog
+
