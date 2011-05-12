@@ -39,6 +39,9 @@ class OcDbObjectId
 public:
     OcDbObjectId(void);
     virtual ~OcDbObjectId(void);
+    std::wstring ToString() const;
+
+    friend std::ostream& operator<<(std::ostream& out, const OcDbObjectId& objId);
 };
 
 END_OCTAVARIUM_NS

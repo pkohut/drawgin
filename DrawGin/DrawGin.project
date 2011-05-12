@@ -6,8 +6,9 @@
     </Plugin>
   </Plugins>
   <Description/>
-  <VirtualDirectory Name="src">
+  <VirtualDirectory Name="Misc">
     <File Name="ReadMe.txt"/>
+    <File Name="../Dependencies.txt"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include"/>
   <Dependencies/>
@@ -93,7 +94,7 @@
         <Library Value="libglog.a"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="$(IntermediateDirectory)/$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory) " PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="$(IntermediateDirectory)/$(ProjectName)" CommandArguments="--v=5" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory) " PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>

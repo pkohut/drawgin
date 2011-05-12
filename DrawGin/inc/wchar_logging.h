@@ -26,4 +26,14 @@ inline std::ostream& operator<<(std::ostream& out, const std::wstring& str)
     return operator<<(out, str.c_str());
 }
 
+inline std::ostream& LogWString(std::ostream& out, const wchar_t* str)
+{
+    return operator<<(out, str);
+}
+
+inline std::ostream& LogWString(std::ostream& out, const std::wstring&str)
+{
+    return operator<<(out, str.c_str());
+}
+
 #endif  // WCHAR_LOGGING_H_

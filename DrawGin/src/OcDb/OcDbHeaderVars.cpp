@@ -46,73 +46,132 @@ BEGIN_OCTAVARIUM_NS
 
 OcDbHeaderVars::OcDbHeaderVars(void)
 {
+    VLOG(3) << "Constructor entered";
 }
 
 OcDbHeaderVars::~OcDbHeaderVars(void)
 {
+    VLOG(3) << "Destructor entered";
 }
 
 OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 {
+    VLOG(3) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING;
+
+    // match dwg header variables start sentinel
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
     if(!CompareSentinels(sentinelHeaderVarsStart, sentinelData)) {
         return OcApp::eInvalidImageDataSentinel;
     }
+
     const DWG_VERSION dwgVersion = in.Version();
     int size;
+
+    // spec says this is a R2007 variable only, but that doesn't
+    // seem to be correct, at least for the R2008 drawing down converted
+    // to R14.
     //if(dwgVersion == R2007) {
     in >> ((bitcode::RL&)size);
     //}
 
     in >> (bitcode::BD&) m_unknown1;
+    VLOG(4) << "unknown1 = " << m_unknown1;
+
     in >> (bitcode::BD&) m_unknown2;
+    VLOG(4) << "unknown2 = " << m_unknown2;
+
     in >> (bitcode::BD&) m_unknown3;
+    VLOG(4) << "unknown3 = " << m_unknown3;
+
     in >> (bitcode::BD&) m_unknown4;
+    VLOG(4) << "unknown4 = " << m_unknown4;
 
     in >> (bitcode::TV&) m_unknown5;
+    VLOG(4) << "unknown5 = " << m_unknown5;
+
     in >> (bitcode::TV&) m_unknown6;
+    VLOG(4) << "unknown6 = " << m_unknown6;
+
     in >> (bitcode::TV&) m_unknown7;
+    VLOG(4) << "unknown7 = " << m_unknown7;
+
     in >> (bitcode::TV&) m_unknown8;
+    VLOG(4) << "unknown8 = " << m_unknown8;
 
     in >> (bitcode::BL&) m_unknown9;
+    VLOG(4) << "unknown9 = " << m_unknown9;
+
     in >> (bitcode::BL&) m_unknown10;
+    VLOG(4) << "unknown10 = " << m_unknown10;
 
     if(dwgVersion == R13 || dwgVersion == R14) {
         in >> (bitcode::BS&) m_unknown11;
+        VLOG(4) << "unknown11 = " << m_unknown11;
     }
 
     in.ReadHandle(m_currentVpId);
+    VLOG(4) << "currentVpId = " << m_currentVpId;
 
     in >> (bitcode::B&) m_dimaso;
+    VLOG(4) << "dimaso = " << m_dimaso;
+
     in >> (bitcode::B&) m_dimsho;
+    VLOG(4) << "dimsho = " << m_dimaso;
 
     if(dwgVersion == R13 || dwgVersion == R14) {
         in >> (bitcode::B&) m_dimsav;
+        VLOG(4) << "dimsav = " << m_dimsav;
     }
     in >> (bitcode::B&) m_plinegen;
+    VLOG(4) << "plinegen = " << m_plinegen;
+
     in >> (bitcode::B&) m_orthomode;
+    VLOG(4) << "orthomode = " << m_orthomode;
+
     in >> (bitcode::B&) m_regenmode;
+    VLOG(4) << "regenmode = " << m_regenmode;
+
     in >> (bitcode::B&) m_fillmode;
+    VLOG(4) << "fillmode = " << m_fillmode;
+
     in >> (bitcode::B&) m_qtextmode;
+    VLOG(4) << "qtextmode = " << m_qtextmode;
+
     in >> (bitcode::B&) m_psltscale;
+    VLOG(4) << "psltscale = " << m_psltscale;
+
     in >> (bitcode::B&) m_limcheck;
+    VLOG(4) << "limcheck = " << m_limcheck;
+
     if(dwgVersion == R13 || dwgVersion == R14) {
         in >> (bitcode::B&) m_blipmode;
+        VLOG(4) << "blipmode = " << m_blipmode;
     }
 
     if(dwgVersion >= R2004) {
         in >> (bitcode::B&) m_undocumented;
+        VLOG(4) << "undocumented = " << m_undocumented;
     }
 
     in >> (bitcode::B&) m_usertimer;
+    VLOG(4) << "usertimer = " << m_usertimer;
+
     in >> (bitcode::B&) m_skpoly;
+    VLOG(4) << "skpoly = " << m_skpoly;
+
     in >> (bitcode::B&) m_angdir;
+    VLOG(4) << "angdir = " << m_angdir;
+
     in >> (bitcode::B&) m_splframe;
+    VLOG(4) << "splframe = " << m_splframe;
+
     if(dwgVersion == R13 || dwgVersion == R14) {
         in >> (bitcode::B&) m_attreq;
         in >> (bitcode::B&) m_attdia;
+        VLOG(4) << "attreq = " << m_attreq;
+        VLOG(4) << "attdia = " << m_attdia;
     }
     in >> (bitcode::B&) m_mirrtext;
     in >> (bitcode::B&) m_worldview;
@@ -247,9 +306,10 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     in >> (bitcode::BD3&) m_ucsydir;
     in.ReadHandle(m_ucsname);
 
-
-    return OcApp::eOk;
-//    return OcApp::eNotImplemented;
+    LOG(INFO) << "Drawing header variables decoding routine not "
+              "fully implemented yet";
+//    return OcApp::eOk;
+    return OcApp::eNotImplemented;
 }
 
 DwgInArchive& operator>>(DwgInArchive& in, OcDbHeaderVars & dwgVars)

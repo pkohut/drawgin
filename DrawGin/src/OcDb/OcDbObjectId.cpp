@@ -42,4 +42,19 @@ OcDbObjectId::~OcDbObjectId(void)
 {
 }
 
+std::wstring OcDbObjectId::ToString() const
+{
+    return L"Function not implemented";
+}
+
+
+std::ostream& operator <<(std::ostream& out, const OcDbObjectId& objId)
+{
+    return LogWString(out, objId.ToString());
+}
+
+
+
+
 END_OCTAVARIUM_NS
+

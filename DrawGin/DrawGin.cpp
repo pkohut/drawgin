@@ -47,9 +47,7 @@ void ProcessDrawing(const string_t & filename)
 {
     OcDbDatabasePtr pDb = new OcDbDatabase;
     OcApp::ErrorStatus es = pDb->Open(filename);
-    if(es != OcApp::eOk) {
-        DLOG(ERROR) << "Error processing drawing.";
-    }
+    LOG_IF(ERROR, es != OcApp::eOk) << "Error processing drawing.";
 }
 
 int main(int argc, char* argv[])

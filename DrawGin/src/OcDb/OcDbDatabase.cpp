@@ -63,46 +63,54 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
     OcBsStreamIn in;
     in.Open(filename);
     if(!in) {
+        // OcBsStreamIn::Open will log any errors
         return OcApp::eOpeningFile;
     }
 
     DwgInArchive ar(in);
     if(!ar) {
+        LOG(ERROR) << "Error opening archive stream";
         return ar.Error();
     }
 
+    // parse the dwgHdr
     OcBsDwgFileHeader dwgHdr;
     ar >> dwgHdr;
     if(ar.Error() != OcApp::eOk) {
+        LOG(ERROR) << "Error processing drawing file header";
         return ar.Error();
     }
+
+    // Read R13c3 or higher file formats
     if(dwgHdr.IsR13c3OrHigher()) {
-        if(dwgHdr.NumSectionRecords() == 6) {
-            if(dwgHdr.Record(6).seeker == ar.FilePosition()) {
-                // records are zero based
-                std::vector<byte_t> section6(dwgHdr.Record(5).size);
-                ar.ReadRC((bitcode::RC*) &section6[0], section6.size());
-            } else {
-                return OcApp::eMismatchedFilePosition;
-            }
-        }
-        assert(dwgHdr.ImageSeeker() == ar.FilePosition());
+        // file position should match offset value stored in the IMAGE SEEKER
+        CHECK(dwgHdr.ImageSeeker() == ar.FilePosition())
+                << "IMAGE SEEKER offset does not match current file position";
+
         OcBsDwgPreviewImage imgData;
         ar >> imgData;
         if(ar.Error() != OcApp::eOk) {
-            return ar.Error();
-        }
-        assert(dwgHdr.Record(0).seeker == ar.FilePosition());
-        OcDbHeaderVars hdrVars;
-        ar >> hdrVars;
-        if(ar.Error() != OcApp::eOk) {
+            LOG(ERROR) << "Error processing data";
             return ar.Error();
         }
 
-        byte_t sentinel[16];
-        ar.ReadRC((bitcode::RC*) sentinel, 16);
-        int x = 0;
-        x++;
+        // current file position should match the offset stored in the
+        // section locator record 0, which is the "drawing variables"
+        CHECK(dwgHdr.Record(0).seeker == ar.FilePosition())
+                << "Section locator record 0 offset does not "
+                "match current file position";
+
+        OcDbHeaderVars hdrVars;
+        ar >> hdrVars;
+        if(ar.Error() != OcApp::eOk) {
+            LOG(ERROR) << "Error processing drawing header variables";
+            return ar.Error();
+        }
+
+        // read the class section map
+
+        // read the object map
+
 
     }
 
