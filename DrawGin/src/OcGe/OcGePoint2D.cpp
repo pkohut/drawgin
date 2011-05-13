@@ -33,9 +33,12 @@
 #include "OcTypes.h"
 #include "OcError.h"
 #include "OcGePoint2D.h"
+#include <iomanip>
+
 
 
 BEGIN_OCTAVARIUM_NS
+using namespace std;
 
 OcGePoint2D::OcGePoint2D()
     : x(0.0), y(.00)
@@ -49,7 +52,8 @@ OcGePoint2D::OcGePoint2D(double xx, double yy)
 
 std::ostream& operator <<(std::ostream& out, const OcGePoint2D & pt)
 {
-    out << "x: = " << pt.x << ", "
+    out << showpoint
+        << "x: = " << setfill('0') << setw(2) << pt.x << ", "
         << "y: = " << pt.Y();
     return out;
 }

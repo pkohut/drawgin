@@ -33,8 +33,10 @@
 #include "OcTypes.h"
 #include "OcError.h"
 #include "OcGePoint3D.h"
+#include <iomanip>
 
 BEGIN_OCTAVARIUM_NS
+using namespace std;
 
 OcGePoint3D::OcGePoint3D()
     : x(0.0), y(0.0), z(0.0)
@@ -48,7 +50,8 @@ OcGePoint3D::OcGePoint3D(double xx, double yy, double zz)
 
 std::ostream& operator <<(std::ostream& out, const OcGePoint3D & pt)
 {
-    out << "x: = " << pt.x << ", "
+    out << showpoint
+        << "x: = " << pt.x << ", "
         << "y: = " << pt.y << ", "
         << "z: = " << pt.z;
     return out;

@@ -31,6 +31,8 @@
 #ifndef DwgInArchive_h__
 #define DwgInArchive_h__
 
+#include <sstream>
+
 #include "OcBsStreamIn.h"
 #include "OcBsDwgCrc.h"
 //#include <boost/typeof/typeof.hpp>
@@ -112,7 +114,7 @@ template<typename BC, typename T>
 DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t, const char * pStr)
 {
     Archive<BC, T>(crc, ar, t);
-    VLOG(4) << std::showbase << pStr << ": " << t;
+    VLOG(4) << pStr << ": " << t;
     return ar;
 }
 
@@ -121,7 +123,23 @@ template<typename BC>
 DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, int8_t & t, const char * pStr)
 {
     Archive<BC>(crc, ar, t);
-    VLOG(4) << std::showbase << pStr << ": " << (int) t;
+    VLOG(4) << pStr << ": " << (int) t;
+    return ar;
+}
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bool & t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << pStr << ": " << (t == true ? "true" : "false");
+    return ar;
+}
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, byte_t & t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << pStr << ": " << (int) t;
     return ar;
 }
 
@@ -136,8 +154,14 @@ DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bitcode::CMC & t, const
 template<typename BC>
 DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, std::wstring & t, const char * pStr)
 {
+    // need to figure out why wstring and wchar_t can not be streamed directly.
+    // If it is streamed directly right now it prints the hex address of
+    // the string.
+    // Prior to adding the OcGePoint2d class this worked fined, and did not
+    // require this template specialization.
     Archive<BC>(crc, ar, t);
-    VLOG(4) << pStr << ": " << t.c_str();
+    VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
+    //VLOG(4) << pStr << ": \"" << t << "\"";
     return ar;
 }
 
@@ -145,7 +169,15 @@ template<typename BC>
 DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, wchar_t * t, const char * pStr)
 {
     Archive<BC>(crc, ar, t);
-    VLOG(4) << pStr << ": " << t;
+    VLOG(4) << pStr << ": \"" << t << "\"";
+    return ar;
+}
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, double & t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << std::showpoint << pStr << ": " << t;
     return ar;
 }
 

@@ -164,7 +164,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     if(dwgVersion == R13 || dwgVersion == R14) {
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimsav, "dimsav");
     }
-    
+
     // common
     BS_ARCHIVE(crc, bitcode::BS, in, m_treedepth, "treedepth");
     BS_ARCHIVE(crc, bitcode::BS, in, m_lunits, "lunits");
