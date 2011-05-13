@@ -53,10 +53,14 @@ void ProcessDrawing(const string_t & filename)
 int main(int argc, char* argv[])
 {
     InitGoogleLogging(argv[0]);
+    string_t filename = _OC("/home/paul/Documents/TestDwgs/OneLayerR14.dwg");
+    LOG(INFO) << "Begin decoding file: " << filename;
+
     //ProcessDrawing(_OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\EmptyR14.dwg"));
     //ProcessDrawing(_OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\OneLayerR14.dwg"));
     //ProcessDrawing(_OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\OneLayerR14.dwg"));
-    ProcessDrawing(_OC("/home/paul/Documents/TestDwgs/OneLayerR14.dwg"));
+    //ProcessDrawing(_OC("/home/paul/Documents/TestDwgs/OneLayerR14.dwg"));
+    ProcessDrawing(filename);
 
     OcRxObject::ShutDown();
     return 0;

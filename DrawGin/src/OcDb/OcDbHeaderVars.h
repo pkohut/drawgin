@@ -200,16 +200,24 @@ private: // header variables
     double m_psvpscale;
 
     // common
-    double m_insbase[3];
-    double m_extmin[3];
-    double m_extmax[3];
-    double m_limmin[2];
-    double m_limmax[2];
+//    double m_insbase[3];
+    OcGePoint3D m_insbase;
+//    double m_extmin[3];
+    OcGePoint3D m_extmin;
+//    double m_extmax[3];
+    OcGePoint3D m_extmax;
+//    double m_limmin[2];
+    OcGePoint2D m_limmin;
+//    double m_limmax[2];
+    OcGePoint2D m_limmax;
 
     double m_elevation;
-    double m_ucsorg[3];
-    double m_ucsxdir[3];
-    double m_ucsydir[3];
+//   double m_ucsorg[3];
+    OcGePoint3D m_ucsorg;
+//    double m_ucsxdir[3];
+    OcGePoint3D m_ucsxdir;
+//    double m_ucsydir[3];
+    OcGePoint3D m_ucsydir;
     OcDbObjectId m_ucsname;
 
 

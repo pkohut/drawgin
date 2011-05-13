@@ -36,11 +36,13 @@
       <File Name="inc/OcRxObject.h"/>
       <File Name="inc/OcTypes.h"/>
       <File Name="inc/wchar_logging.h"/>
+      <File Name="inc/OcGePoint2D.h"/>
+      <File Name="inc/OcGePoint3D.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="src">
-      <VirtualDirectory Name="Dg"/>
-      <VirtualDirectory Name="DgAp"/>
-      <VirtualDirectory Name="DgBs">
+      <VirtualDirectory Name="Oc"/>
+      <VirtualDirectory Name="OcAp"/>
+      <VirtualDirectory Name="OcBs">
         <File Name="src/OcBs/DwgInArchive.cpp"/>
         <File Name="src/OcBs/DwgInArchive.h"/>
         <File Name="src/OcBs/OcBsDwgCrc.cpp"/>
@@ -57,7 +59,7 @@
         <File Name="src/OcBs/OcBsStreamIn.h"/>
         <File Name="src/OcBs/OcBsTypes.h"/>
       </VirtualDirectory>
-      <VirtualDirectory Name="DgDb">
+      <VirtualDirectory Name="OcDb">
         <File Name="src/OcDb/OcDbDatabase.cpp"/>
         <File Name="src/OcDb/OcDbDwgVersion.cpp"/>
         <File Name="src/OcDb/OcDbHardOwnershipId.cpp"/>
@@ -66,9 +68,13 @@
         <File Name="src/OcDb/OcDbObject.cpp"/>
         <File Name="src/OcDb/OcDbObjectId.cpp"/>
       </VirtualDirectory>
-      <VirtualDirectory Name="DgMi"/>
-      <VirtualDirectory Name="DgRx">
+      <VirtualDirectory Name="OcMi"/>
+      <VirtualDirectory Name="OcRx">
         <File Name="src/OcRx/OcRxObject.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="OcGe">
+        <File Name="src/OcGe/OcGePoint2D.cpp"/>
+        <File Name="src/OcGe/OcGePoint3D.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>
@@ -118,7 +124,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="" C_Options="" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O2" C_Options="-O2" Required="yes" PreCompiledHeader="">
         <IncludePath Value="inc"/>
         <Preprocessor Value="NDEBUG"/>
         <Preprocessor Value="_CONSOLE"/>

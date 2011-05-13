@@ -32,6 +32,9 @@
 #define DwgInArchive_h__
 
 #include "OcBsStreamIn.h"
+#include "OcBsDwgCrc.h"
+//#include <boost/typeof/typeof.hpp>
+//#include <boost/type_traits/is_base_of.hpp>
 
 BEGIN_OCTAVARIUM_NS
 
@@ -61,6 +64,8 @@ public:
 
     DwgInArchive & ReadHandle(OcDbObjectId & objId);
 
+    DwgInArchive & operator>>(OcDbObjectId & b);
+
     DwgInArchive & operator>>(bitcode::B & b);
     DwgInArchive & operator>>(bitcode::BB & bb);
     DwgInArchive & operator>>(bitcode::BBBB & bbbb);
@@ -69,9 +74,11 @@ public:
     DwgInArchive & operator>>(bitcode::RL & rl);
     DwgInArchive & operator>>(bitcode::RD & rd);
     DwgInArchive & operator>>(bitcode::RD2 & rd2);
+    DwgInArchive & operator>>(bitcode::RD3 & rd3);
     DwgInArchive & operator>>(bitcode::BS & bs);
     DwgInArchive & operator>>(bitcode::BL & bl);
     DwgInArchive & operator>>(bitcode::BD & bd);
+    DwgInArchive & operator>>(bitcode::BD2 & bd2);
     DwgInArchive & operator>>(bitcode::BD3 & bd3);
     DwgInArchive & operator>>(bitcode::MC & mc);
     DwgInArchive & operator>>(bitcode::MS & ms);
@@ -92,6 +99,78 @@ private:
     OcApp::ErrorStatus m_archiveError;
 };
 
+
+template<typename BC, typename T>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t)
+{
+    ar >> (BC&) t;
+    crc = crc8(crc, (const char*)&t, sizeof(t));
+    return ar;
+}
+
+template<typename BC, typename T>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t, const char * pStr)
+{
+    Archive<BC, T>(crc, ar, t);
+    VLOG(4) << std::showbase << pStr << ": " << t;
+    return ar;
+}
+
+// handle when t is a char and print t as an int
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, int8_t & t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << std::showbase << pStr << ": " << (int) t;
+    return ar;
+}
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bitcode::CMC & t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << pStr << ": " << (bitcode::BCCMC&)t;
+    return ar;
+}
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, std::wstring & t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << pStr << ": " << t.c_str();
+    return ar;
+}
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, wchar_t * t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << pStr << ": " << t;
+    return ar;
+}
+
+
+//template<typename BC>
+//DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, double * t, const char * pStr)
+//{
+//    Archive<BC>(crc, ar, t);
+//    VLOG(4) << pStr;
+////    VLOG(4) << pStr << ": " << (bitcode::BCCMC&)t;
+//    return ar;
+//}
+
+
+
+
+
+// Help with dead string stripping for the Archive template, without this
+// DSS only occurred with gcc compiler setting of -O3
+#if GOOGLE_STRIP_LOG == 0
+#  define BS_ARCHIVE(CRC, BC, AR, T, STR) Archive<BC>(CRC, AR, T, #STR);
+#else
+// have compiler strip away STR from code
+#  define BS_ARCHIVE(CRC, BC, AR, T, STR) Archive<BC>(CRC, AR, T, "");
+#endif
 
 END_OCTAVARIUM_NS
 

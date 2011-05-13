@@ -81,66 +81,60 @@ DWG_VERSION OcBsDwgFileHeader::DecodeVersionData(DwgInArchive& in)
 
 OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
 {
+    using namespace bitcode;
+    VLOG(4) << "*** Begin reading file header ***";
     const char * pcszVersion =
         OcDbDwgVersion::GetVersionId(m_dwgVersion).c_str();
     m_crc = crc8(0, pcszVersion, 6);
+    VLOG(4) << "File ID = " << pcszVersion;
 
     // more version ID, 3.2.1
-    in >> (bitcode::RL&) m_unknown_offset_0x06;
-    m_crc = CRC8_CALC(m_crc, m_unknown_offset_0x06);
+    BS_ARCHIVE(m_crc, RL, in, m_unknown_offset_0x06, "unknown_offset_0x06");
 
-    in >> (bitcode::RC&) m_unknown_offset_0x0a;
-    m_crc = CRC8_CALC(m_crc, m_unknown_offset_0x0a);
+    BS_ARCHIVE(m_crc, RC, in, m_unknown_offset_0x0a, "unknown_offset_0x0a");
 
-    in >> (bitcode::RC&) m_acadMaintVer;
-    m_crc = CRC8_CALC(m_crc, m_acadMaintVer);
+    BS_ARCHIVE(m_crc, RC, in, m_acadMaintVer, "acadMainVer");
 
-    in >> (bitcode::RC&) m_unknown_offset_0x0c;
-    m_crc = CRC8_CALC(m_crc, m_unknown_offset_0x0c);
+    BS_ARCHIVE(m_crc, RC, in, m_unknown_offset_0x0c, "unknown_offset_0x0c");
 
     // image seeker, 3.2.2
-    in >> (bitcode::RL&) m_imageSeeker;
-    m_crc = CRC8_CALC(m_crc, m_imageSeeker);
+    BS_ARCHIVE(m_crc, RL, in, m_imageSeeker, "imageSeeker");
 
     // unknown section, 3.2.3
-    in >> (bitcode::RS&) m_unknown_offset_0x11;
-    m_crc = CRC8_CALC(m_crc, m_unknown_offset_0x11);
+    BS_ARCHIVE(m_crc, RS, in, m_unknown_offset_0x11, "unknown_offset_0x11");
 
     // dwg codepage, 3.2.4
-    in >> (bitcode::RS&) m_codePage;
-    m_crc = CRC8_CALC(m_crc, m_codePage);
+    BS_ARCHIVE(m_crc, RS, in, m_codePage, "codepage");
 
     // section loader records, 3.2.5
-    in >> (bitcode::RL&) m_nSections;
-    m_crc = CRC8_CALC(m_crc, m_nSections);
-    // uint16_t crc = crc8(0, (const char *)in.Buffer(), in.FilePosition());
+    BS_ARCHIVE(m_crc, RL, in, m_nSections, "Selection Locator Records");
+
     for(int i = 0; i < m_nSections; ++i) {
         OcBsDwgFileHeaderSection section;
-        in >> (bitcode::RC&) section.recordNumber;
-        m_crc = CRC8_CALC(m_crc, section.recordNumber);
-        in >> (bitcode::RL&) section.seeker;
-        m_crc = CRC8_CALC(m_crc, section.seeker);
-        in >> (bitcode::RL&) section.size;
-        m_crc = CRC8_CALC(m_crc, section.size);
+        BS_ARCHIVE(m_crc, RC, in, section.recordNumber, "section record");
+
+        BS_ARCHIVE(m_crc, RL, in, section.seeker,       "    section seeker");
+
+        BS_ARCHIVE(m_crc, RL, in, section.size,         "    section size");
         m_headerSections.push_back(section);
-        // crc = crc8(0, (const char *)in.Buffer(), in.FilePosition());
     }
-    // crc = crc8(0, (const char *)in.Buffer(), in.FilePosition());
+
     int16_t headerCrc;
-    in >> (bitcode::RS&) headerCrc;
+    in >> (RS&) headerCrc;
     uint16_t crcCheck = m_crc ^ headerCrc;
-    // int16_t crcCheck1 = crc ^ headerCrc;
+    VLOG(4) << "Header CRC = " << std::hex << std::showbase << crcCheck;
 
     if(crcCheck != 0xa598 && crcCheck != 0x8101
             && crcCheck != 0x3cc4 && crcCheck != 0x8461) {
         return OcApp::eInvalidCRCInFileHeader;
     }
 
-    bitcode::RC sentinelData[16];
+    RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
     if(!CompareSentinels(sentinelR13_R2000, sentinelData)) {
         return OcApp::eInvalidHeaderSentinal;
     }
+    VLOG(4) << "*** Finished reading file header ***";
 
 
     return OcApp::eOk;

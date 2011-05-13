@@ -35,6 +35,9 @@
 #include "OcError.h"
 #include "OcDbDwgVersion.h"
 
+#include "OcGePoint2D.h"
+#include "OcGePoint3D.h"
+
 #include "OcRxObject.h"
 #include "OcDbHardOwnershipId.h"
 #include "OcDbDatabase.h"

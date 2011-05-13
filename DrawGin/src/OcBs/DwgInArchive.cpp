@@ -159,6 +159,13 @@ DwgInArchive & DwgInArchive::operator>>(bitcode::RD2 & rd2)
     return *this;
 }
 
+DwgInArchive & DwgInArchive::operator>>(bitcode::RD3 & rd3)
+{
+    ASSERT_ARCHIVE_NOT_LOADING;
+    m_stream >> rd3;
+    return *this;
+}
+
 DwgInArchive & DwgInArchive::operator>>(bitcode::BS & bs)
 {
     ASSERT_ARCHIVE_NOT_LOADING;
@@ -177,6 +184,13 @@ DwgInArchive & DwgInArchive::operator>>(bitcode::BD & bd)
 {
     ASSERT_ARCHIVE_NOT_LOADING;
     m_stream >> bd;
+    return *this;
+}
+
+DwgInArchive & DwgInArchive::operator>>(bitcode::BD2 & bd2)
+{
+    ASSERT_ARCHIVE_NOT_LOADING;
+    m_stream >> bd2;
     return *this;
 }
 
@@ -289,6 +303,12 @@ void DwgInArchive::SetVersion(DWG_VERSION version)
 DwgInArchive & DwgInArchive::ReadHandle(OcDbObjectId & objId)
 {
     m_stream.ReadHandle(objId);
+    return *this;
+}
+
+DwgInArchive & DwgInArchive::operator>>(OcDbObjectId & objId)
+{
+    m_stream >> objId;
     return *this;
 }
 

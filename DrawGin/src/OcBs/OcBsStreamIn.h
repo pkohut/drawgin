@@ -62,12 +62,13 @@ public:
     OcBsStreamIn & ReadHandle(OcDbObjectId & objId);
 
 
-
+    virtual OcBsStreamIn & operator>>(OcDbObjectId & objId);
 
     virtual OcBsStreamIn & operator>>(bitcode::B & b);
     virtual OcBsStreamIn & operator>>(bitcode::BB & bb);
     virtual OcBsStreamIn & operator>>(bitcode::BBBB & bbbb);
     virtual OcBsStreamIn & operator>>(bitcode::BD & bd);
+    virtual OcBsStreamIn & operator>>(bitcode::BD2 & bd);
     virtual OcBsStreamIn & operator>>(bitcode::BD3 & bd);
     virtual OcBsStreamIn & operator>>(bitcode::BE & be);
     virtual OcBsStreamIn & operator>>(bitcode::BL & bl);
@@ -80,6 +81,7 @@ public:
     virtual OcBsStreamIn & operator>>(bitcode::RC   rc[]);
     virtual OcBsStreamIn & operator>>(bitcode::RD & rd);
     virtual OcBsStreamIn & operator>>(bitcode::RD2 & rd2);
+    virtual OcBsStreamIn & operator>>(bitcode::RD3 & rd3);
     virtual OcBsStreamIn & operator>>(bitcode::RL & rl);
     virtual OcBsStreamIn & operator>>(bitcode::RS & rs);
     virtual OcBsStreamIn & operator>>(bitcode::TV & tv);

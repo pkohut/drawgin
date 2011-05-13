@@ -124,6 +124,10 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
     }
     return *this;
 }
+OcBsStreamIn & OcBsStreamIn::operator>>(OcDbObjectId & objId)
+{
+    return ReadHandle(objId);
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -176,6 +180,14 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD & bd)
         bd = std::numeric_limits<double>::quiet_NaN();
         break;
     }
+    return *this;
+}
+
+OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD2 & bd)
+{
+    bitcode::BD * pBD2 = (bitcode::BD*)&bd;
+    *this >> pBD2[0];
+    *this >> pBD2[1];
     return *this;
 }
 
@@ -360,6 +372,15 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD2 & rd2)
     bitcode::RD * prd2 = (bitcode::RD*)&rd2;
     *this >> prd2[0];
     *this >> prd2[1];
+    return *this;
+}
+
+OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD3 & rd3)
+{
+    bitcode::RD * prd3 = (bitcode::RD*)&rd3;
+    *this >> prd3[0];
+    *this >> prd3[1];
+    *this >> prd3[2];
     return *this;
 }
 

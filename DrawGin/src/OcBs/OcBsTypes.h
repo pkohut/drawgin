@@ -35,15 +35,16 @@
 
 #include <boost/strong_typedef.hpp>
 
-
 BEGIN_OCTAVARIUM_NS
+
+
 
 namespace bitcode
 {
 
 struct BC2D {
     double x, y;
-    BC2D() : x(0), y(0) {}
+    BC2D() : x(0.0), y(0.0) {}
     BC2D(double _x, double _y) : x(_x), y(_y) {}
     void set(double _x, double _y) {
         x = _x;
@@ -55,11 +56,17 @@ struct BC2D {
     bool operator<(const BC2D & other) const {
         return x < other.x && y < other.y;
     }
+
+    friend std::ostream& operator <<(std::ostream& out, const bitcode::BC2D& pt)
+    {
+        out << "index: " << pt.x << pt.y;
+        return out;
+    }
 };
 
 struct BC3D {
     double x, y, z;
-    BC3D() : x(0), y(0), z(0) {}
+    BC3D() : x(0.0), y(0.0), z(0.0) {}
     BC3D(double _x, double _y, double _z) : x(_x), y(_y), z(_z) {}
     void set(double _x, double _y, double _z) {
         x = _x;
@@ -88,6 +95,15 @@ struct BCCMC {
     }
     bool operator<(const BCCMC & other) const {
         return index < other.index;
+    }
+    friend std::ostream& operator <<(std::ostream& out, const bitcode::BCCMC& cmc)
+    {
+        out << "index: " << cmc.index << ", "
+            << "rgb: " << cmc.rgb << ", "
+            << "colorByte: " << (unsigned int) cmc.colorByte << ", "
+            << "colorName: " << cmc.name.c_str() << ", "
+            << "colorBook: " << cmc.bookName.c_str();
+        return out;
     }
 };
 
@@ -118,6 +134,7 @@ BOOST_STRONG_TYPEDEF(double, BT);
 
 BOOST_STRONG_TYPEDEF(BCCMC, CMC);
 BOOST_STRONG_TYPEDEF(std::wstring, TV);
+
 
 } // bitcode
 
