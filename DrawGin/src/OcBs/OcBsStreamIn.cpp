@@ -122,6 +122,7 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
 //        (&val)[i] = rc;
         val |= (uint8_t)rc << (i * CHAR_BIT);
     }
+    objId.Handle(val);
     return *this;
 }
 OcBsStreamIn & OcBsStreamIn::operator>>(OcDbObjectId & objId)

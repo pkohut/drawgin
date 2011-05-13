@@ -1,0 +1,26 @@
+[patterns]
+**.py = native
+**.vcproj = CRLF
+**.txt = native
+Makefile = LF
+**.jpg = BIN
+**.c = native
+**.cpp = native
+**.cc = native
+**.cxx = native
+**.def = native
+**.odl = native
+**.idl = native
+**.hpj = native
+**.bat = native
+**.asm = native
+**.asmx = native
+**.hpp = native
+**.h = native
+**.h = native
+**.hpp = native
+**.hxx = native
+**.hm = native
+**.inl = native
+**.inc = native
+**.xsd = native

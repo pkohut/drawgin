@@ -40,8 +40,12 @@ public:
     OcDbObjectId(void);
     virtual ~OcDbObjectId(void);
     std::wstring ToString() const;
+    void Handle(const int64_t handle);
+    const int64_t & Handle(void) const;
 
     friend std::ostream& operator<<(std::ostream& out, const OcDbObjectId& objId);
+private:
+    int64_t m_handle;
 };
 
 END_OCTAVARIUM_NS

@@ -30,11 +30,20 @@
 
 
 #include "stdafx.h"
+#include <sys/types.h>
 #include <sys/stat.h>
 
 #include "OcCommon.h"
 #include "OcDbDwgVersion.h"
 #include "OcBsStream.h"
+
+#ifndef S_ISDIR
+#define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
+#endif
+
+#ifndef S_ISREG
+#define S_ISREG(mode) (((mode) & S_IFMT) == S_IFREG)
+#endif
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
@@ -75,12 +84,18 @@ void OcBsStream::Open(const std::string & filename, int mode)
         Close();
     }
 
+#if defined(WIN32)
+    struct _stat fileStat;
+    if(_tstat(filename.c_str(), &fileStat) == -1) {
+#else
     struct stat fileStat;
     if(stat(filename.c_str(), &fileStat) == -1) {
+#endif
         LOG(ERROR) << "Invalid file name or invalid permissions.";
         m_fs.setstate(ios_base::badbit);
         return;
     }
+
     if(S_ISDIR(fileStat.st_mode)) {
         LOG(ERROR) << "Invalid filetype, input file name is a directory.";
         m_fs.setstate(ios_base::badbit);

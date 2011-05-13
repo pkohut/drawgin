@@ -269,6 +269,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\inc\OcGePoint2D.h"
+					>
+				</File>
+				<File
+					RelativePath=".\inc\OcGePoint3D.h"
+					>
+				</File>
+				<File
 					RelativePath=".\inc\OcRxObject.h"
 					>
 				</File>
@@ -285,15 +293,15 @@
 				Name="src"
 				>
 				<Filter
-					Name="Dg"
+					Name="Oc"
 					>
 				</Filter>
 				<Filter
-					Name="DgAp"
+					Name="OcAp"
 					>
 				</Filter>
 				<Filter
-					Name="DgBs"
+					Name="OcBs"
 					>
 					<File
 						RelativePath=".\src\OcBs\DwgInArchive.cpp"
@@ -357,7 +365,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="DgDb"
+					Name="OcDb"
 					>
 					<File
 						RelativePath=".\src\OcDb\OcDbDatabase.cpp"
@@ -389,14 +397,26 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="DgMi"
+					Name="OcMi"
 					>
 				</Filter>
 				<Filter
-					Name="DgRx"
+					Name="OcRx"
 					>
 					<File
 						RelativePath=".\src\OcRx\OcRxObject.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="OcGe"
+					>
+					<File
+						RelativePath=".\src\OcGe\OcGePoint2D.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\OcGe\OcGePoint3D.cpp"
 						>
 					</File>
 				</Filter>

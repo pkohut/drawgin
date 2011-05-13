@@ -83,6 +83,7 @@ struct BC3D {
 };
 
 struct BCCMC {
+    BCCMC() : index(0), rgb(0), colorByte(0) {}
     int16_t index;
     int32_t rgb;
     byte_t colorByte;

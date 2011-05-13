@@ -201,27 +201,103 @@ private: // header variables
 
     // common
 //    double m_insbase[3];
-    OcGePoint3D m_insbase;
+    OcGePoint3D m_pinsbase;
 //    double m_extmin[3];
-    OcGePoint3D m_extmin;
+    OcGePoint3D m_pextmin;
 //    double m_extmax[3];
-    OcGePoint3D m_extmax;
+    OcGePoint3D m_pextmax;
 //    double m_limmin[2];
-    OcGePoint2D m_limmin;
+    OcGePoint2D m_plimmin;
 //    double m_limmax[2];
+    OcGePoint2D m_plimmax;
+
+    double m_pelevation;
+//   double m_ucsorg[3];
+    OcGePoint3D m_pucsorg;
+//    double m_ucsxdir[3];
+    OcGePoint3D m_pucsxdir;
+//    double m_ucsydir[3];
+    OcGePoint3D m_pucsydir;
+    OcDbObjectId m_pucsname;
+
+
+    // R2000+ only
+    OcDbObjectId m_pucsbase;
+    int16_t m_pucsorthoview;
+    OcDbObjectId m_pucsorthoref;
+    OcGePoint3D m_pucsorgtop;
+    OcGePoint3D m_pucsorgbottom;
+    OcGePoint3D m_pucsorgleft;
+    OcGePoint3D m_pucsorgright;
+    OcGePoint3D m_pucsorgfront;
+    OcGePoint3D m_pucsorgback;
+
+    // common
+    //    double m_insbase[3];
+    OcGePoint3D m_insbase;
+    //    double m_extmin[3];
+    OcGePoint3D m_extmin;
+    //    double m_extmax[3];
+    OcGePoint3D m_extmax;
+    //    double m_limmin[2];
+    OcGePoint2D m_limmin;
+    //    double m_limmax[2];
     OcGePoint2D m_limmax;
 
     double m_elevation;
-//   double m_ucsorg[3];
+    //   double m_ucsorg[3];
     OcGePoint3D m_ucsorg;
-//    double m_ucsxdir[3];
+    //    double m_ucsxdir[3];
     OcGePoint3D m_ucsxdir;
-//    double m_ucsydir[3];
+    //    double m_ucsydir[3];
     OcGePoint3D m_ucsydir;
     OcDbObjectId m_ucsname;
 
+    // R2000+ only
+    OcDbObjectId m_ucsbase;
+    int16_t m_ucsorthoview;
+    OcDbObjectId m_ucsorthoref;
+    OcGePoint3D m_ucsorgtop;
+    OcGePoint3D m_ucsorgbottom;
+    OcGePoint3D m_ucsorgleft;
+    OcGePoint3D m_ucsorgright;
+    OcGePoint3D m_ucsorgfront;
+    OcGePoint3D m_ucsorgback;
+    std::wstring m_dimpost;
+    std::wstring m_dimapost;
 
-
+    // common
+    //////////////////////////////////////////////////////////////////////////
+    bool m_dimtol;
+    bool m_dimlim;
+    bool m_dimtih;
+    bool m_dimtoh;
+    bool m_dimse1;
+    bool m_dimse2;
+    bool m_dimalt;
+    bool m_dimtofl;
+    bool m_dimsah;
+    bool m_dimtix;
+    bool m_dimsoxd;
+    byte_t m_dimaltd;
+    byte_t m_dimzin;
+    bool m_dimsd1;
+    bool m_dimsd2;
+    byte_t m_dimtolj;
+    byte_t m_dimjust;
+    byte_t m_dimfit;
+    bool m_dimupt;
+    byte_t m_dimtzin;
+    byte_t m_dimaltz;
+    byte_t m_dimalttz;
+    byte_t m_dimtad;
+    int16_t m_dimunit;
+    int16_t m_dimaunit;
+    int16_t m_dimdec;
+    int16_t m_dimtdec;
+    int16_t m_dimaltu;
+    int16_t m_dimalttd;
+    OcDbObjectId m_dimtxsty;
 };
 
 END_OCTAVARIUM_NS

@@ -35,6 +35,7 @@
 BEGIN_OCTAVARIUM_NS
 
 OcDbObjectId::OcDbObjectId(void)
+: m_handle(0)
 {
 }
 
@@ -47,10 +48,24 @@ std::wstring OcDbObjectId::ToString() const
     return L"Function not implemented";
 }
 
+void OcDbObjectId::Handle( const int64_t handle )
+{
+    m_handle = handle;
+}
+
+const int64_t & OcDbObjectId::Handle( void ) const
+{
+    return m_handle;
+}
+
+
+
 
 std::ostream& operator <<(std::ostream& out, const OcDbObjectId& objId)
 {
-    return LogWString(out, objId.ToString());
+//    return LogWString(out, objId.ToString());
+    out << std::hex << std::showbase << objId.Handle();
+    return out;
 }
 
 
