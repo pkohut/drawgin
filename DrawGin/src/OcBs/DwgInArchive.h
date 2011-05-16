@@ -88,6 +88,7 @@ public:
     DwgInArchive & operator>>(bitcode::BT & bt);
     DwgInArchive & operator>>(bitcode::CMC & cmc);
     DwgInArchive & operator>>(bitcode::TV & tv);
+    DwgInArchive & operator>>(bitcode::T & tv);
 
     DwgInArchive & operator>>(bitcode::RC rc[]);
     DwgInArchive & ReadRC(bitcode::RC * pRc, size_t size);

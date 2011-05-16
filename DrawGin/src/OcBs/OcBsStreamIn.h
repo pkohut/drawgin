@@ -85,7 +85,7 @@ public:
     virtual OcBsStreamIn & operator>>(bitcode::RL & rl);
     virtual OcBsStreamIn & operator>>(bitcode::RS & rs);
     virtual OcBsStreamIn & operator>>(bitcode::TV & tv);
-
+    virtual OcBsStreamIn & operator>>(bitcode::T & t);
 
 
 

@@ -75,7 +75,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
     const DWG_VERSION dwgVersion = in.Version();
     int size;
-    uint16_t crc = 0;
+    uint16_t crc = 0xc0c1;
 
     // spec says this is a R2007 variable only, but that doesn't
     // seem to be correct, at least for the R2008 drawing down converted
@@ -86,16 +86,16 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     //    }
 
     // common
-    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown1, "unknown1");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown2, "unknown2");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown3, "unknown3");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown4, "unknown4");
-    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown5, "unknown5");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown1,  "unknown1");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown2,  "unknown2");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown3,  "unknown3");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_unknown4,  "unknown4");
+    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown5,  "unknown5");
 
-    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown6, "unknown6");
-    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown7, "unknown7");
-    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown8, "unknown8");
-    BS_ARCHIVE(crc, bitcode::BL, in, m_unknown9, "unknown9");
+    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown6,  "unknown6");
+    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown7,  "unknown7");
+    BS_ARCHIVE(crc, bitcode::TV, in, m_unknown8,  "unknown8");
+    BS_ARCHIVE(crc, bitcode::BL, in, m_unknown9,  "unknown9");
     BS_ARCHIVE(crc, bitcode::BL, in, m_unknown10, "unknown10");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
@@ -104,21 +104,21 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
     // common
     BS_ARCHIVE(crc, OcDbObjectId, in, m_currentVpId, "currentvpId");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimaso, "dimaso");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimsho, "dimsho");
+    BS_ARCHIVE(crc, bitcode::B, in, m_dimaso,        "dimaso");
+    BS_ARCHIVE(crc, bitcode::B, in, m_dimsho,        "dimsho");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
         BS_ARCHIVE(crc, bitcode::B, in, m_dimsav, "dimsav");
     }
 
     // common
-    BS_ARCHIVE(crc, bitcode::B, in, m_plinegen, "plinegen");
+    BS_ARCHIVE(crc, bitcode::B, in, m_plinegen,  "plinegen");
     BS_ARCHIVE(crc, bitcode::B, in, m_orthomode, "orthomode");
     BS_ARCHIVE(crc, bitcode::B, in, m_regenmode, "regenmode");
-    BS_ARCHIVE(crc, bitcode::B, in, m_fillmode, "fillmode");
+    BS_ARCHIVE(crc, bitcode::B, in, m_fillmode,  "fillmode");
     BS_ARCHIVE(crc, bitcode::B, in, m_qtextmode, "qtextmode");
     BS_ARCHIVE(crc, bitcode::B, in, m_psltscale, "psltscale");
-    BS_ARCHIVE(crc, bitcode::B, in, m_limcheck, "limcheck");
+    BS_ARCHIVE(crc, bitcode::B, in, m_limcheck,  "limcheck");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
         BS_ARCHIVE(crc, bitcode::B, in, m_blipmode, "blipmode");
@@ -130,9 +130,9 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
     // common
     BS_ARCHIVE(crc, bitcode::B, in, m_usertimer, "usertimer");
-    BS_ARCHIVE(crc, bitcode::B, in, m_skpoly, "skpoly");
-    BS_ARCHIVE(crc, bitcode::B, in, m_angdir, "angdir");
-    BS_ARCHIVE(crc, bitcode::B, in, m_splframe, "splframe");
+    BS_ARCHIVE(crc, bitcode::B, in, m_skpoly,    "skpoly");
+    BS_ARCHIVE(crc, bitcode::B, in, m_angdir,    "angdir");
+    BS_ARCHIVE(crc, bitcode::B, in, m_splframe,  "splframe");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
         BS_ARCHIVE(crc, bitcode::B, in, m_attreq, "attreq");
@@ -140,7 +140,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     }
 
     // common
-    BS_ARCHIVE(crc, bitcode::B, in, m_mirrtext, "mirrtext");
+    BS_ARCHIVE(crc, bitcode::B, in, m_mirrtext,  "mirrtext");
     BS_ARCHIVE(crc, bitcode::B, in, m_worldview, "worldview");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
@@ -148,7 +148,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     }
 
     // common
-    BS_ARCHIVE(crc, bitcode::B, in, m_tilemode, "tilemode");
+    BS_ARCHIVE(crc, bitcode::B, in, m_tilemode,  "tilemode");
     BS_ARCHIVE(crc, bitcode::B, in, m_plimcheck, "plimcheck");
     BS_ARCHIVE(crc, bitcode::B, in, m_visretain, "visretain");
 
@@ -157,8 +157,8 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     }
 
     // common
-    BS_ARCHIVE(crc, bitcode::B, in, m_dispsilh, "dispsilh");
-    BS_ARCHIVE(crc, bitcode::B, in, m_pellipse, "pellispe");
+    BS_ARCHIVE(crc, bitcode::B, in, m_dispsilh,    "dispsilh");
+    BS_ARCHIVE(crc, bitcode::B, in, m_pellipse,    "pellispe");
     BS_ARCHIVE(crc, bitcode::BS, in, m_saveimages, "saveimages");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
@@ -167,10 +167,10 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
     // common
     BS_ARCHIVE(crc, bitcode::BS, in, m_treedepth, "treedepth");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_lunits, "lunits");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_luprec, "luprec");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_aunits, "aunits");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_auprec, "auprec");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_lunits,    "lunits");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_luprec,    "luprec");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_aunits,    "aunits");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_auprec,    "auprec");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
         BS_ARCHIVE(crc, bitcode::BS, in, m_osmode, "osmode");
@@ -197,51 +197,51 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     }
 
     // common
-    BS_ARCHIVE(crc, bitcode::BS, in, m_useri1, "useri1");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_useri2, "useri2");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_useri3, "useri3");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_useri4, "useri4");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_useri5, "useri5");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_splinesegs, "splinesegs");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_surfu, "surfu");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_surfv, "surfv");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_surftype, "surftype");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_surftab1, "surftab1");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_surftab2, "surftab2");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_splinetype, "splinetype");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_shadedge, "shadedge");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_shadedif, "shadedif");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_unitmode, "unitmode");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_maxactvp, "macactvp");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_isolines, "isolines");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_cmljust, "cmljust");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_textqlty, "textqlty");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_ltscale, "ltscale");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_textsize, "textsize");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_tracewid, "tracewid");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_sketchinc, "sketchinc");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_filletrad, "filletrad");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_thickness, "thickness");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_angbase, "angbase");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_pdsize, "pdsize");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_plinewid, "plinewid");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_userr1, "userr1");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_userr2, "userr2");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_userr3, "userr3");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_userr4, "userr4");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_userr5, "userr5");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_chamfera, "chamfera");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_chamferb, "chamferb");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_chamferc, "chamferc");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_chamferd, "chamferd");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_facetres, "facetres");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_cmlscale, "cmlscale");
-    BS_ARCHIVE(crc, bitcode::BD, in, m_celtscale, "celtscale");
-    BS_ARCHIVE(crc, bitcode::TV, in, m_menuname, "menuname");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_useri1,       "useri1");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_useri2,       "useri2");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_useri3,       "useri3");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_useri4,       "useri4");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_useri5,       "useri5");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_splinesegs,   "splinesegs");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_surfu,        "surfu");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_surfv,        "surfv");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_surftype,     "surftype");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_surftab1,     "surftab1");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_surftab2,     "surftab2");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_splinetype,   "splinetype");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_shadedge,     "shadedge");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_shadedif,     "shadedif");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_unitmode,     "unitmode");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_maxactvp,     "macactvp");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_isolines,     "isolines");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_cmljust,      "cmljust");
+    BS_ARCHIVE(crc, bitcode::BS, in, m_textqlty,     "textqlty");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_ltscale,      "ltscale");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_textsize,     "textsize");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_tracewid,     "tracewid");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_sketchinc,    "sketchinc");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_filletrad,    "filletrad");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_thickness,    "thickness");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_angbase,      "angbase");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_pdsize,       "pdsize");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_plinewid,     "plinewid");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_userr1,       "userr1");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_userr2,       "userr2");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_userr3,       "userr3");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_userr4,       "userr4");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_userr5,       "userr5");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_chamfera,     "chamfera");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_chamferb,     "chamferb");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_chamferc,     "chamferc");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_chamferd,     "chamferd");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_facetres,     "facetres");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_cmlscale,     "cmlscale");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_celtscale,    "celtscale");
+    BS_ARCHIVE(crc, bitcode::TV, in, m_menuname,     "menuname");
     BS_ARCHIVE(crc, bitcode::BL, in, m_tdcreate_day, "tdcreate_day");
-    BS_ARCHIVE(crc, bitcode::BL, in, m_tdcreate_ms, "tdcreate_ms");
+    BS_ARCHIVE(crc, bitcode::BL, in, m_tdcreate_ms,  "tdcreate_ms");
     BS_ARCHIVE(crc, bitcode::BL, in, m_tdupdate_day, "tdupdate_day");
-    BS_ARCHIVE(crc, bitcode::BL, in, m_tdupdate_ms, "tdupdate_ms");
+    BS_ARCHIVE(crc, bitcode::BL, in, m_tdupdate_ms,  "tdupdate_ms");
 
     if(dwgVersion >= R2004) {
         BS_ARCHIVE(crc, bitcode::BL, in, m_unknown15, "unknown15");
@@ -250,15 +250,15 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     }
 
     // common
-    BS_ARCHIVE(crc, bitcode::BL, in, m_tdindwg_days, "tdindwg_days");
-    BS_ARCHIVE(crc, bitcode::BL, in, m_tdindwg_ms, "tdindwg_ms");
+    BS_ARCHIVE(crc, bitcode::BL, in, m_tdindwg_days,    "tdindwg_days");
+    BS_ARCHIVE(crc, bitcode::BL, in, m_tdindwg_ms,      "tdindwg_ms");
     BS_ARCHIVE(crc, bitcode::BL, in, m_tdusrtimer_days, "tdusrtimer_days");
-    BS_ARCHIVE(crc, bitcode::BL, in, m_tdusrtimer_ms, "tdusrtimer_ms");
-    BS_ARCHIVE(crc, bitcode::CMC, in, m_cecolor, "cecolor");
-    BS_ARCHIVE(crc, OcDbObjectId, in, m_handseed, "handseed");
-    BS_ARCHIVE(crc, OcDbObjectId, in, m_clayer, "clayer");
-    BS_ARCHIVE(crc, OcDbObjectId, in, m_textstyle, "textstyle");
-    BS_ARCHIVE(crc, OcDbObjectId, in, m_celtype, "celtype");
+    BS_ARCHIVE(crc, bitcode::BL, in, m_tdusrtimer_ms,   "tdusrtimer_ms");
+    BS_ARCHIVE(crc, bitcode::CMC, in, m_cecolor,        "cecolor");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_handseed,       "handseed");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_clayer,         "clayer");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_textstyle,      "textstyle");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_celtype,        "celtype");
 
     // R2007+
     if(dwgVersion >= R2007) {
@@ -276,88 +276,396 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
     // common
     VLOG(4) << "****** Begin PS read *****";
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_pinsbase, "pinsbase");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_pextmin, "pextmin");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_pextmax, "pextmax");
-    BS_ARCHIVE(crc, bitcode::RD2, in, m_plimmin, "plimmin");
-    BS_ARCHIVE(crc, bitcode::RD2, in, m_plimmax, "plimmax");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_pinsbase,  "pinsbase");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_pextmin,   "pextmin");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_pextmax,   "pextmax");
+    BS_ARCHIVE(crc, bitcode::RD2, in, m_plimmin,   "plimmin");
+    BS_ARCHIVE(crc, bitcode::RD2, in, m_plimmax,   "plimmax");
     BS_ARCHIVE(crc, bitcode::BD, in, m_pelevation, "pelevation");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorg, "pucsorg");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsxdir, "pucsxdir");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsydir, "pucsydir");
-    BS_ARCHIVE(crc, OcDbObjectId, in, m_pucsname, "pucsname");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorg,   "pucsorg");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsxdir,  "pucsxdir");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsydir,  "pucsydir");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_pucsname,  "pucsname");
 
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(crc, OcDbObjectId, in, m_pucsbase, "pucsbase");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_pucsorthoview, "pucsorthoview");
-        BS_ARCHIVE(crc, OcDbObjectId, in, m_pucsorthoref, "pucsorthoref");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgtop, "pucsorgtop");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_pucsbase,      "pucsbase");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_pucsorthoview,  "pucsorthoview");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_pucsorthoref,  "pucsorthoref");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgtop,    "pucsorgtop");
         BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgbottom, "pucsorgbottom");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgleft, "pucsorgleft");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgright, "pucsorgright");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgfront, "pucsorgfront");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgback, "pucsorgback");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgleft,   "pucsorgleft");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgright,  "pucsorgright");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgfront,  "pucsorgfront");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_pucsorgback,   "pucsorgback");
     }
 
 
     // common
     VLOG(4) << "****** Begin MS read *****";
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_insbase, "insbase");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_extmin, "extmin");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_extmax, "extmax");
-    BS_ARCHIVE(crc, bitcode::RD2, in, m_limmin, "limmin");
-    BS_ARCHIVE(crc, bitcode::RD2, in, m_limmax, "limmax");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_insbase,  "insbase");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_extmin,   "extmin");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_extmax,   "extmax");
+    BS_ARCHIVE(crc, bitcode::RD2, in, m_limmin,   "limmin");
+    BS_ARCHIVE(crc, bitcode::RD2, in, m_limmax,   "limmax");
     BS_ARCHIVE(crc, bitcode::BD, in, m_elevation, "elevation");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorg, "ucsorg");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsxdir, "ucsxdir");
-    BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsydir, "ucsydir");
-    BS_ARCHIVE(crc, OcDbObjectId, in, m_ucsname, "ucsname");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorg,   "ucsorg");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsxdir,  "ucsxdir");
+    BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsydir,  "ucsydir");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_ucsname,  "ucsname");
 
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(crc, OcDbObjectId, in, m_ucsbase, "ucsbase");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_ucsorthoview, "ucsorthoview");
-        BS_ARCHIVE(crc, OcDbObjectId, in, m_ucsorthoref, "ucsorthoref");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgtop, "ucsorgtop");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_ucsbase,      "ucsbase");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_ucsorthoview,  "ucsorthoview");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_ucsorthoref,  "ucsorthoref");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgtop,    "ucsorgtop");
         BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgbottom, "ucsorgbottom");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgleft, "ucsorgleft");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgright, "ucsorgright");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgfront, "ucsorgfront");
-        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgback, "ucsorgback");
-        BS_ARCHIVE(crc, bitcode::TV, in, m_dimpost, "dimpost");
-        BS_ARCHIVE(crc, bitcode::TV, in, m_dimapost, "dimapost");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgleft,   "ucsorgleft");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgright,  "ucsorgright");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgfront,  "ucsorgfront");
+        BS_ARCHIVE(crc, bitcode::BD3, in, m_ucsorgback,   "ucsorgback");
+        BS_ARCHIVE(crc, bitcode::TV, in, m_dimpost,       "dimpost");
+        BS_ARCHIVE(crc, bitcode::TV, in, m_dimapost,      "dimapost");
     }
 
-    // common
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimtol, "dimtol");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimlim, "dimlim");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimtih, "dimtih");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimtoh, "dimtoh");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimse1, "dimse1");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimse2, "dimse2");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimalt, "dimalt");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimtofl, "dimtofl");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimsah, "dimsah");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimtix, "dimtix");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimsoxd, "dimsoxd");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltd, "dimaltd");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimzin, "dimzin");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimsd1, "dimsd1");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimsd2, "dimsd2");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimtolj, "dimtolj");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimjust, "dimjust");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimfit, "dimfit");
-    BS_ARCHIVE(crc, bitcode::B, in, m_dimupt, "dimupt");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimtzin, "dimtzin");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltz, "dimaltz");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimalttz, "dimalttz");
-    BS_ARCHIVE(crc, bitcode::RC, in, m_dimtad, "dimtad");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_dimunit, "dimunit");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_dimaunit, "dimaunit");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_dimdec, "dimdec");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_dimtdec, "dimtdec");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltu, "dimaltu");
-    BS_ARCHIVE(crc, bitcode::BS, in, m_dimalttd, "dimalttd");
-    BS_ARCHIVE(crc, OcDbObjectId, in, m_dimtxsty, "dimtxsty");
+    if(dwgVersion == R13 || dwgVersion == R14) {
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimtol,     "dimtol");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimlim,     "dimlim");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimtih,     "dimtih");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimtoh,     "dimtoh");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimse1,     "dimse1");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimse2,     "dimse2");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimalt,     "dimalt");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimtofl,    "dimtofl");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimsah,     "dimsah");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimtix,     "dimtix");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimsoxd,    "dimsoxd");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltd,   "dimaltd");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimzin,    "dimzin");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimsd1,     "dimsd1");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimsd2,     "dimsd2");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtolj,   "dimtolj");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimjust,   "dimjust");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimfit,    "dimfit");
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimupt,     "dimupt");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtzin,   "dimtzin");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltz,   "dimaltz");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimalttz,  "dimalttz");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtad,    "dimtad");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimunit,   "dimunit");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaunit,  "dimaunit");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimdec,    "dimdec");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtdec,   "dimtdec");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltu,   "dimaltu");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimalttd,  "dimalttd");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimtxsty, "dimtxsty");
+    }
+
+////////////////////////////////////////////////////////////////////////////
+// common
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimscale, "dimscale")
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimasz,   "dimasz");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimexo,   "dimexo");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimdli,   "dimdli");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimexe,   "dimexe");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimrnd,   "dimrnd");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimdle,   "dimdle");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimtp,    "dimtp");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimtm,    "dimtm");
+
+// R2007+
+    if(dwgVersion >= R2007) {
+        BS_ARCHIVE(crc, bitcode::BD, in,  m_dimfxl,      "dimfxl");
+        BS_ARCHIVE(crc, bitcode::BD, in,  m_dimjogang,   "dimjogang");
+        BS_ARCHIVE(crc, bitcode::BS, in,  m_dimtfill,    "dimtfill");
+        BS_ARCHIVE(crc, bitcode::CMC, in, m_dimtfillclr, "dimtfillclr");
+    }
+
+// R2000+
+    if(dwgVersion >= R2000) {
+        BS_ARCHIVE(crc, bitcode::B, in,  m_dimtol,  "dimtol");
+        BS_ARCHIVE(crc, bitcode::B, in,  m_dimlim,  "dimlim");
+        BS_ARCHIVE(crc, bitcode::B, in,  m_dimtih,  "dimtih");
+        BS_ARCHIVE(crc, bitcode::B, in,  m_dimtoh,  "dimtoh");
+        BS_ARCHIVE(crc, bitcode::B, in,  m_dimse1,  "dimse1");
+        BS_ARCHIVE(crc, bitcode::B, in,  m_dimse2,  "dimse2");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtad,  "dimtad");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimzin,  "dimzin");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimazin, "dimazin");
+    }
+
+// R2007+
+    if(dwgVersion >= R2007) {
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimarcsym, "dimarcsym");
+    }
+
+// common
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimtxt,  "dimtxt");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimcen,  "dimcen");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimtsz,  "dimtsz");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimaltf, "dimaltf");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimlfac, "dimlfac");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimtvp,  "dimtvp");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimtfac, "dimtfac");
+    BS_ARCHIVE(crc, bitcode::BD, in, m_dimgap,  "dimgap");
+
+// R13-R14
+    if(dwgVersion == R13 || dwgVersion == R14) {
+        BS_ARCHIVE(crc, bitcode::T, in, m_dimpost,  "dimpost");
+        BS_ARCHIVE(crc, bitcode::T, in, m_dimapost, "dimapost");
+        BS_ARCHIVE(crc, bitcode::T, in, m_dimblk,   "dimblk");
+        BS_ARCHIVE(crc, bitcode::T, in, m_dimblk1,  "dimblk1");
+        BS_ARCHIVE(crc, bitcode::T, in, m_dimblk2,  "dimblk2");
+    }
+
+// R2000+
+    if(dwgVersion >= R2000) {
+        BS_ARCHIVE(crc, bitcode::BD, in, m_dimaltrnd, "dimaltrnd");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimalt,    "dimalt");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltd,   "dimaltd");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimtofl,   "dimtofl");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimsah,    "dimsah");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimtix,    "dimtix");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimsoxd,   "dimsoxd");
+    }
+
+// common
+    BS_ARCHIVE(crc, bitcode::CMC, in, m_dimclrd, "dimclrd");
+    BS_ARCHIVE(crc, bitcode::CMC, in, m_dimclre, "dimclre");
+    BS_ARCHIVE(crc, bitcode::CMC, in, m_dimclrt, "dimclrt");
+
+// R2000+
+    if(dwgVersion >= R2000) {
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimadec,  "dimadec");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimdec,   "dimdec");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtdec,  "dimtdec");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltu,  "dimaltu");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimalttd, "dimalttd");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaunit, "dimaunit");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimfrac,  "dimfrac");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimlunit, "dimlunit");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimdsep,  "dimdsep");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtmove, "dimtmove");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimjust,  "dimjust");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimsd1,   "dimsd1");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimsd2,   "dimsd2");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtolj,  "dimtolj");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtzin,  "dimtzin");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltz,  "dimaltz");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimalttz, "dimalttz");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_dimupt,   "dimupt");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimatfit, "dimatfit");
+    }
+
+// R2007+
+    if(dwgVersion >= R2007) {
+        BS_ARCHIVE(crc, bitcode::B, in, m_dimfxlon, "dimfxlog");
+    }
+
+    if(dwgVersion >= R2010) {
+//        BS_ARCHIVE(crc, bitcode::B,  in, m_dimtxtdirection, "dimtxtdirection");
+//        BS_ARCHIVE(crc, bitcode::BD, in, m_dimaltmzf,       "dimaltmzf");
+//        BS_ARCHIVE(crc, bitcode::T,  in, m_dimaltmzs,       "dimaltmzs");
+//        BS_ARCHIVE(crc, bitcode::BD, in, m_dimmzf,          "dimmzf");
+//        BS_ARCHIVE(crc, bitcode::T,  in, m_dimmzs,          "dimmzs");
+    }
+
+// R2000+
+    if(dwgVersion >= R2000) {
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimtxsty,  "dimtxsty");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimldrblk, "dimldrblk");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimblkId,  "dimblkId");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimblk1Id, "dimblk1Id");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimblk2Id, "dimblk2Id");
+    }
+
+// R2007+
+    if(dwgVersion >= R2007) {
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimltype,  "dimltype");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimltex1,  "dimltex1");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dimltex2,  "dimltex2");
+    }
+
+// R2000+
+    if(dwgVersion >= R2000) {
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimlwd, "dimlwd");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimlwe, "dimlwe");
+    }
+
+// common
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_blockCtrlId,    "blockCtrlId");  // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_layerCtrlId,    "layerCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_styleCtrlId,    "styleCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_linetypeCtrlId, "linetypeCtrlId"); // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_viewCtrlId,     "viewCtrlId");     // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_ucsCtrlId,      "ucsCtrlId");      // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_vportCtrlId,    "vportCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_appidCtrlId,    "appidCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_dimstyleCtrlId, "dimstyleCtrlId"); // CONTROL OBJECT
+
+// R13-R15
+    if(dwgVersion == R13 || dwgVersion == R14 || dwgVersion == R2000) {
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_viewport, "viewport"); // ENTITY HEADER CONTROL OBJECT
+    }
+
+// common
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryGroupId,      "group dictionary Id");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryMLineStyleId, "mline style dict Id");
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryNamedObjsId,  "named objects dict Id");
+
+// R2000+
+    if(dwgVersion >= R2000) {
+        BS_ARCHIVE(crc, bitcode::BS, in, m_tstackalign,   "tstackalign");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_tstacksize,    "tstacksize");
+        BS_ARCHIVE(crc, bitcode::TV, in, m_hyperlinkbase, "hyperlinkbase");
+        BS_ARCHIVE(crc, bitcode::TV, in, m_stylesheet,    "stylesheet")
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryLayoutsId,      "layouts dict Id");       // (LAYOUTS)
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryPlotSettingsId, "plot settings dict Id"); // (PLOTSETTINGS)
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryPlotStylesId,   "plot styles dict Id");        // (PLOTSTYLES)
+    }
+
+// R2004+
+    if(dwgVersion >= R2004) {
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryMaterialsId, "materials dict Id");     // (MATERIALS)
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryColorsId, "colors dict Id");        // (COLORS)
+    }
+
+// R2007+
+    if(dwgVersion >= R2007) {
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dictionaryVisualStyleId, "visual style dict Id");  // (VISUALSTYLE)
+    }
+
+// R2000+
+    if(dwgVersion >= R2000) {
+        BS_ARCHIVE(crc, bitcode::BL, in, m_flags, "flags");
+        //                      CELWEIGHT       Flags & 0x001F
+        //                      ENDCAPS         Flags & 0x0060
+        //                      JOINSTYLE       Flags & 0x0180
+        //                      LWDISPLAY       !(Flags & 0x0200)
+        //                      XEDIT           !(Flags & 0x0400)
+        //                      EXTNAMES        Flags & 0x0800
+        //                      PSTYLEMODE      Flags & 0x2000
+        //                      OLESTARTUP      Flags & 0x4000
+        BS_ARCHIVE(crc, bitcode::BS, in, m_insunits,  "insunits");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_cepsntype, "cepsntype");
+        if(m_cepsntype == 3) {
+            // m_cpsnid only present if m_cepsntype == 3
+            BS_ARCHIVE(crc, OcDbObjectId, in, m_cpsnid, "cpsnid");
+        }
+        BS_ARCHIVE(crc, bitcode::TV, in, m_fingerprintguid, "fingerprintguid");
+        BS_ARCHIVE(crc, bitcode::TV, in, m_versionguid, "versionguid");
+    }
+
+// R2004+
+    if(dwgVersion >= R2004) {
+        BS_ARCHIVE(crc, bitcode::RC, in, m_sortents,          "sortents");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_indexctl,          "indexctl");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_hidetext,          "hidetext");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_xclipframe,        "xclipframe");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimassoc,          "dimassoc");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_halogap,           "halogap");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_obscuredcolor,     "obscuredcolor");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_intersectioncolor, "intersectioncolor");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_obscuredltype,     "obscuredltype");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_intersectiondisplay, "intersectiondisplay")
+        BS_ARCHIVE(crc, bitcode::TV, in, m_projectname,       "projectname");
+    }
+
+// common
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_block_recordPsId, "ps block record Id");  // (*PAPER_SPACE)
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_block_recordMsId, "ms block record Id");  // (*MODEL_SPACE)
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_ltypeByLayerId,   "ltype bylayer id");         // (BYLAYER)
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_ltypeByBlockId,   "ltype byblock id");         // (BYBLOCK)
+    BS_ARCHIVE(crc, OcDbObjectId, in, m_ltypeContinuousId, "ltype continuous LT id");         // (CONTINUOUS)
+
+// R2007+
+    if(dwgVersion >= R2007) {
+        BS_ARCHIVE(crc, bitcode::B,  in, m_cameradisplay,     "cameradisplay");
+        BS_ARCHIVE(crc, bitcode::BL, in, m_unknown21,         "unknown21");
+        BS_ARCHIVE(crc, bitcode::BL, in, m_unknown22,         "unknown22");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_unknown23,         "unknown23");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_stepspersec,       "stepspersec");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_stepsize,          "stepsize");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_3ddwfprec,         "3ddwfprec");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_lenslength,        "lenslength");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_cameraheight,      "cameraheight");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_solidhist,         "solidhist");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_showhist,          "showhist");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_psolwidth,         "psolwidth");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_psolheight,        "psolheight");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_loftang1,          "loftang1");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_loftang2,          "loftang2");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_loftmag1,          "loftmag1");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_logtmag2,          "loftmag2");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_loftparam,         "loftparam");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_loftnormals,       "loftnormals");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_latitude,          "latitude");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_longitude,         "longitude");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_northdirection,    "northdirection");
+        BS_ARCHIVE(crc, bitcode::BL, in, m_timezone,          "timezone");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_lightglyphdisplay, "lightglyphdisplay");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_tilemodelightsynch, "tilemodelightsynch");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dwfframe,          "dwfframe");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dgnframe,          "dgnframe");
+        BS_ARCHIVE(crc, bitcode::B,  in, m_unknown47,         "unknown47");
+        BS_ARCHIVE(crc, bitcode::CMC, in, m_interferecolor,   "interferecolor");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_interfereobjvsId, "interfereobjvsId");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_interferevpvsId,  "interferevpvsId");
+        BS_ARCHIVE(crc, OcDbObjectId, in, m_dragvsId,         "dragvsId");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_cshadow,           "cshadow");
+        BS_ARCHIVE(crc, bitcode::BD, in, m_unknown53,         "unknown53");
+    }
+
+// R14+
+    if(dwgVersion >= R14) {
+        BS_ARCHIVE(crc, bitcode::BS, in, m_unknown54, "unknown54");  // short(type 5 / 6 only)  these do not seem to be required,
+        BS_ARCHIVE(crc, bitcode::BS, in, m_unknown55, "unknown55");  // short(type 5 / 6 only)  even for type 5.
+        BS_ARCHIVE(crc, bitcode::BS, in, m_unknown56, "unknown56");  // short(type 5 / 6 only)
+        BS_ARCHIVE(crc, bitcode::BS, in, m_unknown57, "unknown57");  // short(type 5 / 6 only)
+    }
+
+
+    uint16_t crc1;
+    in >> (bitcode::RS&) crc1;
+
+// common
+//    BS_ARCHIVE(crc, bitcode::RS, in, m_crc, "crc"); // for the data section, starting after the
+    // sentinel. Use 0xC0C1 for the initial value.
+
+////////////////////////////////////////////////////////////////////////////
+
+    bool bVal;
+//    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
+//    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
+    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
+    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
+    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
+    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
+
+
+    // match dwg header variables start sentinel
+//    bitcode::RC sentinelData[16];
+    for(int j = 0; j < 5; j++) {
+        in.ReadRC(sentinelData, 16);
+        std::stringstream ss;
+        for(int i = 0; i < 16; ++i) {
+            ss << hex << showbase << (int)sentinelData[i] << " ";
+        }
+        VLOG(4) << ss.str();
+    }
+//    if(!CompareSentinels(sentinelHeaderVarsEnd, sentinelData)) {
+//        std::stringstream ss;
+//        for(int i =0; i < 16; ++i) {
+//            ss << hex << showbase << (int)sentinelData[i] << " ";
+//        }
+//        VLOG(4) << ss.str();
+//        return OcApp::eInvalidImageDataSentinel;
+//    }
+
+
+
+
+
+
 
 
 

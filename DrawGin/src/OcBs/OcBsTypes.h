@@ -135,6 +135,7 @@ BOOST_STRONG_TYPEDEF(double, BT);
 
 BOOST_STRONG_TYPEDEF(BCCMC, CMC);
 BOOST_STRONG_TYPEDEF(std::wstring, TV);
+BOOST_STRONG_TYPEDEF(std::wstring, T);
 
 
 } // bitcode

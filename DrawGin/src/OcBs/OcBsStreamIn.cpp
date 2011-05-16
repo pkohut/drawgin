@@ -448,4 +448,17 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TV & tv)
     return *this;
 }
 
+OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
+{
+    bitcode::BS length;
+    *this >> length;
+
+    for(int i = 0; i < length.t; ++i) {
+        bitcode::RS rs;
+        *this >> rs;
+        t.t.push_back(rs);
+    }
+    return *this;
+}
+
 END_OCTAVARIUM_NS

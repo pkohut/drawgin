@@ -243,6 +243,13 @@ DwgInArchive & DwgInArchive::operator>>(bitcode::TV & tv)
     return *this;
 }
 
+DwgInArchive & DwgInArchive::operator>>(bitcode::T & t)
+{
+    ASSERT_ARCHIVE_NOT_LOADING;
+    m_stream >> t;
+    return *this;
+}
+
 DwgInArchive & DwgInArchive::operator>>(bitcode::RC rc[])
 {
     ASSERT_ARCHIVE_NOT_LOADING;
