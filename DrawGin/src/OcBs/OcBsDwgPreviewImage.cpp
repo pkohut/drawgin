@@ -36,7 +36,7 @@
 #include "OcDbObjectId.h"
 #include "OcDbDwgVersion.h"
 
-
+#include "OcBsStreamIn.h"
 #include "OcBsDwgPreviewImage.h"
 #include "OcBsDwgSentinels.h"
 

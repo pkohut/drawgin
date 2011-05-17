@@ -67,8 +67,6 @@ private:
 
 private:
     DWG_VERSION m_dwgVersion;
-    uint16_t m_crc;
-
     int32_t m_unknown_offset_0x06;
     int8_t m_unknown_offset_0x0a;
     int8_t m_acadMaintVer;

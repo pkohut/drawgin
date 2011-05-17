@@ -63,7 +63,6 @@ public:
     OcBsStreamIn & ReadCRC(uint16_t & crc);
 
     virtual OcBsStreamIn & operator>>(OcDbObjectId & objId);
-
     virtual OcBsStreamIn & operator>>(bitcode::B & b);
     virtual OcBsStreamIn & operator>>(bitcode::BB & bb);
     virtual OcBsStreamIn & operator>>(bitcode::BBBB & bbbb);
@@ -87,8 +86,6 @@ public:
     virtual OcBsStreamIn & operator>>(bitcode::TV & tv);
     virtual OcBsStreamIn & operator>>(bitcode::T & t);
     virtual OcBsStreamIn & operator>>(bitcode::TU & tu);
-
-
 
 };
 

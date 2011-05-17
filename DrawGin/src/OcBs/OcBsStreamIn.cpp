@@ -35,6 +35,7 @@
 #include "OcDbObjectId.h"
 #include "OcDbDwgVersion.h"
 #include "OcBsStreamIn.h"
+#include "OcBsDwgCrc.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -85,10 +86,6 @@ bool OcBsStreamIn::Good(void) const
         return true;
     }
     return Eof();
-    //if(m_fs.eof() && m_filePosition < m_fileLength) {
-    //    return true;
-    //}
-    //return false;
 }
 
 bool OcBsStreamIn::Eof(void) const
@@ -119,7 +116,6 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
     int64_t val = 0;
     for(int i = (int) counter - 1; i >= 0; --i) {
         *this >> rc;
-//        (&val)[i] = rc;
         val |= (uint8_t)rc << (i * CHAR_BIT);
     }
     objId.Handle(val);
@@ -142,17 +138,18 @@ OcBsStreamIn & OcBsStreamIn::ReadCRC( uint16_t & crc )
 }
 
 
+//////////////////////////////////////////////////////////////////////////
+
 OcBsStreamIn & OcBsStreamIn::operator>>(OcDbObjectId & objId)
 {
     return ReadHandle(objId);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::B & b)
 {
     if(m_bitPosition == 0) {
         m_cache = Get();
+        m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
     }
     b = (m_cache & (0x80 >> m_bitPosition)) >> (7 - m_bitPosition);
     m_bitPosition = (m_bitPosition + 1) % CHAR_BIT;
@@ -319,13 +316,10 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MC & mc)
                 bNeg = true;
                 rc[i] &= 0xbf;
             }
-//            mc |= (((bitcode::MC)rc[i]) << j);
-//            mc = (mc ^ -bNeg) + bNeg;
             mc |= ((uint8_t)rc[i] << j);
             mc = ((uint8_t)mc ^ -bNeg) + bNeg;
             return *this;
         }
-//        mc |= (((bitcode::MC)rc[i]) << j);
         mc |= ((uint8_t)rc[i] << j);
     }
     // error parsing if it gets here.
@@ -342,11 +336,9 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MS & ms)
         if(rs[i] & 0x8000) {
             rs[i] &= 0x7fff;
         } else {
-//            ms |= (((bitcode::RS) rs[i]) << j);
             ms |= ((uint16_t)rs[i] << j);
             return *this;
         }
-//        ms |= (((bitcode::RS) rs[i]) << j);
         ms |= ((uint16_t)rs[i] << j);
     }
     // error parsing if it gets here.
@@ -358,10 +350,12 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RC & rc)
 {
     if(m_bitPosition == 0) {
         rc = m_cache = Get();
+        m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
     } else {
         rc = m_cache << m_bitPosition;
         if(m_filePosition < m_fileLength - 1) {
             m_cache = Get();
+            m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
             rc |= m_cache >> (8 - m_bitPosition);
         }
     }

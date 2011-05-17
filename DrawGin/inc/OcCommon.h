@@ -36,6 +36,7 @@
 #include <fstream>
 #include <functional>
 #include <set>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>

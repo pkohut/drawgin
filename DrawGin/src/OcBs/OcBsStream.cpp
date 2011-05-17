@@ -57,16 +57,9 @@ const int BUFSIZE = 4096;
 
 OcBsStream::OcBsStream(void)
     : m_pBuffer(NULL), m_filePosition(0), m_fileLength(0), m_bitPosition(0),
-      m_indexSize(0), m_version(NONE), m_convertCodepage(false)
+      m_indexSize(0), m_crc(0), m_version(NONE), m_convertCodepage(false)
 {
 }
-
-//OcBsStream::OcBsStream(const std::wstring & filename)
-//    : m_pBuffer(NULL), m_filePosition(0), m_fileLength(0), m_bitPosition(0),
-//      m_indexSize(0), m_version(000), m_convertCodepage(false)
-//{
-//    open(filename);
-//}
 
 OcBsStream::~OcBsStream(void)
 {
@@ -79,7 +72,6 @@ void OcBsStream::Open(const std::wstring & filename, int mode)
 void OcBsStream::Open(const std::string & filename, int mode)
 #endif
 {
-    //    m_fs.open(filename.c_str(), fstream::in | fstream::binary);
     if(m_fs.is_open()) {
         Close();
     }
@@ -175,6 +167,16 @@ DWG_VERSION OcBsStream::Version(void) const
 void OcBsStream::SetVersion(DWG_VERSION version)
 {
     m_version = version;
+}
+
+octavarium::uint16_t OcBsStream::CalcedCRC( void ) const
+{
+    return m_crc;
+}
+
+void OcBsStream::SetCalcedCRC( uint16_t crc )
+{
+    m_crc = crc;
 }
 
 END_OCTAVARIUM_NS

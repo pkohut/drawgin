@@ -69,6 +69,9 @@ public:
     DWG_VERSION Version(void) const;
     void SetVersion(DWG_VERSION version);
 
+    uint16_t CalcedCRC(void) const;
+    void SetCalcedCRC(uint16_t crc);
+
 protected:
 #if defined(WIN32) && defined(_UNICODE)
     virtual void Open(const std::wstring & filename, int mode);
@@ -81,6 +84,7 @@ protected:
     std::streamsize m_fileLength;
     int             m_bitPosition;
     std::streamsize m_indexSize;
+    uint16_t        m_crc;
     byte_t          m_cache;
     std::fstream    m_fs;
     DWG_VERSION     m_version;
