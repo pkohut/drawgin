@@ -34,7 +34,8 @@
 #include "OcTypes.h"
 #include "OcDbObjectId.h"
 #include "OcDbDwgVersion.h"
-#include "OcBsDwgCrc.h"
+
+//#include "OcBsDwgCrc.h"
 #include "OcBsDwgFileHeader.h"
 #include "OcBsDwgSentinels.h"
 

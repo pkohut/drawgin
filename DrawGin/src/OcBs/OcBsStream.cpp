@@ -147,9 +147,9 @@ byte_t OcBsStream::Get()
     return m_pBuffer[pos];
 }
 
-bitcode::TV & OcBsStream::ConvertToCodepage(bitcode::TV & tv)
+bitcode::T & OcBsStream::ConvertToCodepage(bitcode::T & t)
 {
-    return tv;
+    return t;
 }
 
 OcBsStream::operator void*(void) const

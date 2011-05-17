@@ -31,6 +31,8 @@
 #include "stdafx.h"
 #include "OcCommon.h"
 #include "OcTypes.h"
+#include "OcDbObjectId.h"
+#include "OcBsTypes.h"
 #include "OcBsDwgCrc.h"
 
 BEGIN_OCTAVARIUM_NS
@@ -81,5 +83,15 @@ uint16_t crc8(uint16_t dx, const char * p, long n)
     }
     return dx;
 }
+
+uint16_t crc8(uint16_t dx, const OcDbObjectId & objId)
+{
+    return crc8(dx, (const char *)&objId.Handle(), sizeof(objId.Handle()));
+}
+
+//uint16_t crc8(uint16_t dx, const OcDbObjectId & objId)
+//{
+//    return crc8(dx, (const char *)&objId.Handle(), sizeof(objId.Handle()));
+//}
 
 END_OCTAVARIUM_NS

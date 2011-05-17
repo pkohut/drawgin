@@ -39,6 +39,7 @@
 #include "OcGePoint2D.h"
 #include "OcGePoint3D.h"
 
+
 #include "../OcBs/DwgInArchive.h"
 #include "OcDbHeaderVars.h"
 #include "../OcBs/OcBsDwgSentinels.h"
@@ -52,6 +53,65 @@ using namespace std;
 
 
 OcDbHeaderVars::OcDbHeaderVars(void)
+:
+m_unknown1(0.0), m_unknown2(0.0), m_unknown3(0.0), m_unknown4(0.0),
+m_unknown9(0), m_unknown10(0), m_unknown11(0), m_dimaso(false),
+m_dimsho(false), m_dimsav(false), m_plinegen(false), m_orthomode(false),
+m_regenmode(false), m_fillmode(false), m_qtextmode(false),
+m_psltscale(false), m_limcheck(false), m_blipmode(false),
+m_undocumented(false), m_usertimer(false), m_skpoly(false),
+m_angdir(false), m_splframe(false), m_attreq(false), m_attdia(false),
+m_mirrtext(false), m_worldview(false), m_wireframe(false),
+m_tilemode(false), m_plimcheck(false), m_visretain(false), m_delobj(false),
+m_dispsilh(false), m_pellipse(false),
+m_saveimages(0), m_dragmode(0), m_treedepth(0), m_lunits(0), m_luprec(0),
+m_aunits(0), m_auprec(0), m_osmode(0), m_attmode(0), m_coords(0),
+m_pdmode(0), m_pickstyle(0), m_unknown12(0), m_unknown13(0),m_unknown14(0),
+m_useri1(0), m_useri2(0), m_useri3(0), m_useri4(0), m_useri5(0),
+m_splinesegs(0), m_surfu(0), m_surfv(0), m_surftype(0), m_surftab1(0),
+m_surftab2(0), m_splinetype(0), m_shadedge(0), m_shadedif(0),
+m_unitmode(0), m_maxactvp(0), m_isolines(0), m_cmljust(0), m_textqlty(0),
+m_ltscale(0.0), m_textsize(0.0), m_tracewid(0.0), m_sketchinc(0.0),
+m_filletrad(0.0), m_thickness(0.0), m_angbase(0.0), m_pdsize(0.0),
+m_plinewid(0.0), m_userr1(0.0), m_userr2(0.0), m_userr3(0.0),
+m_userr4(0.0), m_userr5(0.0), m_chamfera(0.0), m_chamferb(0.0),
+m_chamferc(0.0), m_chamferd(0.0), m_facetres(0.0), m_cmlscale(0.0),
+m_celtscale(0.0), m_tdcreate_day(0), m_tdcreate_ms(0), m_tdupdate_day(0),
+m_tdupdate_ms(0), m_unknown15(0), m_unknown16(0), m_unknown17(0),
+m_tdindwg_days(0), m_tdindwg_ms(0), m_tdusrtimer_days(0), m_tdusrtimer_ms(0),
+m_psvpscale(0.0), m_pelevation(0.0), m_pucsorthoview(0), m_elevation(0.0),
+m_ucsorthoview(0),
+m_dimtol(false), m_dimlim(false), m_dimtih(false), m_dimtoh(false),
+m_dimse1(false), m_dimse2(false), m_dimalt(false), m_dimtofl(false),
+m_dimsah(false), m_dimtix(false), m_dimsoxd(false),
+/*m_dimaltd(0),*/ /*m_dimzin(0),*/ m_dimsd1(false), m_dimsd2(false),
+/*m_dimtolj(0),*/ /*m_dimjust(0),*/ m_dimfit(0), m_dimupt(false), /*m_dimtzin(0),*/
+/*m_dimaltz(0),*/ /*m_dimalttz(0),*/ /*m_dimtad(0),*/ m_dimunit(0), m_dimaunit(0),
+m_dimdec(0), m_dimtdec(0), m_dimaltu(0), m_dimalttd(0),
+m_dimscale(0.0), m_dimasz(0.0), m_dimexo(0.0), m_dimdli(0.0),
+m_dimexe(0.0), m_dimrnd(0.0), m_dimdle(0.0), m_dimtp(0.0),
+m_dimtm(0.0), m_dimfxl(0.0), m_dimjogang(0.0), m_dimtfill(0),
+m_dimazin(0), m_dimarcsym(0),
+m_dimtxt(0.0), m_dimcen(0.0), m_dimtsz(0.0), m_dimaltf(0.0),
+m_dimlfac(0.0), m_dimtvp(0.0), m_dimtfac(0.0), m_dimgap(0.0),
+m_dimaltrnd(0.0), m_dimadec(0), m_dimfrac(0), m_dimlunit(0),
+m_dimdsep(0), m_dimtmove(0), m_dimatfit(0), m_dimfxlon(false),
+m_dimlwd(0), m_dimlwe(0), m_tstackalign(0), m_tstacksize(0),
+m_flags(0), m_insunits(0), m_cepsntype(0),
+m_sortents(0), m_indexctl(0), m_hidetext(0), m_xclipframe(0),
+m_dimassoc(0), m_halogap(0), m_obscuredcolor(0), m_intersectioncolor(0),
+m_obscuredltype(0), m_intersectiondisplay(0),
+m_cameradisplay(false), m_unknown21(0), m_unknown22(0),
+m_unknown23(0.0), m_stepspersec(0.0), m_stepsize(0.0), m_3ddwfprec(0.0),
+m_lenslength(0.0), m_cameraheight(0.0), m_solidhist(0), m_showhist(0),
+m_psolwidth(0.0), m_psolheight(0.0), m_loftang1(0.0), m_loftang2(0.0),
+m_loftmag1(0.0), m_logtmag2(0.0), m_loftparam(0), m_loftnormals(0),
+m_latitude(0.0), m_longitude(0.0), m_northdirection(0.0),
+m_timezone(0), m_lightglyphdisplay(0), m_tilemodelightsynch(0),
+m_dwfframe(0), m_dgnframe(0), m_unknown47(false), m_cshadow(0),
+m_unknown53(0.0), m_unknown54(0), m_unknown55(0),
+m_unknown56(0), m_unknown57(0), m_crc(0)
+
 {
     VLOG(3) << "Constructor entered";
 }
@@ -77,13 +137,20 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     int size;
     uint16_t crc = 0xc0c1;
 
-    // spec says this is a R2007 variable only, but that doesn't
-    // seem to be correct, at least for the R2008 drawing down converted
-    // to R14.
+    uint16_t ccc = 0xc0c1;
+    int offset = in.FilePosition() % 4096;
+    ccc = crc8(ccc, (const char *) in.Buffer() + offset, 0x190);
+
+    // spec says this is a R2007 variable only and is the size in "bits",
+    // but that doesn't totally correct.
+    // At least for the R2008 drawing down converted to R14, this value
+    // appears to be the size of the header in "bytes".
     //   if(dwgVersion == R2007) {
     //    Archive<bitcode::RL>(in, size, "Header variables size");
     BS_ARCHIVE(crc, bitcode::RL, in, size, "Header variables size");
     //    }
+
+    size_t startPos = in.FilePosition();
 
     // common
     BS_ARCHIVE(crc, bitcode::BD, in, m_unknown1,  "unknown1");
@@ -339,18 +406,26 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(crc, bitcode::B, in, m_dimsah,     "dimsah");
         BS_ARCHIVE(crc, bitcode::B, in, m_dimtix,     "dimtix");
         BS_ARCHIVE(crc, bitcode::B, in, m_dimsoxd,    "dimsoxd");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltd,   "dimaltd");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimzin,    "dimzin");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltd.b,   "dimaltd");
+//        Archive<bitcode::RC>(crc, in, m_dimaltd, "dimaltd");
+        //template<typename BC, typename T>
+        //DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t, const char * pStr)
+        //{
+        //    Archive<BC, T>(crc, ar, t);
+        //    VLOG(4) << pStr << ": " << t;
+        //    return ar;
+        //}
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimzin.b,    "dimzin");
         BS_ARCHIVE(crc, bitcode::B, in, m_dimsd1,     "dimsd1");
         BS_ARCHIVE(crc, bitcode::B, in, m_dimsd2,     "dimsd2");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtolj,   "dimtolj");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimjust,   "dimjust");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtolj.b,   "dimtolj");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimjust.b,   "dimjust");
         BS_ARCHIVE(crc, bitcode::RC, in, m_dimfit,    "dimfit");
         BS_ARCHIVE(crc, bitcode::B, in, m_dimupt,     "dimupt");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtzin,   "dimtzin");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltz,   "dimaltz");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimalttz,  "dimalttz");
-        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtad,    "dimtad");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtzin.b,   "dimtzin");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimaltz.b,   "dimaltz");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimalttz.b,  "dimalttz");
+        BS_ARCHIVE(crc, bitcode::RC, in, m_dimtad.b,    "dimtad");
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimunit,   "dimunit");
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimaunit,  "dimaunit");
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimdec,    "dimdec");
@@ -388,8 +463,8 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(crc, bitcode::B, in,  m_dimtoh,  "dimtoh");
         BS_ARCHIVE(crc, bitcode::B, in,  m_dimse1,  "dimse1");
         BS_ARCHIVE(crc, bitcode::B, in,  m_dimse2,  "dimse2");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtad,  "dimtad");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimzin,  "dimzin");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtad.i,  "dimtad");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimzin.i,  "dimzin");
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimazin, "dimazin");
     }
 
@@ -421,7 +496,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     if(dwgVersion >= R2000) {
         BS_ARCHIVE(crc, bitcode::BD, in, m_dimaltrnd, "dimaltrnd");
         BS_ARCHIVE(crc, bitcode::B,  in, m_dimalt,    "dimalt");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltd,   "dimaltd");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltd.i,   "dimaltd");
         BS_ARCHIVE(crc, bitcode::B,  in, m_dimtofl,   "dimtofl");
         BS_ARCHIVE(crc, bitcode::B,  in, m_dimsah,    "dimsah");
         BS_ARCHIVE(crc, bitcode::B,  in, m_dimtix,    "dimtix");
@@ -445,13 +520,13 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimlunit, "dimlunit");
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimdsep,  "dimdsep");
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimtmove, "dimtmove");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimjust,  "dimjust");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimjust.i,  "dimjust");
         BS_ARCHIVE(crc, bitcode::B,  in, m_dimsd1,   "dimsd1");
         BS_ARCHIVE(crc, bitcode::B,  in, m_dimsd2,   "dimsd2");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtolj,  "dimtolj");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtzin,  "dimtzin");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltz,  "dimaltz");
-        BS_ARCHIVE(crc, bitcode::BS, in, m_dimalttz, "dimalttz");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtolj.i,  "dimtolj");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimtzin.i,  "dimtzin");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimaltz.i,  "dimaltz");
+        BS_ARCHIVE(crc, bitcode::BS, in, m_dimalttz.i, "dimalttz");
         BS_ARCHIVE(crc, bitcode::B,  in, m_dimupt,   "dimupt");
         BS_ARCHIVE(crc, bitcode::BS, in, m_dimatfit, "dimatfit");
     }
@@ -623,9 +698,16 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(crc, bitcode::BS, in, m_unknown57, "unknown57");  // short(type 5 / 6 only)
     }
 
+    if(size != in.FilePosition() - startPos) {
+        LOG(ERROR) << "File position should be "
+            << size << " instead of "
+            << in.FilePosition() - startPos;
+    }
 
     uint16_t crc1;
-    in >> (bitcode::RS&) crc1;
+    in.ReadCRC(crc1); //  >> (bitcode::RS&) crc1;
+    VLOG(4) << "CRC= " << crc;
+    VLOG(4) << "CRC1= " << crc1;
 
 // common
 //    BS_ARCHIVE(crc, bitcode::RS, in, m_crc, "crc"); // for the data section, starting after the
@@ -633,33 +715,27 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
 ////////////////////////////////////////////////////////////////////////////
 
-    bool bVal;
-//    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
-//    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
-    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
-    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
-    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
-    BS_ARCHIVE(crc, bitcode::B, in, bVal, "Tester");
 
 
-    // match dwg header variables start sentinel
-//    bitcode::RC sentinelData[16];
-    for(int j = 0; j < 5; j++) {
-        in.ReadRC(sentinelData, 16);
+    // match dwg header variables end sentinel
+    //bitcode::RC sentinelData[16];
+    in.ReadRC(sentinelData, 16);
+    //for(int j = 0; j < 5; j++) {
+    //    in.ReadRC(sentinelData, 16);
+    //    std::stringstream ss;
+    //    for(int i = 0; i < 16; ++i) {
+    //        ss << hex << showbase << (int)sentinelData[i] << " ";
+    //    }
+    //    VLOG(4) << ss.str();
+    //}
+    if(!CompareSentinels(sentinelHeaderVarsEnd, sentinelData)) {
         std::stringstream ss;
-        for(int i = 0; i < 16; ++i) {
+        for(int i =0; i < 16; ++i) {
             ss << hex << showbase << (int)sentinelData[i] << " ";
         }
         VLOG(4) << ss.str();
+        return OcApp::eInvalidImageDataSentinel;
     }
-//    if(!CompareSentinels(sentinelHeaderVarsEnd, sentinelData)) {
-//        std::stringstream ss;
-//        for(int i =0; i < 16; ++i) {
-//            ss << hex << showbase << (int)sentinelData[i] << " ";
-//        }
-//        VLOG(4) << ss.str();
-//        return OcApp::eInvalidImageDataSentinel;
-//    }
 
 
 

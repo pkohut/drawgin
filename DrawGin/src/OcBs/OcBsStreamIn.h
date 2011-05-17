@@ -60,7 +60,7 @@ public:
     }
     virtual OcBsStreamIn & Seek(std::streamoff nPos, int nBit = 0);
     OcBsStreamIn & ReadHandle(OcDbObjectId & objId);
-
+    OcBsStreamIn & ReadCRC(uint16_t & crc);
 
     virtual OcBsStreamIn & operator>>(OcDbObjectId & objId);
 
@@ -86,6 +86,7 @@ public:
     virtual OcBsStreamIn & operator>>(bitcode::RS & rs);
     virtual OcBsStreamIn & operator>>(bitcode::TV & tv);
     virtual OcBsStreamIn & operator>>(bitcode::T & t);
+    virtual OcBsStreamIn & operator>>(bitcode::TU & tu);
 
 
 

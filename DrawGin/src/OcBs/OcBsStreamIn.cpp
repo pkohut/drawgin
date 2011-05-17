@@ -125,6 +125,23 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
     objId.Handle(val);
     return *this;
 }
+
+
+OcBsStreamIn & OcBsStreamIn::ReadCRC( uint16_t & crc )
+{
+    // CRC are located on byte boundaries within the file.
+    // if m_bitPosition is not 0 then "advance" to next
+    // byte boundary. This is simply accomplished by setting
+    // m_bitPosition to 0, then the next stream operation
+    // will read the next byte into m_cache. See Get()
+    // function this class.
+    if(m_bitPosition != 0) {
+        m_bitPosition = 0;
+    }
+    return *this >> (bitcode::RS&) crc;
+}
+
+
 OcBsStreamIn & OcBsStreamIn::operator>>(OcDbObjectId & objId)
 {
     return ReadHandle(objId);
@@ -407,44 +424,12 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RS & rs)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TV & tv)
 {
-    bitcode::BS length;
-    *this >> length;
     if(m_version < R2007) {
-        // get char from stream and place in wstring
-        for(int i = 0; i < length.t; ++i) {
-            bitcode::RC rc;
-            *this >> rc;
-            if(rc == 0 && i == length - 1) {
-                // don't push trailing null ('\0')
-            } else {
-                tv.t.push_back(rc);
-            }
-        }
+        *this >> (bitcode::T&) tv;
     } else {
-        // get wchar from stream and place in wstring
-        for(int i = 0; i < length.t; ++i) {
-            bitcode::RS rs;
-            *this >> rs;
-            if(rs == 0 && i == length - 1) {
-                // don't push trailing null ('\0')
-            } else {
-                tv.t.push_back(rs);
-            }
-        }
+        *this >> (bitcode::TU&) tv;
     }
 
-    // check if NULL is embedded in the string space.
-    // If there is, then the string space may represent
-    // a string array. Will need to investigate and
-    // code appropriately.
-    // For now just debug assert.
-    for(size_t i = 0; i < tv.t.size(); ++i) {
-        assert(tv.t[i] != L'\0');
-    }
-
-    if(m_version < R2007 && m_convertCodepage) {
-        ConvertToCodepage(tv);
-    }
     return *this;
 }
 
@@ -454,9 +439,52 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
     *this >> length;
 
     for(int i = 0; i < length.t; ++i) {
+        bitcode::RC rc;
+        *this >> rc;
+        if(rc == 0 && i == length - 1) {
+            // don't push trailing null ('\0')
+        } else {
+            t.t.push_back(rc);
+        }
+    }
+
+    for(size_t i = 0; i < t.t.size(); ++i) {
+        // check if NULL is embedded in the string space.
+        // If there is, then the string space may represent
+        // a string array. Will need to investigate and
+        // code appropriately.
+        // For now just debug assert.
+        assert(t.t[i] != L'\0');
+    }
+
+    if(m_convertCodepage) {
+        ConvertToCodepage(t);
+    }
+
+    return *this;
+}
+
+OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TU & tu)
+{
+    bitcode::BS length;
+    *this >> length;
+
+    for(int i = 0; i < length.t; ++i) {
         bitcode::RS rs;
         *this >> rs;
-        t.t.push_back(rs);
+        if(rs == 0 && i == length - 1) {
+            // don't push trailing null ('\0')
+        } else {
+            tu.t.push_back(rs);
+        }
+    }
+    for(size_t i = 0; i < tu.t.size(); ++i) {
+        // check if NULL is embedded in the string space.
+        // If there is, then the string space may represent
+        // a string array. Will need to investigate and
+        // code appropriately.
+        // For now just debug assert.
+        assert(tu.t[i] != L'\0');
     }
     return *this;
 }

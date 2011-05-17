@@ -63,7 +63,7 @@ public:
     virtual bool Eof(void) const = 0;
     virtual bool Fail(void) const = 0;
     virtual bool Bad(void) const = 0;
-    bitcode::TV & ConvertToCodepage(bitcode::TV & tv);
+    bitcode::T & ConvertToCodepage(bitcode::T & t);
     operator void*(void) const;
 
     DWG_VERSION Version(void) const;

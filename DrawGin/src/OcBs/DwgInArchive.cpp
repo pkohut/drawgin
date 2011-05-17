@@ -37,6 +37,7 @@
 #include "OcError.h"
 #include "OcDbObjectId.h"
 #include "OcDbDwgVersion.h"
+#include "OcBsTypes.h"
 #include "DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
@@ -250,6 +251,13 @@ DwgInArchive & DwgInArchive::operator>>(bitcode::T & t)
     return *this;
 }
 
+DwgInArchive & DwgInArchive::operator>>(bitcode::TU & tu)
+{
+    ASSERT_ARCHIVE_NOT_LOADING;
+    m_stream >> tu;
+    return *this;
+}
+
 DwgInArchive & DwgInArchive::operator>>(bitcode::RC rc[])
 {
     ASSERT_ARCHIVE_NOT_LOADING;
@@ -316,6 +324,13 @@ DwgInArchive & DwgInArchive::ReadHandle(OcDbObjectId & objId)
 DwgInArchive & DwgInArchive::operator>>(OcDbObjectId & objId)
 {
     m_stream >> objId;
+    return *this;
+}
+
+
+DwgInArchive & DwgInArchive::ReadCRC( uint16_t & crc )
+{
+    m_stream.ReadCRC(crc);
     return *this;
 }
 

@@ -35,6 +35,12 @@ BEGIN_OCTAVARIUM_NS
 
 class OcDbObjectId;
 
+union VVV {
+    VVV() : i(0) {}
+    byte_t  b;
+    int16_t i;
+};
+
 class OcDbHeaderVars
 {
 public:
@@ -292,18 +298,27 @@ private: // header variables
     bool m_dimsah;
     bool m_dimtix;
     bool m_dimsoxd;
-    int16_t m_dimaltd; // RC in R13-R14
-    int16_t m_dimzin; // RC in R13-R14
+
+    //int16_t m_dimaltd; // RC in R13-R14
+    VVV m_dimaltd;
+    //int16_t m_dimzin; // RC in R13-R14
+    VVV m_dimzin;
     bool m_dimsd1;
     bool m_dimsd2;
-    int16_t m_dimtolj; // RC in R13-R14
-    int16_t m_dimjust; // RC in R13-R14
+    //int16_t m_dimtolj; // RC in R13-R14
+    VVV m_dimtolj;
+    ///int16_t m_dimjust; // RC in R13-R14
+    VVV m_dimjust;
     byte_t m_dimfit;
     bool m_dimupt;
-    int16_t m_dimtzin; // RC in R13-R14
-    int16_t m_dimaltz; // RC in R13-R14
-    int16_t m_dimalttz; // RC in R13-R14
-    int16_t m_dimtad; // RC in R13-R14
+    ///int16_t m_dimtzin; // RC in R13-R14
+    VVV m_dimtzin;
+    ///int16_t m_dimaltz; // RC in R13-R14
+    VVV m_dimaltz;
+    ///int16_t m_dimalttz; // RC in R13-R14
+    VVV m_dimalttz;
+    //int16_t m_dimtad; // RC in R13-R14
+    VVV m_dimtad;
     int16_t m_dimunit;
     int16_t m_dimaunit;
     int16_t m_dimdec;

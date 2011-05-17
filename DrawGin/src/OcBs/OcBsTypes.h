@@ -83,12 +83,18 @@ struct BC3D {
 };
 
 struct BCCMC {
-    BCCMC() : index(0), rgb(0), colorByte(0) {}
-    int16_t index;
-    int32_t rgb;
-    byte_t colorByte;
+//    BCCMC() : index(0), rgb(0), colorByte(0) {}
+//    int16_t index;
+//    int32_t rgb;
+//    byte_t colorByte;
+//    std::wstring name;
+//    std::wstring bookName;
+    BCCMC() : rgb(0), index(0), colorByte(0) {}
     std::wstring name;
     std::wstring bookName;
+    int32_t rgb;
+    int16_t index;
+    byte_t colorByte;
     bool operator==(const BCCMC & other) const {
         return index == other.index && rgb == other.rgb &&
                colorByte == other.colorByte && name == other.name &&
@@ -136,6 +142,7 @@ BOOST_STRONG_TYPEDEF(double, BT);
 BOOST_STRONG_TYPEDEF(BCCMC, CMC);
 BOOST_STRONG_TYPEDEF(std::wstring, TV);
 BOOST_STRONG_TYPEDEF(std::wstring, T);
+BOOST_STRONG_TYPEDEF(std::wstring, TU);
 
 
 } // bitcode

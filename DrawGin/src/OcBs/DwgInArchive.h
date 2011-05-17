@@ -35,6 +35,7 @@
 
 #include "OcBsStreamIn.h"
 #include "OcBsDwgCrc.h"
+
 //#include <boost/typeof/typeof.hpp>
 //#include <boost/type_traits/is_base_of.hpp>
 
@@ -89,12 +90,14 @@ public:
     DwgInArchive & operator>>(bitcode::CMC & cmc);
     DwgInArchive & operator>>(bitcode::TV & tv);
     DwgInArchive & operator>>(bitcode::T & tv);
+    DwgInArchive & operator>>(bitcode::TU & tv);
+
 
     DwgInArchive & operator>>(bitcode::RC rc[]);
     DwgInArchive & ReadRC(bitcode::RC * pRc, size_t size);
     DwgInArchive & ReadRC(std::vector<bitcode::RC> & rc, size_t size);
     DwgInArchive & ReadRC(std::string & rc, size_t size);
-
+    DwgInArchive & ReadCRC(uint16_t & crc);
 
 private:
     OcBsStreamIn & m_stream;
@@ -107,9 +110,41 @@ template<typename BC, typename T>
 DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t)
 {
     ar >> (BC&) t;
-    crc = crc8(crc, (const char*)&t, sizeof(t));
+    crc = CalcCRC<BC>(crc, (BC&)t);
+//    crc = crc8(crc, (const char*)&t, sizeof(t));
     return ar;
 }
+
+//template<typename BC>
+//DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, OcDbObjectId & t)
+//{
+//    ar >> (BC&) t;
+////    crc = crc8(crc, (const char*)&t, sizeof(t));
+//    crc = crc8(crc, (const char *)& t.Handle(), sizeof(t.Handle()));//OcDbObjectId::HandleSize());
+//    return ar;
+//}
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bitcode::CMC & t)
+{
+    ar >> (BC&) t;
+    crc = crc8(crc, (const char *)& t.t.index, sizeof(t.t.index));
+    if(ar.Version() >= R2004) {
+        LOG(INFO) << "this function has not been needs more testing "
+            << "especially when colorByte is & 1 or & 2";
+        crc = crc8(crc, (const char *)& t.t.rgb, sizeof(t.t.rgb));
+        crc = crc8(crc, (const char *)& t.t.colorByte, sizeof(t.t.colorByte));
+        if(t.t.colorByte & 1) {
+            crc = crc8(crc, (const char *) t.t.name.c_str(), t.t.name.size());
+        }
+        if(t.t.colorByte & 2) {
+            crc = crc8(crc, (const char*) t.t.bookName.c_str(), t.t.bookName.size());
+        }
+
+    }
+    return ar;
+}
+
 
 template<typename BC, typename T>
 DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t, const char * pStr)
@@ -160,9 +195,20 @@ DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, std::wstring & t, const
     // the string.
     // Prior to adding the OcGePoint2d class this worked fined, and did not
     // require this template specialization.
-    Archive<BC>(crc, ar, t);
-    VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
-    //VLOG(4) << pStr << ": \"" << t << "\"";
+
+    if(typeid(BC).name() == typeid(bitcode::T).name()
+        || (typeid(BC).name() == typeid(bitcode::TV).name()
+            && ar.Version() <= R2004) ) {
+//        if(ar.Version() <= R2004) {
+            Archive<bitcode::T>(crc, ar, t);
+            VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
+    } else {
+            Archive<bitcode::TU>(crc, ar, t);
+            VLOG(4) << pStr << ": U\"" << WStringToString(t.c_str()).c_str() << "\"";        
+    }
+//    Archive<BC>(crc, ar, t);
+//    VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
+
     return ar;
 }
 
@@ -181,6 +227,28 @@ DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, double & t, const char 
     VLOG(4) << std::showpoint << pStr << ": " << t;
     return ar;
 }
+
+template<typename BC>
+DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, OcDbObjectId & t, const char * pStr)
+{
+    Archive<BC>(crc, ar, t);
+    VLOG(4) << std::showpoint << pStr << ": " << t;
+    return ar;
+}
+
+//template<typename BC>
+//DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bitcode::TV & t, const char * pStr)
+//{
+//    if(ar.Version() <= R2004) {
+//        Archive<bitcode::T>(crc, ar, t);
+//        VLOG(4) << pStr << ": " << t;
+//    } else {
+//        Archive<bitcode::TU>(crc, ar, t);
+//        VLOG(4) pStr << ": U\"" << t << "\"";
+//
+//    }
+//    return ar;
+//}
 
 
 //template<typename BC>
