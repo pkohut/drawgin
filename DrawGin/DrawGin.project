@@ -67,6 +67,10 @@
         <File Name="src/OcDb/OcDbHeaderVars.h"/>
         <File Name="src/OcDb/OcDbObject.cpp"/>
         <File Name="src/OcDb/OcDbObjectId.cpp"/>
+        <File Name="src/OcDb/OcDbClasses.cpp"/>
+        <File Name="src/OcDb/OcDbClasses.h"/>
+        <File Name="src/OcDb/OcDbClass.cpp"/>
+        <File Name="src/OcDb/OcDbClass.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="OcMi"/>
       <VirtualDirectory Name="OcRx">

@@ -48,6 +48,8 @@
 #include "../OcBs/OcBsDwgPreviewImage.h"
 
 #include "OcDbHeaderVars.h"
+#include "OcDbClass.h"
+#include "OcDbClasses.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -110,7 +112,19 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             return ar.Error();
         }
 
-        // read the class section map
+        // current file position should match the offset stored in the
+        // section locator record 1, which is the "classes section"
+        CHECK(dwgHdr.Record(1).seeker == ar.FilePosition())
+                << "Section locator record 1 offset does not "
+                "match current file position";
+
+        OcDbClasses dwgClasses;
+        ar >> dwgClasses;
+        if(ar.Error() != OcApp::eOk) {
+            LOG(ERROR) << "Error processing classes section";
+            return ar.Error();
+        }
+
 
         // read the object map
 
