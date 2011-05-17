@@ -35,9 +35,10 @@
 #include "OcDbObjectId.h"
 #include "OcDbDwgVersion.h"
 
-//#include "OcBsDwgCrc.h"
+#include "OcBsStreamIn.h"
 #include "OcBsDwgFileHeader.h"
 #include "OcBsDwgSentinels.h"
+#include "OcBsDwgCrc.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -45,7 +46,7 @@ BEGIN_OCTAVARIUM_NS
 #define CRC8_CALC(crcIn, x) crc8(crcIn, (const char*)&x, sizeof(x))
 
 OcBsDwgFileHeader::OcBsDwgFileHeader(void)
-    : m_dwgVersion(NONE), m_crc(0)
+    : m_dwgVersion(NONE)
 {
 }
 
@@ -86,43 +87,45 @@ OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
     VLOG(4) << "*** Begin reading file header ***";
     const char * pcszVersion =
         OcDbDwgVersion::GetVersionId(m_dwgVersion).c_str();
-    m_crc = crc8(0, pcszVersion, 6);
+
+    in.SetCalcedCRC(crc8(0, pcszVersion, 6));
     VLOG(4) << "File ID = " << pcszVersion;
 
     // more version ID, 3.2.1
-    BS_ARCHIVE(m_crc, RL, in, m_unknown_offset_0x06, "unknown_offset_0x06");
+    BS_ARCHIVE(RL, in, m_unknown_offset_0x06, "unknown_offset_0x06");
 
-    BS_ARCHIVE(m_crc, RC, in, m_unknown_offset_0x0a, "unknown_offset_0x0a");
+    BS_ARCHIVE(RC, in, m_unknown_offset_0x0a, "unknown_offset_0x0a");
 
-    BS_ARCHIVE(m_crc, RC, in, m_acadMaintVer, "acadMainVer");
+    BS_ARCHIVE(RC, in, m_acadMaintVer, "acadMainVer");
 
-    BS_ARCHIVE(m_crc, RC, in, m_unknown_offset_0x0c, "unknown_offset_0x0c");
+    BS_ARCHIVE(RC, in, m_unknown_offset_0x0c, "unknown_offset_0x0c");
 
     // image seeker, 3.2.2
-    BS_ARCHIVE(m_crc, RL, in, m_imageSeeker, "imageSeeker");
+    BS_ARCHIVE(RL, in, m_imageSeeker, "imageSeeker");
 
     // unknown section, 3.2.3
-    BS_ARCHIVE(m_crc, RS, in, m_unknown_offset_0x11, "unknown_offset_0x11");
+    BS_ARCHIVE(RS, in, m_unknown_offset_0x11, "unknown_offset_0x11");
 
     // dwg codepage, 3.2.4
-    BS_ARCHIVE(m_crc, RS, in, m_codePage, "codepage");
+    BS_ARCHIVE(RS, in, m_codePage, "codepage");
 
     // section loader records, 3.2.5
-    BS_ARCHIVE(m_crc, RL, in, m_nSections, "Selection Locator Records");
+    BS_ARCHIVE(RL, in, m_nSections, "Selection Locator Records");
 
     for(int i = 0; i < m_nSections; ++i) {
         OcBsDwgFileHeaderSection section;
-        BS_ARCHIVE(m_crc, RC, in, section.recordNumber, "section record");
+        BS_ARCHIVE(RC, in, section.recordNumber, "section record");
 
-        BS_ARCHIVE(m_crc, RL, in, section.seeker,       "    section seeker");
+        BS_ARCHIVE(RL, in, section.seeker,       "    section seeker");
 
-        BS_ARCHIVE(m_crc, RL, in, section.size,         "    section size");
+        BS_ARCHIVE(RL, in, section.size,         "    section size");
         m_headerSections.push_back(section);
     }
 
+    uint16_t runningCrc = in.CalcedCRC();
     int16_t headerCrc;
     in >> (RS&) headerCrc;
-    uint16_t crcCheck = m_crc ^ headerCrc;
+    uint16_t crcCheck = runningCrc ^ headerCrc;
     VLOG(4) << "Header CRC = " << std::hex << std::showbase << crcCheck;
 
     if(crcCheck != 0xa598 && crcCheck != 0x8101

@@ -38,14 +38,11 @@
 #include "OcDbObjectId.h"
 #include "OcDbDwgVersion.h"
 #include "OcBsTypes.h"
+#include "OcBsStreamIn.h"
 #include "DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
 #define ASSERT_ARCHIVE_NOT_LOADING assert(ArchiveFlag() == DwgInArchive::LOADING)
-//namespace archive {
-//DwgInArchive::DwgInArchive(void)
-//{
-//}
 
 DwgInArchive::DwgInArchive(OcBsStreamIn & in)
     : m_stream(in), m_archiveFlag(NOT_SET), m_archiveError(OcApp::eOk)
@@ -95,7 +92,6 @@ void DwgInArchive::ClearError(void)
 {
     m_archiveError = OcApp::eOk;
 }
-
 
 
 DwgInArchive::operator void*(void) const
@@ -332,6 +328,16 @@ DwgInArchive & DwgInArchive::ReadCRC( uint16_t & crc )
 {
     m_stream.ReadCRC(crc);
     return *this;
+}
+
+octavarium::uint16_t DwgInArchive::CalcedCRC( void ) const
+{
+    return m_stream.CalcedCRC();
+}
+
+void DwgInArchive::SetCalcedCRC( uint16_t crc )
+{
+    m_stream.SetCalcedCRC(crc);
 }
 
 

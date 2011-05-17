@@ -31,21 +31,12 @@
 #ifndef DwgInArchive_h__
 #define DwgInArchive_h__
 
-#include <sstream>
-
-#include "OcBsStreamIn.h"
-#include "OcBsDwgCrc.h"
-
-//#include <boost/typeof/typeof.hpp>
-//#include <boost/type_traits/is_base_of.hpp>
-
 BEGIN_OCTAVARIUM_NS
 
 class DwgInArchive
 {
 public:
     enum ARCHIVE_FLAG {NOT_SET = 0, LOADING, SAVING, };
-    //DwgInArchive(void);
     explicit DwgInArchive(OcBsStreamIn & in);
     virtual ~DwgInArchive(void);
 
@@ -64,6 +55,8 @@ public:
     std::streamoff FilePosition(void) const;
     DWG_VERSION Version(void) const;
     void SetVersion(DWG_VERSION version);
+    uint16_t CalcedCRC(void) const;
+    void SetCalcedCRC(uint16_t crc);
 
     DwgInArchive & ReadHandle(OcDbObjectId & objId);
 
@@ -106,89 +99,59 @@ private:
 };
 
 
+// helper template function to ensure T is dereferenced before
+// calling archive.
 template<typename BC, typename T>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t)
+DwgInArchive& Archive(DwgInArchive & ar, T & t)
 {
     ar >> (BC&) t;
-    crc = CalcCRC<BC>(crc, (BC&)t);
-//    crc = crc8(crc, (const char*)&t, sizeof(t));
-    return ar;
-}
-
-//template<typename BC>
-//DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, OcDbObjectId & t)
-//{
-//    ar >> (BC&) t;
-////    crc = crc8(crc, (const char*)&t, sizeof(t));
-//    crc = crc8(crc, (const char *)& t.Handle(), sizeof(t.Handle()));//OcDbObjectId::HandleSize());
-//    return ar;
-//}
-
-template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bitcode::CMC & t)
-{
-    ar >> (BC&) t;
-    crc = crc8(crc, (const char *)& t.t.index, sizeof(t.t.index));
-    if(ar.Version() >= R2004) {
-        LOG(INFO) << "this function has not been needs more testing "
-            << "especially when colorByte is & 1 or & 2";
-        crc = crc8(crc, (const char *)& t.t.rgb, sizeof(t.t.rgb));
-        crc = crc8(crc, (const char *)& t.t.colorByte, sizeof(t.t.colorByte));
-        if(t.t.colorByte & 1) {
-            crc = crc8(crc, (const char *) t.t.name.c_str(), t.t.name.size());
-        }
-        if(t.t.colorByte & 2) {
-            crc = crc8(crc, (const char*) t.t.bookName.c_str(), t.t.bookName.size());
-        }
-
-    }
     return ar;
 }
 
 
 template<typename BC, typename T>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, T & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, T & t, const char * pStr)
 {
-    Archive<BC, T>(crc, ar, t);
+    Archive<BC, T>(ar, t);
     VLOG(4) << pStr << ": " << t;
     return ar;
 }
 
 // handle when t is a char and print t as an int
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, int8_t & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, int8_t & t, const char * pStr)
 {
-    Archive<BC>(crc, ar, t);
+    Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (int) t;
     return ar;
 }
 
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bool & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, bool & t, const char * pStr)
 {
-    Archive<BC>(crc, ar, t);
+    Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (t == true ? "true" : "false");
     return ar;
 }
 
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, byte_t & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, byte_t & t, const char * pStr)
 {
-    Archive<BC>(crc, ar, t);
+    Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (int) t;
     return ar;
 }
 
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bitcode::CMC & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, bitcode::CMC & t, const char * pStr)
 {
-    Archive<BC>(crc, ar, t);
+    Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (bitcode::BCCMC&)t;
     return ar;
 }
 
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, std::wstring & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, std::wstring & t, const char * pStr)
 {
     // need to figure out why wstring and wchar_t can not be streamed directly.
     // If it is streamed directly right now it prints the hex address of
@@ -200,77 +163,49 @@ DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, std::wstring & t, const
         || (typeid(BC).name() == typeid(bitcode::TV).name()
             && ar.Version() <= R2004) ) {
 //        if(ar.Version() <= R2004) {
-            Archive<bitcode::T>(crc, ar, t);
+            Archive<bitcode::T>(ar, t);
             VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
     } else {
-            Archive<bitcode::TU>(crc, ar, t);
+            Archive<bitcode::TU>(ar, t);
             VLOG(4) << pStr << ": U\"" << WStringToString(t.c_str()).c_str() << "\"";        
     }
-//    Archive<BC>(crc, ar, t);
+//    Archive<BC>(ar, t);
 //    VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
 
     return ar;
 }
 
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, wchar_t * t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, wchar_t * t, const char * pStr)
 {
-    Archive<BC>(crc, ar, t);
+    Archive<BC>(ar, t);
     VLOG(4) << pStr << ": \"" << t << "\"";
     return ar;
 }
 
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, double & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, double & t, const char * pStr)
 {
-    Archive<BC>(crc, ar, t);
+    Archive<BC>(ar, t);
     VLOG(4) << std::showpoint << pStr << ": " << t;
     return ar;
 }
 
 template<typename BC>
-DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, OcDbObjectId & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, OcDbObjectId & t, const char * pStr)
 {
-    Archive<BC>(crc, ar, t);
+    Archive<BC>(ar, t);
     VLOG(4) << std::showpoint << pStr << ": " << t;
     return ar;
 }
 
-//template<typename BC>
-//DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, bitcode::TV & t, const char * pStr)
-//{
-//    if(ar.Version() <= R2004) {
-//        Archive<bitcode::T>(crc, ar, t);
-//        VLOG(4) << pStr << ": " << t;
-//    } else {
-//        Archive<bitcode::TU>(crc, ar, t);
-//        VLOG(4) pStr << ": U\"" << t << "\"";
-//
-//    }
-//    return ar;
-//}
-
-
-//template<typename BC>
-//DwgInArchive& Archive(uint16_t & crc, DwgInArchive & ar, double * t, const char * pStr)
-//{
-//    Archive<BC>(crc, ar, t);
-//    VLOG(4) << pStr;
-////    VLOG(4) << pStr << ": " << (bitcode::BCCMC&)t;
-//    return ar;
-//}
-
-
-
-
-
 // Help with dead string stripping for the Archive template, without this
 // DSS only occurred with gcc compiler setting of -O3
 #if GOOGLE_STRIP_LOG == 0
-#  define BS_ARCHIVE(CRC, BC, AR, T, STR) Archive<BC>(CRC, AR, T, #STR);
+#  define BS_ARCHIVE(BC, AR, T, STR) Archive<BC>(AR, T, #STR);
 #else
 // have compiler strip away STR from code
-#  define BS_ARCHIVE(CRC, BC, AR, T, STR) Archive<BC>(CRC, AR, T, "");
+#  define BS_ARCHIVE(BC, AR, T, STR) Archive<BC>(AR, T, "");
 #endif
 
 END_OCTAVARIUM_NS

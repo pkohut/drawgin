@@ -84,14 +84,4 @@ uint16_t crc8(uint16_t dx, const char * p, long n)
     return dx;
 }
 
-uint16_t crc8(uint16_t dx, const OcDbObjectId & objId)
-{
-    return crc8(dx, (const char *)&objId.Handle(), sizeof(objId.Handle()));
-}
-
-//uint16_t crc8(uint16_t dx, const OcDbObjectId & objId)
-//{
-//    return crc8(dx, (const char *)&objId.Handle(), sizeof(objId.Handle()));
-//}
-
 END_OCTAVARIUM_NS
