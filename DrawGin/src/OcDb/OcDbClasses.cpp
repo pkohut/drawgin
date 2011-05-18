@@ -92,6 +92,7 @@ OcApp::ErrorStatus OcDbClasses::DecodeData(DwgInArchive& in)
     while(in.FilePosition() < endSection) {
         OcDbClass cls;
         in >> cls;
+        m_classes.push_back(cls);
     }
 
     if(in.FilePosition() != endSection) {

@@ -35,6 +35,7 @@
 BEGIN_OCTAVARIUM_NS
 
 class OcRxObject;
+class DwgInArchive;
 
 class OcDbDatabase : public OcRxObject
 {
@@ -45,6 +46,10 @@ public:
     virtual ~OcDbDatabase(void);
 
     OcApp::ErrorStatus Open(const string_t & filename);
+
+private:
+    OcApp::ErrorStatus DecodeObjectMap(DwgInArchive & ar, int32_t fileOffset,
+        int32_t dataSize);
 
 };
 

@@ -55,7 +55,7 @@ public:
     std::streamoff FilePosition(void) const;
     DWG_VERSION Version(void) const;
     void SetVersion(DWG_VERSION version);
-    uint16_t CalcedCRC(void) const;
+    uint16_t CalcedCRC(bool bRetResultInMSB = false) const;
     void SetCalcedCRC(uint16_t crc);
 
     DwgInArchive & ReadHandle(OcDbObjectId & objId);

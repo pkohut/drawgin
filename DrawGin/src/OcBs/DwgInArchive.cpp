@@ -339,9 +339,9 @@ DwgInArchive & DwgInArchive::ReadCRC( uint16_t & crc, bool bSkipCrcTracking)
     return *this;
 }
 
-octavarium::uint16_t DwgInArchive::CalcedCRC( void ) const
+octavarium::uint16_t DwgInArchive::CalcedCRC(bool bRetResultInMSB) const
 {
-    return m_stream.CalcedCRC();
+    return m_stream.CalcedCRC(bRetResultInMSB);
 }
 
 void DwgInArchive::SetCalcedCRC( uint16_t crc )

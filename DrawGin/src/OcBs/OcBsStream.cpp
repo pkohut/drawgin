@@ -169,8 +169,20 @@ void OcBsStream::SetVersion(DWG_VERSION version)
     m_version = version;
 }
 
-octavarium::uint16_t OcBsStream::CalcedCRC( void ) const
+octavarium::uint16_t OcBsStream::CalcedCRC(bool bRetResultInMSB) const
 {
+    // when bRetResultInMSB is true then some bit twiddling is done
+    // that expects m_crc to be a 16 bit integer. Assert if is not.
+    DCHECK(sizeof(m_crc) == sizeof(uint16_t))
+        << "size of m_crc must be a 16 bit integer";
+    
+    if(bRetResultInMSB) {
+        uint16_t crc = m_crc;
+        byte_t * pCrc = (byte_t*) &crc;
+        // XOR byte swap
+        (pCrc[0] ^= pCrc[1]), (pCrc[1] ^= pCrc[0]), (pCrc[0] ^= pCrc[1]);
+        return crc;
+    }
     return m_crc;
 }
 

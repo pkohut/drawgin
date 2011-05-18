@@ -76,6 +76,9 @@ struct OcApp {
         eInvalidImageDataCode,
         eUnknownHeaderDataValues,
         eMismatchedFilePosition,
+        eInvalidObjectMapRecord,
+        eInvalidObjectMapOffset,
+        eInvalidCRCInObjectMap,
 
     }; //ErrorStatus
 }; // OcApp
