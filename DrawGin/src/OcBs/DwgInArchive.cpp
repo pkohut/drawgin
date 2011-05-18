@@ -261,32 +261,41 @@ DwgInArchive & DwgInArchive::operator>>(bitcode::RC rc[])
     return *this;
 }
 
-DwgInArchive & DwgInArchive::ReadRC(bitcode::RC * pRc, size_t size)
+DwgInArchive & DwgInArchive::ReadRC(bitcode::RC * pRc, size_t size, bool bSkipCrcTracking)
 {
     ASSERT_ARCHIVE_NOT_LOADING;
+    uint16_t currentCrc = m_stream.CalcedCRC();
     for(size_t i = 0; i < size; ++i) {
         m_stream >> pRc[i];
     }
+    if(bSkipCrcTracking == true)
+        m_stream.SetCalcedCRC(currentCrc);
     return *this;
 }
 
-DwgInArchive & DwgInArchive::ReadRC(std::vector<bitcode::RC> & rc, size_t size)
+DwgInArchive & DwgInArchive::ReadRC(std::vector<bitcode::RC> & rc, size_t size, bool bSkipCrcTracking)
 {
     ASSERT_ARCHIVE_NOT_LOADING;
+    uint16_t currentCrc = m_stream.CalcedCRC();
     rc.resize(size);
     for(size_t i = 0; i < size; ++i) {
         m_stream >> rc[i];
     }
+    if(bSkipCrcTracking == true)
+        m_stream.SetCalcedCRC(currentCrc);
     return *this;
 }
 
-DwgInArchive & DwgInArchive::ReadRC(std::string & rc, size_t size)
+DwgInArchive & DwgInArchive::ReadRC(std::string & rc, size_t size, bool bSkipCrcTracking)
 {
     ASSERT_ARCHIVE_NOT_LOADING;
+    uint16_t currentCrc = m_stream.CalcedCRC();
     rc.resize(size);
     for(size_t i = 0; i < size; ++i) {
         m_stream >> (bitcode::RC*)&rc[i];
     }
+    if(bSkipCrcTracking == true)
+        m_stream.SetCalcedCRC(currentCrc);
     return *this;
 }
 
@@ -324,9 +333,9 @@ DwgInArchive & DwgInArchive::operator>>(OcDbObjectId & objId)
 }
 
 
-DwgInArchive & DwgInArchive::ReadCRC( uint16_t & crc )
+DwgInArchive & DwgInArchive::ReadCRC( uint16_t & crc, bool bSkipCrcTracking)
 {
-    m_stream.ReadCRC(crc);
+    m_stream.ReadCRC(crc, bSkipCrcTracking);
     return *this;
 }
 

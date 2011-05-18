@@ -1,3 +1,33 @@
+/****************************************************************************
+**
+** This file is part of DrawGin library. A C++ framework to read and
+** write .dwg files formats.
+**
+** Copyright (C) 2011 Paul Kohut.
+** All rights reserved.
+** Author: Paul Kohut (pkohut2@gmail.com)
+**
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Lesser General Public
+** License as published by the Free Software Foundation; either
+** version 3 of the License, or (at your option) any later version.
+**
+** This library is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Lesser General Public License for more details.
+**
+** You should have received a copy of the GNU Lesser General Public
+** License along with this library; if not, write to the Free Software
+** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+**
+** DrawGin project hosted at: http://code.google.com/p/drawgin/
+**
+** Authors:
+**      pk          Paul Kohut <pkohut2@gmail.com>
+**
+****************************************************************************/
+
 #include "stdafx.h"
 
 #include "OcCommon.h"
@@ -33,53 +63,64 @@ OcApp::ErrorStatus OcDbClasses::DecodeData(DwgInArchive& in)
     VLOG(3) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING;
 
-    // match dwg header variables start sentinel
+    // match classes section start sentinel
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
     if(!CompareSentinels(sentinelClassesSectionStart, sentinelData)) {
         return OcApp::eInvalidImageDataSentinel;
     }
 
+    in.SetCalcedCRC(0xc0c1);
+
     int size;
     BS_ARCHIVE(bitcode::RL, in, size, "classes section size");
-    int16_t nClasses;
-    byte_t val1, val2;
-    bool bVal;
+    int endSection = in.FilePosition() + size;
 
-    BS_ARCHIVE(bitcode::BS, in, nClasses, "Maximum class number");
-    BS_ARCHIVE(bitcode::RC, in, val1, "val1");
-    BS_ARCHIVE(bitcode::RC, in, val2, "val2");
-    BS_ARCHIVE(bitcode::B,  in, bVal, "bVal");
+    if(in.Version() >= R2004) {
+        // read the RS value - maximum class number
+        // read the RC value -
+        // read the RC value -
+        // read the  B value -
+    }
 
-    int16_t classNum;
-    int16_t version;
-    wstring appName;
-    wstring cppClassName;
-    wstring classDxfName;
-    bool wasAZombie;
-    int16_t itemClassId;
-    int32_t numObjects;
-    int16_t dwgVersion;
-    int16_t maintVersion;
-    int32_t unknown1;
-    int32_t unknown2;
+    if(in.Version() >= R2007) {
+        //   : Class Data
+        // X : String stream data
+        // B : bool value (true if string stream is present)
+    }
 
-    BS_ARCHIVE(bitcode::BS, in, classNum, "class number");
-    BS_ARCHIVE(bitcode::BS, in, version, "version");
-    BS_ARCHIVE(bitcode::TV, in, appName, "app name");
-    BS_ARCHIVE(bitcode::TV, in, cppClassName, "cpp ClassName");
-    BS_ARCHIVE(bitcode::TV, in, classDxfName, "class DXF name");
-    BS_ARCHIVE(bitcode::B,  in, wasAZombie, "was a zombie");
-    BS_ARCHIVE(bitcode::BS, in, itemClassId, "item class id");
-    BS_ARCHIVE(bitcode::BL, in, numObjects, "number of objects");
-    BS_ARCHIVE(bitcode::BS, in, dwgVersion, "dwg version");
-    BS_ARCHIVE(bitcode::BS, in, maintVersion, "maintenance version");
-    BS_ARCHIVE(bitcode::BL, in, unknown1, "unknown1");
-    BS_ARCHIVE(bitcode::BL, in, unknown2, "unknown2");
+    while(in.FilePosition() < endSection) {
+        OcDbClass cls;
+        in >> cls;
+    }
 
+    if(in.FilePosition() != endSection) {
+        LOG(ERROR) << "File position should be "
+            << endSection << " instead of "
+            << in.FilePosition();
+    }
 
+    // Check and log CRC
+    uint16_t calcedCRC = in.CalcedCRC();
+    uint16_t sectionCRC;
+    in.ReadCRC(sectionCRC);
+    if(calcedCRC != sectionCRC) {
+        LOG(ERROR) << "file section and calced CRC's do not match";
+        LOG(ERROR) << "Classes section CRC = " << hex << showbase << sectionCRC;
+        LOG(ERROR) << "Calced CRC          = " << hex << showbase << calcedCRC;
+    } else {
+        VLOG(4) << "CRC for Classes Section = " << hex << showbase << sectionCRC;
+    }
 
-    return OcApp::eNotImplemented;
+    // match classes section end sentinel
+    in.ReadRC(sentinelData, 16);
+    if(!CompareSentinels(sentinelClassesSectionEnd, sentinelData)) {
+        return OcApp::eInvalidImageDataSentinel;
+    }
+
+    VLOG(3) << "Successfully decoded Classes Section";
+
+    return OcApp::eOk;
 }
 
 DwgInArchive& operator>>(DwgInArchive& in, OcDbClasses & dwgClasses)

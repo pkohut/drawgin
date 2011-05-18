@@ -123,8 +123,9 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
 }
 
 
-OcBsStreamIn & OcBsStreamIn::ReadCRC( uint16_t & crc )
+OcBsStreamIn & OcBsStreamIn::ReadCRC(uint16_t & crc, bool bSkipCrcTracking)
 {
+    uint16_t currentCrc = CalcedCRC();
     // CRC are located on byte boundaries within the file.
     // if m_bitPosition is not 0 then "advance" to next
     // byte boundary. This is simply accomplished by setting
@@ -134,7 +135,11 @@ OcBsStreamIn & OcBsStreamIn::ReadCRC( uint16_t & crc )
     if(m_bitPosition != 0) {
         m_bitPosition = 0;
     }
-    return *this >> (bitcode::RS&) crc;
+
+    *this >> (bitcode::RS&) crc;
+    if(bSkipCrcTracking == true)
+        SetCalcedCRC(currentCrc);
+    return *this;
 }
 
 
@@ -429,6 +434,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TV & tv)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
 {
+    t.t.clear();
     bitcode::BS length;
     *this >> length;
 
@@ -460,6 +466,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TU & tu)
 {
+    tu.t.clear();
     bitcode::BS length;
     *this >> length;
 

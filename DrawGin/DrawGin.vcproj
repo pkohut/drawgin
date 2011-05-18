@@ -368,6 +368,22 @@
 					Name="OcDb"
 					>
 					<File
+						RelativePath=".\src\OcDb\OcDbClass.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\OcDb\OcDbClass.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\OcDb\OcDbClasses.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\OcDb\OcDbClasses.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\OcDb\OcDbDatabase.cpp"
 						>
 					</File>

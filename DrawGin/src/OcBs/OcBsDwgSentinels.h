@@ -42,7 +42,7 @@ extern const byte_t sentinelHeaderVarsStart[];
 extern const byte_t sentinelHeaderVarsEnd[];
 
 extern const byte_t sentinelClassesSectionStart[];
-//extern const byte_t sentinelClassesSectionEnd[];
+extern const byte_t sentinelClassesSectionEnd[];
 
 
 bool CompareSentinels(const byte_t * pSentinel1, const byte_t * pSentinel2);

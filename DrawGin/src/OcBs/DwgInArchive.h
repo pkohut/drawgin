@@ -87,10 +87,10 @@ public:
 
 
     DwgInArchive & operator>>(bitcode::RC rc[]);
-    DwgInArchive & ReadRC(bitcode::RC * pRc, size_t size);
-    DwgInArchive & ReadRC(std::vector<bitcode::RC> & rc, size_t size);
-    DwgInArchive & ReadRC(std::string & rc, size_t size);
-    DwgInArchive & ReadCRC(uint16_t & crc);
+    DwgInArchive & ReadRC(bitcode::RC * pRc, size_t size, bool bSkipCrcTracking = false);
+    DwgInArchive & ReadRC(std::vector<bitcode::RC> & rc, size_t size, bool bSkipCrcTracking = false);
+    DwgInArchive & ReadRC(std::string & rc, size_t size, bool bSkipCrcTracking = false);
+    DwgInArchive & ReadCRC(uint16_t & crc, bool bSkipCrcTracking = true);
 
 private:
     OcBsStreamIn & m_stream;

@@ -689,7 +689,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
     if(size != in.FilePosition() - startPos) {
         LOG(ERROR) << "File position should be "
-            << size << " instead of "
+            << startPos + size << " instead of "
             << in.FilePosition() - startPos;
     }
 

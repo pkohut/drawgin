@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
 #else
     string_t filename = _OC("/home/paul/Documents/TestDwgs/OneLayerR14.dwg");
 #endif
-    
-    
+
+
     LOG(INFO) << "Begin decoding file: " << filename;
 
     //ProcessDrawing(_OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\EmptyR14.dwg"));
