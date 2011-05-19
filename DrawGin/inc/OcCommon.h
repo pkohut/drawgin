@@ -43,7 +43,7 @@
 #include <vector>
 
 #ifdef NDEBUG
-#define GOOGLE_STRIP_LOG 1
+//#define GOOGLE_STRIP_LOG 1
 #endif
 
 #include <glog/logging.h>

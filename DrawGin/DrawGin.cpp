@@ -32,6 +32,7 @@
 ****************************************************************************/
 
 #include "stdafx.h"
+#include <boost/program_options.hpp>
 
 #include "OcCommon.h"
 #include "OcError.h"
@@ -42,6 +43,122 @@
 
 using namespace octavarium;
 using namespace google;
+using namespace std;
+
+namespace po = boost::program_options;
+
+const static int major_version = 0;
+const static int minor_version = 0;
+const static int patch_version = 1;
+
+string VersionString(void)
+{
+    stringstream ss;
+    ss << major_version << "."
+       << minor_version << "."
+       << patch_version;
+    return ss.str();
+}
+
+
+// From GLOG, logging.cc,
+// Compute the default value for --log_dir
+static const char* DefaultLogDir()
+{
+    const char* env;
+    env = getenv("GOOGLE_LOG_DIR");
+    if (env != NULL && env[0] != '\0') {
+        return env;
+    }
+    env = getenv("TEST_TMPDIR");
+    if (env != NULL && env[0] != '\0') {
+        return env;
+    }
+    return "";
+}
+
+int SetProgramOptionsDesc(po::options_description & desc)
+{
+    try {
+        // predefine dynamic string
+        string sLogFiles = "If specified, logfiles are written into this "
+                           "directory instead of the default logging directory.\n"
+                           "Defaults to ";
+        sLogFiles += DefaultLogDir();
+
+        desc.add_options()
+        ("help", "produce help message")
+
+        ("logtostderr", po::value<bool>(&FLAGS_logtostderr),
+         "Log messages go to stderr instead of logfiles.\n"
+         "Defaults to 0")
+
+        ("alsologtostderr", po::value<bool>(&FLAGS_alsologtostderr),
+         "log messages go to stderr in addition to logfiles.\n"
+         "Defaults to 0")
+
+        ("stderrthreshold", po::value<int>(&FLAGS_stderrthreshold),
+         "log messages at or above this level are copied to stderr in "
+         "addition to logfiles.\n"
+         "Defaults to 2 (INFO = 0 WARNING = 1\n"
+         "               ERROR = 2 FATAL = 3\n"
+         "               NUM_SEVERITIES = 4)")
+
+        ("log_prefix", po::value<bool>(&FLAGS_log_prefix),
+         "Prepend the log prefix to the start of each log line\n"
+         "Defaults to 1")
+
+        ("minloglevel", po::value<int>(&FLAGS_minloglevel),
+         "Messages logged at a lower level than this don't "
+         "actually get logged anywhere\n"
+         "Defaults to 0")
+
+        ("logbuflevel", po::value<int>(&FLAGS_logbuflevel),
+         "Buffer log messages logged at this level or lower"
+         " (-1 means don't buffer; 0 means buffer INFO only;"
+         " ...)\n"
+         "Defaults to 0")
+
+        ("logbufsecs", po::value<int>(&FLAGS_logbufsecs),
+         "Buffer log messages for at most this many seconds\n"
+         "Defaults to 30")
+
+        ("log_dir", po::value<string>(&FLAGS_log_dir),
+         sLogFiles.c_str())
+
+        ("log_link", po::value<string>(&FLAGS_log_link),
+         "Put additional links to the log "
+         "files in this directory\n"
+         "Defaults to \"\"")
+
+        ("max_log_size", po::value<int>(&FLAGS_max_log_size),
+         "approx. maximum log file size (in MB). A value of 0 will "
+         "be silently overridden to 1.\n"
+         "Defaults to 1800")
+
+        ("stop_logging_if_full_disk", po::value<bool>(&FLAGS_stop_logging_if_full_disk),
+         "Stop attempting to log to disk if the disk is full.\n"
+         "Defaults to 0")
+
+        ("v", po::value<int>(&FLAGS_v),
+         "Gives the default maximal active V-logging level:"
+         "0 is the default.\n"
+         "Defaults to 0")
+
+        ("version", "Print version info")
+
+        ("drawing", po::value<string>(),
+         "Input drawing file to process")
+        ;
+    } catch(exception & e) {
+        cerr << e.what() << endl;
+        return 1;
+    } catch(...) {
+        cerr << "unknown exception occurred" << endl;
+        return 1;
+    }
+    return 0;
+}
 
 void ProcessDrawing(const string_t & filename)
 {
@@ -53,21 +170,52 @@ void ProcessDrawing(const string_t & filename)
 int main(int argc, char* argv[])
 {
     InitGoogleLogging(argv[0]);
-#ifdef WIN32
-    string_t filename = _OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\OneLayerR14.dwg");
+    string_t filename;
+    try {
+        po::options_description desc("Allowed options");
+        if(SetProgramOptionsDesc(desc)) {
+            return 1;
+        }
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        po::notify(vm);
+
+        if(vm.count("help")) {
+            cout << "DrawGin, version " << VersionString() << endl;
+            cout << desc << endl;
+            return 1;
+        }
+
+        if(vm.count("version")) {
+            cout << "DrawGin, version " << VersionString() << endl;
+            return 1;
+        }
+
+        if(vm.count("drawing")) {
+#ifdef _UNICODE
+            // GLOG string are stored as std::strings
+            string temp = vm["drawing"].as<string>();
+            filename.assign(temp.begin(), temp.end());
 #else
-    string_t filename = _OC("/home/paul/Documents/TestDwgs/OneLayerR14.dwg");
+            filename = vm["drawing"].as<string>();
 #endif
+        } else {
+            cerr << "Drawing file not specified" << endl;
+            cerr << "Use --help for available options." << endl;
+            return 1;
+        }
 
+        LOG(INFO) << "Begin decoding file: " << filename;
+        ProcessDrawing(filename);
 
-    LOG(INFO) << "Begin decoding file: " << filename;
-
-    //ProcessDrawing(_OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\EmptyR14.dwg"));
-    //ProcessDrawing(_OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\OneLayerR14.dwg"));
-    //ProcessDrawing(_OC("C:\\VS9_Project\\Metropolis\\TestDwgs\\OneLayerR14.dwg"));
-    //ProcessDrawing(_OC("/home/paul/Documents/TestDwgs/OneLayerR14.dwg"));
-    ProcessDrawing(filename);
-
-    OcRxObject::ShutDown();
+        OcRxObject::ShutDown();
+    } catch(exception & e) {
+        cerr << e.what();
+        return 1;
+    } catch(...) {
+        cerr << "Unknown exception caught";
+        return 1;
+    }
     return 0;
 }
