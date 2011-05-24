@@ -25,6 +25,7 @@ syntax: glob
 *.sbr
 *.scc
 *.vcproj*
+*.sln
 [Bb]in
 [Dd]ebug*/
 obj/
