@@ -24,6 +24,7 @@ syntax: glob
 *.lib
 *.sbr
 *.scc
+*.vcproj*
 [Bb]in
 [Dd]ebug*/
 obj/
@@ -33,14 +34,23 @@ _ReSharper*/
 [Bb]uild[Ll]og.*
 *.[Pp]ublish.xml
 
-# Ingnore Codelite files
+# Ignore Codelite files
 *.workspace.*
+*.session
 *.tags
 *_wsp.mk
+*.project
 [Dd]rawGin/[Dd]rawGin.mk
 cppcheck.list
 
 core
 
+# ignore cmake extras
+[Cc][Mm]ake[Ff]iles/*
+[Cc][Mm]ake[Cc]ache.txt
+*.dir/
+[Ll]ib/
+ZERO_CHECK.dir/
+cmake_install.cmake
 
 
