@@ -55,3 +55,7 @@ ZERO_CHECK.dir/
 cmake_install.cmake
 
 Makefile
+
+# ignore Code::Blocks project files
+*.cbp
+*.layout
