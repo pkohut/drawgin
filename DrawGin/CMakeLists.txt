@@ -28,8 +28,14 @@ else(MSVC)
     set (EXTRA_LIBS ${EXTRA_LIBS}
 	    libglog.a
 	    libboost_program_options.a
-	    libpthread.so
-    )
+	)
+	# Linux needs libpthread.so (apple does not)
+	if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+		set (EXTRA_LIBS ${EXTRA_LIBS}
+			libpthread.so
+		)
+	endif()
+
 endif(MSVC)
 
 set (PROJECT_HEADER_FILES

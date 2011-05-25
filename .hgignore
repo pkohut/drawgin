@@ -53,9 +53,19 @@ core
 [Ll]ib/
 ZERO_CHECK.dir/
 cmake_install.cmake
+*.make
+*_postBuildPhase.*
+*_cmakeRulesBuildPhase.*
 
 Makefile
 
 # ignore Code::Blocks project files
 *.cbp
 *.layout
+
+# ignore XCode project files
+#*.pbxindex*
+#*.pbxuser
+#*.pbxproj
+[Bb]uild/
+*.xcodeproj/*
