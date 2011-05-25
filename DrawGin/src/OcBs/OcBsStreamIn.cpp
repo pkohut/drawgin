@@ -28,7 +28,7 @@
 **
 ****************************************************************************/
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <limits>
 
 #include "OcCommon.h"

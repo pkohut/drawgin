@@ -29,7 +29,7 @@
 ****************************************************************************/
 
 
-#include "stdafx.h"
+//#include "stdafx.h"
 
 #include <algorithm>
 #include <functional>

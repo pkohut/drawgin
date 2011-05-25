@@ -46,6 +46,10 @@
 //#define GOOGLE_STRIP_LOG 1
 #endif
 
+#if defined(WIN32)
+#include <tchar.h>
+#endif
+
 #include <glog/logging.h>
 #include "wchar_logging.h"
 

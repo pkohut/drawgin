@@ -28,7 +28,7 @@
 **
 ****************************************************************************/
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <boost/bind.hpp>
 #include "OcCommon.h"
 #include "OcError.h"

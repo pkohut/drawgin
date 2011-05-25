@@ -28,7 +28,7 @@
 **
 ****************************************************************************/
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcTypes.h"

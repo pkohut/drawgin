@@ -28,7 +28,7 @@
 **
 ****************************************************************************/
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <assert.h>
 #include <fstream>
 #include <string>
