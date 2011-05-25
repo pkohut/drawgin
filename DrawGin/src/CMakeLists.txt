@@ -120,7 +120,7 @@ if(MSVC AND USE_PRECOMPILED_HEADER)
 	endforeach(ITEM) 
 	ADD_MSVC_PRECOMPILED_HEADER("precompiled.h" "precompiled.cpp" PRECOMP_FILES)
 	set(PRECOMP_FILES precompiled.cpp precompiled.h)
-endif(MSVC)
+endif(MSVC AND USE_PRECOMPILED_HEADER)
 
 add_library(libDrawGin
 		${PUBLIC_HEADERS}
