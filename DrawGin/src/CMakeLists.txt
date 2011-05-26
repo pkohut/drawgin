@@ -63,6 +63,10 @@ set (OCBS_FILES
 	${OCBS_DIR}/OcBsDwgCrc.h
 	${OCBS_DIR}/OcBsDwgFileHeader.cpp
 	${OCBS_DIR}/OcBsDwgFileHeader.h
+	${OCBS_DIR}/OcBsDwgObjectMap.cpp
+	${OCBS_DIR}/OcBsDwgObjectMap.h
+	${OCBS_DIR}/OcBsDwgObjectMapItem.cpp
+	${OCBS_DIR}/OcBsDwgObjectMapItem.h
 	${OCBS_DIR}/OcBsDwgPreviewImage.cpp
 	${OCBS_DIR}/OcBsDwgPreviewImage.h
 	${OCBS_DIR}/OcBsDwgSentinels.cpp
@@ -130,4 +134,4 @@ add_library(libDrawGin
 		${OCRX_FILES}
 		${PRECOMP_FILES}
 )
-
+message("Yo dawg")

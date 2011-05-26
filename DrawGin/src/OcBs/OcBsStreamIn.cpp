@@ -310,7 +310,10 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::CMC & cmc)
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MC & mc)
 {
     mc = 0;
-    bitcode::RC rc[4];
+    bitcode::RC rc[4] = {
+        (bitcode::RC)0, (bitcode::RC)0,
+        (bitcode::RC)0 ,(bitcode::RC)0,
+    };
     for(int i = 3, j = 0; i >= 0; --i, j += 7) {
         *this >> rc[i];
         if(rc[i] & 0x80) {
@@ -321,11 +324,11 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MC & mc)
                 bNeg = true;
                 rc[i] &= 0xbf;
             }
-            mc |= ((uint8_t)rc[i] << j);
-            mc = ((uint8_t)mc ^ -bNeg) + bNeg;
+            mc |= ((bitcode::MC)rc[i] << j);
+            mc = ((bitcode::MC)mc ^ -bNeg) + bNeg;
             return *this;
         }
-        mc |= ((uint8_t)rc[i] << j);
+        mc |= ((bitcode::MC)rc[i] << j);
     }
     // error parsing if it gets here.
     mc = INT_MIN;
@@ -335,7 +338,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MC & mc)
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MS & ms)
 {
     ms = 0;
-    bitcode::RS rs[2];
+    bitcode::RS rs[2] = {(bitcode::RS) 0, (bitcode::RS)0} ;
     for(int i = 1, j = 0; i >= 0; --i, j += 15) {
         *this >> rs[i];
         if(rs[i] & 0x8000) {

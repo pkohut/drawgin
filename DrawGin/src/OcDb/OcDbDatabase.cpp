@@ -46,6 +46,8 @@
 #include "../OcBs/DwgInArchive.h"
 #include "../OcBs/OcBsDwgFileHeader.h"
 #include "../OcBs/OcBsDwgPreviewImage.h"
+#include "../OcBs/OcBsDwgObjectMapItem.h"
+#include "../OcBs/OcBsDwgObjectMap.h"
 
 #include "OcDbHeaderVars.h"
 #include "OcDbClass.h"
@@ -125,13 +127,24 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             return ar.Error();
         }
 
-        OcApp::ErrorStatus es;
-        if( (es = DecodeObjectMap(ar,
-                                  dwgHdr.Record(2).seeker,
-                                  dwgHdr.Record(2).size))
-                != OcApp::eOk) {
-            return es;
+        int32_t filePos = ar.FilePosition();
+
+        OcBsDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
+            dwgHdr.Record(2).size);
+        ar >> dwgObjMap;
+        if(ar.Error() != OcApp::eOk) {
+            LOG(ERROR) << "Error processing object map section";
+            return ar.Error();
         }
+
+        //OcApp::ErrorStatus es;
+        //if( (es = DecodeObjectMap(ar,
+        //                          dwgHdr.Record(2).seeker,
+        //                          dwgHdr.Record(2).size))
+
+        //        != OcApp::eOk) {
+        //    return es;
+        //}
     }
 
     return OcApp::eOk;
@@ -153,7 +166,7 @@ OcApp::ErrorStatus OcDbDatabase::DecodeObjectMap(DwgInArchive & ar, int32_t file
         LOG(ERROR) << "Error setting file position";
         return ar.Error();
     }
-
+    int nCount = 0;
     // section size and crc are stored in big endian format.
     while(1) {
         // reset calced crc to 0xc0c1 for each section
@@ -179,6 +192,7 @@ OcApp::ErrorStatus OcDbDatabase::DecodeObjectMap(DwgInArchive & ar, int32_t file
             int32_t offsetLoc;
             BS_ARCHIVE(bitcode::MC,  ar, offsetLastH, "offset last handle");
             BS_ARCHIVE(bitcode::MC , ar, offsetLoc,   "offset loc");
+            nCount++;
         }
         // calc section crc
         uint16_t crc, calcedCrc = ar.CalcedCRC(true); 
@@ -195,6 +209,7 @@ OcApp::ErrorStatus OcDbDatabase::DecodeObjectMap(DwgInArchive & ar, int32_t file
         LOG(ERROR) << "CRC for Object Map is incorrect";
         return OcApp::eInvalidCRCInObjectMap;
     }
+    VLOG(4) << "ncount = " << nCount;
     VLOG(3) << "Successfully decoded Object map";
     return OcApp::eOk;
 }
