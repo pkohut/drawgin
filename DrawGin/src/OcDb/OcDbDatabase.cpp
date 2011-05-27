@@ -69,12 +69,14 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 {
     OcBsStreamIn in;
     in.Open(filename);
+
     if(!in) {
         // OcBsStreamIn::Open will log any errors
         return OcApp::eOpeningFile;
     }
 
     DwgInArchive ar(in);
+
     if(!ar) {
         LOG(ERROR) << "Error opening archive stream";
         return ar.Error();
@@ -83,6 +85,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
     // parse the dwgHdr
     OcBsDwgFileHeader dwgHdr;
     ar >> dwgHdr;
+
     if(ar.Error() != OcApp::eOk) {
         LOG(ERROR) << "Error processing drawing file header";
         return ar.Error();
@@ -96,6 +99,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 
         OcBsDwgPreviewImage imgData;
         ar >> imgData;
+
         if(ar.Error() != OcApp::eOk) {
             LOG(ERROR) << "Error processing data";
             return ar.Error();
@@ -109,6 +113,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 
         OcDbHeaderVars hdrVars;
         ar >> hdrVars;
+
         if(ar.Error() != OcApp::eOk) {
             LOG(ERROR) << "Error processing drawing header variables";
             return ar.Error();
@@ -122,6 +127,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 
         OcDbClasses dwgClasses;
         ar >> dwgClasses;
+
         if(ar.Error() != OcApp::eOk) {
             LOG(ERROR) << "Error processing classes section";
             return ar.Error();
@@ -129,89 +135,27 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 
         int32_t filePos = ar.FilePosition();
 
+        // Read the Object Map portion from the file.
         OcBsDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
-            dwgHdr.Record(2).size);
+                                   dwgHdr.Record(2).size);
         ar >> dwgObjMap;
+
         if(ar.Error() != OcApp::eOk) {
             LOG(ERROR) << "Error processing object map section";
             return ar.Error();
         }
 
-        //OcApp::ErrorStatus es;
-        //if( (es = DecodeObjectMap(ar,
-        //                          dwgHdr.Record(2).seeker,
-        //                          dwgHdr.Record(2).size))
+        OcDbDatabase * pDb = this;
+        dwgObjMap.DecodeObjects(ar, pDb);
+        if(ar.Error() != OcApp::eOk) {
+            LOG(ERROR) << "Error processing objects";
+            return ar.Error();
+        }
 
-        //        != OcApp::eOk) {
-        //    return es;
-        //}
     }
 
     return OcApp::eOk;
 }
 
-OcApp::ErrorStatus OcDbDatabase::DecodeObjectMap(DwgInArchive & ar, int32_t fileOffset,
-        int32_t dataSize)
-{
-    VLOG(3) << "DecodeObjectMap entered";
-    // do some sanity checks before trying to read the object map
-    if(fileOffset == 0) {
-        LOG(ERROR) << "Invalid file offset position for Object Map";
-        return OcApp::eInvalidObjectMapOffset;
-    }
-
-    // set file position to the Object Map offset
-    ar.Seek(fileOffset);
-    if(ar.Error() != OcApp::eOk) {
-        LOG(ERROR) << "Error setting file position";
-        return ar.Error();
-    }
-    int nCount = 0;
-    // section size and crc are stored in big endian format.
-    while(1) {
-        // reset calced crc to 0xc0c1 for each section
-        ar.SetCalcedCRC(0xc0c1);
-        // read section size and convert to little endian format.
-        int16_t sectionSize;
-        ar >> (bitcode::RC&)sectionSize;
-        sectionSize <<= 8;
-        ar >> (bitcode::RC&)sectionSize;
-        VLOG(4) << "Section size = " << sectionSize;
-
-        // only 2 bytes for this section, they are the final crc
-        // which is calced below outside of this loop.
-        if(sectionSize <= 2) {
-            break;
-        }
-
-        // endSection includes the 2 byte crc for this section, so
-        // exclude 2 bytes when doing the loop.
-        int32_t endSection = ar.FilePosition() + sectionSize;
-        while(ar.FilePosition() < endSection - 2) {
-            int32_t offsetLastH;
-            int32_t offsetLoc;
-            BS_ARCHIVE(bitcode::MC,  ar, offsetLastH, "offset last handle");
-            BS_ARCHIVE(bitcode::MC , ar, offsetLoc,   "offset loc");
-            nCount++;
-        }
-        // calc section crc
-        uint16_t crc, calcedCrc = ar.CalcedCRC(true); 
-        ar.ReadCRC(crc);
-        if(crc != calcedCrc) {
-            LOG(ERROR) << "Data section CRC for Object Map is incorrect";
-            return OcApp::eInvalidCRCInObjectMap;
-        }
-    }
-    // calc final crc
-    uint16_t crc, calcedCrc = ar.CalcedCRC(true);
-    ar.ReadCRC(crc);
-    if(crc != calcedCrc) {
-        LOG(ERROR) << "CRC for Object Map is incorrect";
-        return OcApp::eInvalidCRCInObjectMap;
-    }
-    VLOG(4) << "ncount = " << nCount;
-    VLOG(3) << "Successfully decoded Object map";
-    return OcApp::eOk;
-}
 
 END_OCTAVARIUM_NS

@@ -71,8 +71,11 @@ OcBsStreamIn & OcBsStreamIn::Seek(std::streamoff nPos, int nBit)
 {
     m_filePosition = nPos + (nBit / CHAR_BIT);
     std::streamoff pos = m_filePosition / BufferSize() * BufferSize();
+    if(m_fs.eof())
+        m_fs.clear();
     m_fs.seekg(pos, ios::beg);
     m_fs.read((char *) m_pBuffer, BufferSize());
+
     m_indexSize = std::min(m_fs.gcount(), m_fileLength
                            - (std::streamsize)m_filePosition);
     m_bitPosition = nBit % CHAR_BIT;

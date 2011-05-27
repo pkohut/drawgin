@@ -28,6 +28,8 @@
 **
 ****************************************************************************/
 
+#include <boost/foreach.hpp>
+
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcTypes.h"
@@ -41,10 +43,10 @@
 BEGIN_OCTAVARIUM_NS
 
 #define ASSERT_ARCHIVE_NOT_LOADING assert(ar.ArchiveFlag() \
-    == DwgInArchive::LOADING)
+        == DwgInArchive::LOADING)
 
 OcBsDwgObjectMap::OcBsDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize)
-: m_objMapFilePos(objMapFilePos), m_objMapSize(objMapSize)
+    : m_objMapFilePos(objMapFilePos), m_objMapSize(objMapSize)
 {
 }
 
@@ -111,11 +113,11 @@ OcApp::ErrorStatus OcBsDwgObjectMap::DecodeData(DwgInArchive& ar)
             BS_ARCHIVE(bitcode::MC , ar, offsetLoc,   "offset loc");
             lastHandle += offsetLastH;
             lastOffset += offsetLoc;
-            m_objMapItems.push_back(OcBsDwgObjectMapItem(lastHandle, 
-                lastOffset));
+            m_objMapItems.push_back(OcBsDwgObjectMapItem(lastHandle,
+                                    lastOffset));
         }
         // calc section crc
-        uint16_t crc, calcedCrc = ar.CalcedCRC(true); 
+        uint16_t crc, calcedCrc = ar.CalcedCRC(true);
         ar.ReadCRC(crc);
         if(crc != calcedCrc) {
             LOG(ERROR) << "Data section CRC for Object Map is incorrect";
@@ -132,6 +134,28 @@ OcApp::ErrorStatus OcBsDwgObjectMap::DecodeData(DwgInArchive& ar)
     }
 
     VLOG(3) << "Successfully decoded Object map";
+    return OcApp::eOk;
+}
+
+OcApp::ErrorStatus OcBsDwgObjectMap::DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb)
+{
+    BOOST_FOREACH(const OcBsDwgObjectMapItem & item, m_objMapItems) {
+        int32_t handle = item.Handle();
+        int32_t fp = item.FilePosition();
+
+        ar.Seek(item.FilePosition());
+        if(ar.Error() != OcApp::eOk)
+            return ar.Error();
+
+        uint32_t objectSize;
+        uint16_t objectType;
+        OcDbObjectId objId;
+
+        BS_ARCHIVE(bitcode::MS, ar, objectSize, "Object size = ");
+        BS_ARCHIVE(bitcode::BS, ar, objectType, "Object type = ");
+        BS_ARCHIVE(OcDbObjectId, ar, objId, "Object handle = ");
+
+    }
     return OcApp::eOk;
 }
 

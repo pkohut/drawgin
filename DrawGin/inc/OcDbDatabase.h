@@ -48,8 +48,7 @@ public:
     OcApp::ErrorStatus Open(const string_t & filename);
 
 private:
-    OcApp::ErrorStatus DecodeObjectMap(DwgInArchive & ar, int32_t fileOffset,
-        int32_t dataSize);
+
 
 };
 

@@ -35,13 +35,23 @@
 BEGIN_OCTAVARIUM_NS
 
 OcBsDwgObjectMapItem::OcBsDwgObjectMapItem(int32_t handle,
-                                           int32_t filePosition)
-: m_handle(handle), m_filePosition(filePosition)
+        int32_t filePosition)
+    : m_handle(handle), m_filePosition(filePosition)
 {
 }
 
 OcBsDwgObjectMapItem::~OcBsDwgObjectMapItem(void)
 {
+}
+
+int32_t OcBsDwgObjectMapItem::Handle(void) const
+{
+    return m_handle;
+}
+
+int32_t OcBsDwgObjectMapItem::FilePosition(void) const
+{
+    return m_filePosition;
 }
 
 

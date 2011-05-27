@@ -35,11 +35,15 @@
 
 BEGIN_OCTAVARIUM_NS
 
+class OcDbDatabase;
+
 class OcBsDwgObjectMap
 {
 public:
     OcBsDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize);
     virtual ~OcBsDwgObjectMap(void);
+
+    OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb);
 
 private:
     friend DwgInArchive& operator>>(DwgInArchive& ar, OcBsDwgObjectMap & imgData);

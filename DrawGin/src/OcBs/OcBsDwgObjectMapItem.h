@@ -39,6 +39,9 @@ public:
     OcBsDwgObjectMapItem(int32_t handle, int32_t filePosition);
     virtual ~OcBsDwgObjectMapItem(void);
 
+    int32_t Handle(void) const;
+    int32_t FilePosition(void) const;
+
 private:
     int32_t m_handle;
     int32_t m_filePosition;
