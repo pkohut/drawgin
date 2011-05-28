@@ -14,10 +14,10 @@ MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar
                                            OBJECT_OUTPUTS "${PrecompiledBinary}")
     SET_SOURCE_FILES_PROPERTIES(${Sources}
                                 PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-                                           OBJECT_DEPENDS "${PrecompiledBinary}")  
+                                           OBJECT_DEPENDS "${PrecompiledBinary}")
     # Add precompiled header to SourcesVar
     #LIST(APPEND ${SourcesVar} ${PrecompiledSource})
-	
+
   ENDIF(MSVC)
 ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
 
@@ -119,7 +119,7 @@ if(MSVC AND USE_PRECOMPILED_HEADER)
 		if(MATCHED)
 			set (PRECOMP_FILES ${PRECOMP_FILES} ${ITEM})
 		endif(MATCHED)
-	endforeach(ITEM) 
+	endforeach(ITEM)
 	ADD_MSVC_PRECOMPILED_HEADER("precompiled.h" "precompiled.cpp" PRECOMP_FILES)
 	set(PRECOMP_FILES precompiled.cpp precompiled.h)
 endif(MSVC AND USE_PRECOMPILED_HEADER)
@@ -132,4 +132,4 @@ add_library(libDrawGin
 		${OCRX_FILES}
 		${PRECOMP_FILES}
 )
-message("Ya dawg")
+

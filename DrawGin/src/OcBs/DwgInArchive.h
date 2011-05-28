@@ -168,7 +168,7 @@ DwgInArchive& Archive(DwgInArchive & ar, std::wstring & t, const char * pStr)
             VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
     } else {
             Archive<bitcode::TU>(ar, t);
-            VLOG(4) << pStr << ": U\"" << WStringToString(t.c_str()).c_str() << "\"";        
+            VLOG(4) << pStr << ": U\"" << WStringToString(t.c_str()).c_str() << "\"";
     }
 //    Archive<BC>(ar, t);
 //    VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
@@ -202,11 +202,11 @@ DwgInArchive& Archive(DwgInArchive & ar, OcDbObjectId & t, const char * pStr)
 
 // Help with dead string stripping for the Archive template, without this
 // DSS only occurred with gcc compiler setting of -O3
-#if GOOGLE_STRIP_LOG == 0
-#  define BS_ARCHIVE(BC, AR, T, STR) Archive<BC>(AR, T, #STR);
-#else
+#if GOOGLE_STRIP_LOG > 0
 // have compiler strip away STR from code
 #  define BS_ARCHIVE(BC, AR, T, STR) Archive<BC>(AR, T, "");
+#else
+#  define BS_ARCHIVE(BC, AR, T, STR) Archive<BC>(AR, T, #STR);
 #endif
 
 END_OCTAVARIUM_NS

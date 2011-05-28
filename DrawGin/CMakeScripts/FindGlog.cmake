@@ -76,7 +76,7 @@ if(MSVC)
     _FIND_GLOG_LIBRARY(GLOG_LIBRARY                   libglog.lib)
 else(MSVC)
 	# Linux/OS X builds
-    _FIND_GLOG_LIBRARY(GLOG_LIBRARY                   libglog.a)
+    _FIND_GLOG_LIBRARY(GLOG_LIBRARY                   libglog.so)
 endif(MSVC)
 
 message("glog library = " ${GLOG_LIBRARY})
@@ -95,7 +95,7 @@ if(MSVC)
 else(MSVC)
 	# Linux/OS X builds
     set(GLOG_INCLUDE_DIRS ${GLOG_INCLUDE_DIR})
-    string(REGEX REPLACE "/libglog.a" "" GLOG_LIBRARY_DIR ${GLOG_LIBRARY})
+    string(REGEX REPLACE "/libglog.so" "" GLOG_LIBRARY_DIR ${GLOG_LIBRARY})
 endif(MSVC)
 
 if(GLOG_FOUND)

@@ -15,19 +15,19 @@ set (EXECUTABLE_OUTPUT_PATH    "${PROJECT_BINARY_DIR}/bin")
 add_definitions(-DGOOGLE_GLOG_DLL_DECL=)
 
 
-set (EXTRA_LIBS ${EXTRA_LIBS} 
+set (EXTRA_LIBS ${EXTRA_LIBS}
 	libDrawGin
 )
-	
+
 if(MSVC)
     # this needs check for 64 or 32 bit builds
-    set (Boost_LIBRARY_DIRS "${Boost_LIBRARY_DIRS}/win32")	
+    set (Boost_LIBRARY_DIRS "${Boost_LIBRARY_DIRS}/win32")
 	add_definitions(-D_UNICODE)
 else(MSVC)
 	# Linux/OS X builds
     set (EXTRA_LIBS ${EXTRA_LIBS}
-	    libglog.a
-	    libboost_program_options.a
+	    libglog.so
+	    libboost_program_options.so
 	)
 	# Linux needs libpthread.so (apple does not)
 	if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -39,18 +39,18 @@ else(MSVC)
 endif(MSVC)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-	message("build type = " ${CMAKE_BUILD_TYPE})
     if(${CMAKE_BUILD_TYPE} STREQUAL Debug)
 	list(APPEND CMAKE_CXX_FLAGS "-g")
-    else(${CMAKE_BUILD_TYPE} STREQUAL Debug)	
-	list (APPEND CMAKE_EXE_LINKER_FLAGS "-s")
+    else(${CMAKE_BUILD_TYPE} STREQUAL Debug)
+	list(APPEND CMAKE_CXX_FLAGS "-ffunction-sections -fdata-sections")
+	list (APPEND CMAKE_EXE_LINKER_FLAGS "-s -Wl --gc-sections")
     endif(${CMAKE_BUILD_TYPE} STREQUAL Debug)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set (PROJECT_HEADER_FILES
 	OcConfig.h
 	stdafx.h
-	targetver.h	
+	targetver.h
 )
 
 set (PROJECT_FILES
