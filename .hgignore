@@ -37,6 +37,7 @@ _ReSharper*/
 
 # Ignore Codelite files
 *.workspace.*
+*.workspace
 *.session
 *.tags
 *_wsp.mk

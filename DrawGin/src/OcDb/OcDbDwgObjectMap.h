@@ -20,7 +20,7 @@ private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
 
     // pair::first = handle, pair::second = fileposition
-    std::vector<std::pair<int32_t, int32_t>> m_objMapItems;
+    std::vector<std::pair<int32_t, int32_t> > m_objMapItems;
 
     int32_t m_objMapFilePos;
     int32_t m_objMapSize;

@@ -38,6 +38,15 @@ else(MSVC)
 
 endif(MSVC)
 
+if(CMAKE_COMPILER_IS_GNUCXX)
+	message("build type = " ${CMAKE_BUILD_TYPE})
+    if(${CMAKE_BUILD_TYPE} STREQUAL Debug)
+	list(APPEND CMAKE_CXX_FLAGS "-g")
+    else(${CMAKE_BUILD_TYPE} STREQUAL Debug)	
+	list (APPEND CMAKE_EXE_LINKER_FLAGS "-s")
+    endif(${CMAKE_BUILD_TYPE} STREQUAL Debug)
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
 set (PROJECT_HEADER_FILES
 	OcConfig.h
 	stdafx.h
