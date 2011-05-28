@@ -61,6 +61,7 @@ public:
     virtual OcBsStreamIn & Seek(std::streamoff nPos, int nBit = 0);
     OcBsStreamIn & ReadHandle(OcDbObjectId & objId);
     OcBsStreamIn & ReadCRC(uint16_t & crc, bool bSkipCrcTracking = true);
+    void AdvanceToByteBoundary(void);
 
     virtual OcBsStreamIn & operator>>(OcDbObjectId & objId);
     virtual OcBsStreamIn & operator>>(bitcode::B & b);

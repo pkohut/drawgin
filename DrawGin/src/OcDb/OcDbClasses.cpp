@@ -74,7 +74,7 @@ OcApp::ErrorStatus OcDbClasses::DecodeData(DwgInArchive& in)
 
     int size;
     BS_ARCHIVE(bitcode::RL, in, size, "classes section size");
-    int endSection = in.FilePosition() + size;
+    int endSection = in.FilePosition() + size - 1;
 
     if(in.Version() >= R2004) {
         // read the RS value - maximum class number

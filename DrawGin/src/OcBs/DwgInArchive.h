@@ -57,6 +57,7 @@ public:
     void SetVersion(DWG_VERSION version);
     uint16_t CalcedCRC(bool bRetResultInMSB = false) const;
     void SetCalcedCRC(uint16_t crc);
+    void AdvanceToByteBoundary(void);
 
     DwgInArchive & ReadHandle(OcDbObjectId & objId);
 

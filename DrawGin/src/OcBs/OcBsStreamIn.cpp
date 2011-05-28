@@ -125,7 +125,6 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
     return *this;
 }
 
-
 OcBsStreamIn & OcBsStreamIn::ReadCRC(uint16_t & crc, bool bSkipCrcTracking)
 {
     uint16_t currentCrc = CalcedCRC();
@@ -135,14 +134,25 @@ OcBsStreamIn & OcBsStreamIn::ReadCRC(uint16_t & crc, bool bSkipCrcTracking)
     // m_bitPosition to 0, then the next stream operation
     // will read the next byte into m_cache. See Get()
     // function this class.
-    if(m_bitPosition != 0) {
-        m_bitPosition = 0;
-    }
+    AdvanceToByteBoundary();
+    //if(m_bitPosition != 0) {
+    //    m_bitPosition = 0;
+    //    m_filePosition++;
+    //}
 
     *this >> (bitcode::RS&) crc;
     if(bSkipCrcTracking == true)
         SetCalcedCRC(currentCrc);
     return *this;
+}
+
+
+void OcBsStreamIn::AdvanceToByteBoundary( void )
+{
+    if(m_bitPosition) {
+        m_bitPosition = 0;
+        m_filePosition++;
+    }
 }
 
 
@@ -155,12 +165,14 @@ OcBsStreamIn & OcBsStreamIn::operator>>(OcDbObjectId & objId)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::B & b)
 {
+    b = 0;
     if(m_bitPosition == 0) {
         m_cache = Get();
         m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
     }
-    b = (m_cache & (0x80 >> m_bitPosition)) >> (7 - m_bitPosition);
-    m_bitPosition = (m_bitPosition + 1) % CHAR_BIT;
+    b = (m_cache & (0x80 >> m_bitPosition)) >> (7 - m_bitPosition);    
+    m_filePosition += (m_bitPosition + 1) / 8;
+    m_bitPosition = (m_bitPosition + 1) % CHAR_BIT;    
     return *this;
 }
 
@@ -359,17 +371,19 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MS & ms)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RC & rc)
 {
+    rc = 0;
     if(m_bitPosition == 0) {
         rc = m_cache = Get();
         m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
     } else {
         rc = m_cache << m_bitPosition;
         if(m_filePosition < m_fileLength - 1) {
-            m_cache = Get();
+            m_cache = PeekAhead();
             m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
             rc |= m_cache >> (8 - m_bitPosition);
         }
     }
+    m_filePosition += (m_bitPosition + 8) / 8;
     m_bitPosition = (m_bitPosition + 8) % CHAR_BIT;
     return *this;
 }
@@ -495,5 +509,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TU & tu)
     }
     return *this;
 }
+
+
 
 END_OCTAVARIUM_NS

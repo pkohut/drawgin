@@ -135,8 +135,16 @@ byte_t OcBsStream::Get()
         m_indexSize = std::min(m_fs.gcount(), m_fileLength
                                - (std::streamsize) m_filePosition);
     }
-    m_filePosition++;
+//    m_filePosition++;
     return m_pBuffer[pos];
+}
+
+byte_t OcBsStream::PeekAhead()
+{
+    m_filePosition++;
+    byte_t byte = Get();
+    m_filePosition--;
+    return byte;
 }
 
 bitcode::T & OcBsStream::ConvertToCodepage(bitcode::T & t)

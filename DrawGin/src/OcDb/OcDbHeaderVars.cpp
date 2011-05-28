@@ -134,7 +134,6 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     }
 
     const DWG_VERSION dwgVersion = in.Version();
-    int size;
 
     // per spec, set initial CRC value to 0xc0c1
     in.SetCalcedCRC(0xc0c1);
@@ -145,6 +144,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     // appears to be the size of the header in "bytes".
     //   if(dwgVersion == R2007) {
     //    Archive<bitcode::RL>(in, size, "Header variables size");
+    int size;
     BS_ARCHIVE(bitcode::RL, in, size, "Header variables size");
     //    }
 
@@ -687,10 +687,11 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(bitcode::BS, in, m_unknown57, "unknown57");  // short(type 5 / 6 only)
     }
 
+    in.AdvanceToByteBoundary();
     if(size != in.FilePosition() - startPos) {
         LOG(ERROR) << "File position should be "
             << startPos + size << " instead of "
-            << in.FilePosition() - startPos;
+            << in.FilePosition();
     }
 
     uint16_t fileCRC, calcedCRC = in.CalcedCRC();

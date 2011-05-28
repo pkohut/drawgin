@@ -46,12 +46,12 @@
 #include "../OcBs/DwgInArchive.h"
 #include "../OcBs/OcBsDwgFileHeader.h"
 #include "../OcBs/OcBsDwgPreviewImage.h"
-#include "../OcBs/OcBsDwgObjectMapItem.h"
-#include "../OcBs/OcBsDwgObjectMap.h"
+//#include "../OcBs/OcBsDwgObjectMap.h"
 
 #include "OcDbHeaderVars.h"
 #include "OcDbClass.h"
 #include "OcDbClasses.h"
+#include "OcDbDwgObjectMap.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -136,7 +136,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
         int32_t filePos = ar.FilePosition();
 
         // Read the Object Map portion from the file.
-        OcBsDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
+        OcDbDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
                                    dwgHdr.Record(2).size);
         ar >> dwgObjMap;
 
@@ -151,7 +151,6 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             LOG(ERROR) << "Error processing objects";
             return ar.Error();
         }
-
     }
 
     return OcApp::eOk;

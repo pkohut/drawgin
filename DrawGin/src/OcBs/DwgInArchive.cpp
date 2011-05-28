@@ -349,6 +349,12 @@ void DwgInArchive::SetCalcedCRC( uint16_t crc )
     m_stream.SetCalcedCRC(crc);
 }
 
+void DwgInArchive::AdvanceToByteBoundary( void )
+{
+    m_stream.AdvanceToByteBoundary();
+}
+
+
 
 //} // namespace archive
 

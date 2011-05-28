@@ -52,6 +52,7 @@ public:
 
     byte_t Get(int nBits);
     byte_t Get(void);
+    byte_t PeekAhead();
     virtual OcBsStream & Seek(std::streamoff nPos, int nBit = 0) = 0;
     virtual std::streamoff FilePosition(void) const;
     int BufferSize(void) const;
