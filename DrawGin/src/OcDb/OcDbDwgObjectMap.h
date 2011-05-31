@@ -42,7 +42,6 @@ class OcDbObject;
 class OcDbDwgObjectMap : public OcDbObject
 {
 public:
-    OcDbDwgObjectMap(OcDbObject * parent) {}
     OcDbDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize);
     virtual ~OcDbDwgObjectMap(void);
 

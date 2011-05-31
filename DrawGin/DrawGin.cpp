@@ -67,11 +67,11 @@ static const char* DefaultLogDir()
 {
     const char* env;
     env = getenv("GOOGLE_LOG_DIR");
-    if (env != NULL && env[0] != '\0') {
+    if(env != NULL && env[0] != '\0') {
         return env;
     }
     env = getenv("TEST_TMPDIR");
-    if (env != NULL && env[0] != '\0') {
+    if(env != NULL && env[0] != '\0') {
         return env;
     }
     return "";
@@ -170,7 +170,7 @@ void ProcessDrawing(const string_t & filename)
 int main(int argc, char* argv[])
 {
     InitGoogleLogging(argv[0]);
-   
+
     try {
         string_t filename;
         po::options_description desc("Allowed options");
@@ -218,6 +218,7 @@ int main(int argc, char* argv[])
         cerr << "Unknown exception caught";
         return 1;
     }
+
 #if defined(_WIN32)
     _CrtDumpMemoryLeaks();
 #endif

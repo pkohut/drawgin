@@ -45,15 +45,8 @@
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
 
-#include "OcDbClassFactory.h"
-
-
-
-
 BEGIN_OCTAVARIUM_NS
 using namespace std;
-
-//Register<OcDbDwgObjectMap, OcDbObject> robj(L"OcDbDwgObjectMap");
 
 struct SUB_CLASS_ID {
     int id;

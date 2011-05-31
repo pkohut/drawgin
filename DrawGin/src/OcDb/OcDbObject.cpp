@@ -39,7 +39,6 @@
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
 
-
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
@@ -52,7 +51,7 @@ OcDbObject::~OcDbObject(void)
 {
 }
 
-OcApp::ErrorStatus OcDbObject::DecodeData( DwgInArchive& ar )
+OcApp::ErrorStatus OcDbObject::DecodeData(DwgInArchive& ar)
 {
     //     MS size of object, not including the CRC
     //     BS object type
@@ -78,7 +77,7 @@ OcApp::ErrorStatus OcDbObject::DecodeData( DwgInArchive& ar )
 
     int16_t objType;
     BS_ARCHIVE(bitcode::BS, ar, objType, "Object type = ");
-    
+
     int32_t objSizeInBits;
     if(ar.Version() >= R2000) {
         BS_ARCHIVE(bitcode::RL, ar, objSizeInBits, "Object size in bits = ");
@@ -86,7 +85,7 @@ OcApp::ErrorStatus OcDbObject::DecodeData( DwgInArchive& ar )
 
     OcDbObjectId objId;
     BS_ARCHIVE(OcDbObjectId, ar, objId, "Object handle = ");
-    
+
     int16_t extendedObjSize;
     BS_ARCHIVE(bitcode::BS, ar, extendedObjSize, "extended object data size = ");
     if(extendedObjSize) {
@@ -109,7 +108,7 @@ OcApp::ErrorStatus OcDbObject::DecodeData( DwgInArchive& ar )
     return OcApp::eNotImplemented;
 }
 
-DwgInArchive& operator>>( DwgInArchive& ar, OcDbObject & data )
+DwgInArchive& operator>>(DwgInArchive& ar, OcDbObject & data)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);
     ar.SetError(data.DecodeData(ar));
