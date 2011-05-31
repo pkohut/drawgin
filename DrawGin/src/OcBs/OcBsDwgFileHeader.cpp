@@ -36,13 +36,13 @@
 #include "OcDbDwgVersion.h"
 
 #include "OcBsStreamIn.h"
+#include "DwgInArchive.h"
 #include "OcBsDwgFileHeader.h"
 #include "OcBsDwgSentinels.h"
 #include "OcBsDwgCrc.h"
 
 BEGIN_OCTAVARIUM_NS
 
-#define ASSERT_ARCHIVE_NOT_LOADING assert(in.ArchiveFlag() == DwgInArchive::LOADING)
 #define CRC8_CALC(crcIn, x) crc8(crcIn, (const char*)&x, sizeof(x))
 
 OcBsDwgFileHeader::OcBsDwgFileHeader(void)
@@ -157,7 +157,7 @@ const OcBsDwgFileHeaderSection& OcBsDwgFileHeader::Record(int nRecord) const
 
 DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgFileHeader & hdr)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
     // version ID, 3.2.1
     hdr.m_dwgVersion = hdr.DecodeVersionData(in);
     in.SetVersion(hdr.DwgVersion());

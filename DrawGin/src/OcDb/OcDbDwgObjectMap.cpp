@@ -5,19 +5,116 @@
 #include "OcDbDwgVersion.h"
 #include "OcTypes.h"
 #include "OcDbObjectId.h"
-#include "OcDbDwgVersion.h"
-
-#include "../OcBs/OcBsStreamIn.h"
 #include "OcDbDwgObjectMap.h"
+
+#include "OcDbClass.h"
+#include "OcDbClasses.h"
+
+#include "OcDbDwgVersion.h"
+#include "../OcBs/OcBsStreamIn.h"
+#include "../OcBs/DwgInArchive.h"
+
+
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-#define ASSERT_ARCHIVE_NOT_LOADING assert(ar.ArchiveFlag() \
-    == DwgInArchive::LOADING)
+struct SUB_CLASS_ID {
+    int id;
+    const char * subClassName;
+};
+
+SUB_CLASS_ID _subClasses[] = {
+    {0x00, ""},                         // unused
+    {0x01, "AcDbText"},                 // text
+    {0x02, "AcDbAttribute"},            // attrib
+    {0x03, "AcDbAttributeDefinition"},  // attdef
+    {0x04, "AcDbBlockBegn"},            // block
+    {0x05, "AcDbBlockEnd"},             // endblk
+    {0x06, "AcDbSequenceEnd"},          // seqend
+    {0x07, "AcDbBlockReference"},       // insert
+    {0x08, "AcDbMInsertBlock"},         // minsert
+    {0x09, "0x09"},                     // unknown
+    {0x0A, "AcDb2dVertex"},             // vertex (2d)
+    {0x0B, "AcDb3dVertex"},             // vertex (3d)
+    {0x0C, "0x0c"},	                    // vertex (mesh)
+    {0x0D, "0x0d"},                     // vertex (pface)
+    {0x0E, "0x0e"},                     // vertex (pface face)
+    {0x0F, "AcDb2dPolyline"},           // polyline (2d)
+    {0x10, "AcDb3dPolyline"},           // polyline (3d)
+    {0x11, "AcDbArc"},                  // arc
+    {0x12, "AcDbCircle"},               // circle
+    {0x13, "AcDbLine"},                 // line
+    {0x14, "0x14"},                     // dimension (ordinate)
+    {0x15, "0x15"},                     // dimension (linear)
+    {0x16, "0x16"},                     // dimension (aligned)
+    {0x17, "0x17"},                     // dimension (ang 3-pt)
+    {0x18, "0x18"},                     // dimension (ang 2-ln)
+    {0x19, "0x19"},                     // dimension (radius)
+    {0x1A, "0x1a"},                     // dimension (diameter)
+    {0x1B, "AcDbPoint"},                // point
+    {0x1C, "AcDbFace"},                 // 3dface
+    {0x1D, "0x1d"},                     // polyline (pface)
+    {0x1E, "0x1e"},                     // polyline (mesh)
+    {0x1F, "AcDbSolid"},                // solid
+    {0x20, "AcDbTrace"},                // trace
+    {0x21, "AcDbShape"},                // shape
+    {0x22, "AcDbViewport"},             // viewport
+    {0x23, "AcDbEllipse"},              // ellipse
+    {0x24, "AcDbSpline"},               // spline
+    {0x25, "AcDbRegion"},               // region
+    {0x26, "AcDb3dSolid"},              // 3dsolid
+    {0x27, "AcDbBody"},                 // body
+    {0x28, "AcDbRay"},                  // ray
+    {0x29, "AcDbXline"},                // xline
+    {0x2A, "AcDbDictionary"},           // dictionary
+    {0x2B, "0x2b"},                     // unknown
+    {0x2C, "AcDbMText"},                // mtext
+    {0x2D, "AcDbLeader"},               // leader
+    {0x2E, "AcDbFcf"},                  // tolerance
+    {0x2F, "AcDbMline"},                // mline
+    {0x30, "0x30"},                     // block control obj
+    {0x31, "0x31"},                     // block header
+    {0x32, "0x32"},                     // layer control obj
+    {0x33, "0x33"},                     // layer
+    {0x34, "0x34"},                     // style control obj
+    {0x35, "0x35"},                     // style
+    {0x36, "0x36"},                     // unknown
+    {0x37, "0x37"},                     // unknown
+    {0x38, "0x38"},                     // ltype contorl obj
+    {0x39, "0x39"},                     // ltype
+    {0x3A, "0x3a"},                     // unknown
+    {0x3B, "0x3b"},                     // unknown
+    {0x3C, "0x3c"},                     // view control obj
+    {0x3D, "0x3d"},                     // view
+    {0x3E, "0x3e"},                     // ucs control obj
+    {0x3F, "0xef"},                     // ucs
+    {0x40, "0x40"},                     // vport control obj
+    {0x41, "0x41"},                     // vport
+    {0x42, "0x42"},                     // appid control obj
+    {0x43, "AcDbRegAppTableRecord"},    // appid
+    {0x44, "0x44"},                     // dimstyle control obj
+    {0x45, "0x45"},                     // dimstyle
+    {0x46, "0x46"},                     // vp ent hdr ctrl obj
+    {0x47, "0x47"},                     // vp ent hdr
+    {0x48, "AcDbGroup"},                // group
+    {0x49, "AcDbMlineStyle"},           // mlinestyle
+    {0x4A, "0x4a"},                     // ole2frame
+    {0x4B, "0x4b"},                     // dummy
+    {0x4C, "0x4c"},                     // long transaction
+    {0x4D, "0x4d"},                     // lwpolyline
+    {0x4E, "0x4e"},                     // hatch
+    {0x4F, "0x4f"},                     // xrecord
+    {0x50, "0x50"},                     // AcDbPlaceHolder
+    {0x51, "0x51"},                     // VBA_Project
+};
+
+
+#define ELEMENTS(x) sizeof(x)/sizeof(x[0])
+
 
 OcDbDwgObjectMap::OcDbDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize)
-: m_objMapFilePos(objMapFilePos), m_objMapSize(objMapSize)
+    : m_objMapFilePos(objMapFilePos), m_objMapSize(objMapSize)
 {
 }
 
@@ -29,7 +126,7 @@ OcDbDwgObjectMap::~OcDbDwgObjectMap(void)
 
 OcApp::ErrorStatus OcDbDwgObjectMap::DecodeData(DwgInArchive& ar)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(ar);
     VLOG(3) << "DecodeObjectMap entered";
     // do some sanity checks before trying to read the object map
     if(m_objMapFilePos == 0) {
@@ -107,60 +204,43 @@ OcApp::ErrorStatus OcDbDwgObjectMap::DecodeData(DwgInArchive& ar)
     return OcApp::eOk;
 }
 
-OcApp::ErrorStatus OcDbDwgObjectMap::DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb)
+OcApp::ErrorStatus OcDbDwgObjectMap::DecodeObjects(DwgInArchive& ar,
+        OcDbDatabase *& pDb,
+        const OcDbClasses & classes)
 {
+    std::vector<SUB_CLASS_ID> subClasses(&_subClasses[0],
+                                         &_subClasses[ELEMENTS(_subClasses)]);
     BOOST_FOREACH(const MapItem &  item, m_objMapItems) {
         ar.Seek(item.second);
         if(ar.Error() != OcApp::eOk)
             return ar.Error();
 
-        const DWG_VERSION dwgVersion = ar.Version();
         uint32_t objSize = 0;
-        uint32_t objSizeBits = 0;
         uint16_t objType = 0;
-        OcDbObjectId objId;
-        uint16_t extendedObjSize = 0;
-        bool hasGraphicsImage;
-
 
         BS_ARCHIVE(bitcode::MS, ar, objSize, "Object size = ");
         BS_ARCHIVE(bitcode::BS, ar, objType, "Object type = ");
-        if(dwgVersion >= R2000) {
-            BS_ARCHIVE(bitcode::RL, ar, objSizeBits, "Object size in bits = ");
+
+        if(objType > subClasses.size() - 1 && objType < 500) {
+            LOG(ERROR) << "Object type outside of known range";
+            LOG(ERROR) << "Sub type = " << hex << showbase << objType;
+            return OcApp::eOutsideOfClassMapRange;
+        } else {            
+            if(objType >= 500) {
+                const OcDbClass & className = classes.ClassAt(objType - 500);
+                VLOG(4) << "Classname = " << WStringToString(className.CppClassName().c_str());
+            } else {
+                SUB_CLASS_ID subClass = subClass = subClasses.at(objType);
+                VLOG(4) << "Sub class name = " << subClass.subClassName;
+            }
         }
-        BS_ARCHIVE(OcDbObjectId, ar, objId, "Object handle = ");
-        BS_ARCHIVE(bitcode::BS, ar, extendedObjSize, "extended object data size = ");
-        if(extendedObjSize) {
-
-        }
-        //BS_ARCHIVE(bitcode::B, ar, hasGraphicsImage, "has graphics data = ");
-        //if(hasGraphicsImage) {
-        //    uint32_t imageDataSize;
-        //    BS_ARCHIVE(bitcode::RL, ar, imageDataSize, "graphics data size = ");
-        //    // read the graphics data
-        //}
-
-        if(dwgVersion == R13 || dwgVersion == R14) {
-            BS_ARCHIVE(bitcode::RL, ar, objSizeBits, "Object size in bits = ");
-        }
-
-        // read object data
-
-        if(dwgVersion >= R2007) {
-            // read string data
-            // get string stream data
-        }
-
-
-
-
     }
     return OcApp::eOk;
 }
 
 DwgInArchive& operator>>(DwgInArchive& ar, OcDbDwgObjectMap & hdr)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(ar);
     ar.SetError(hdr.DecodeData(ar));
     return ar;
 }

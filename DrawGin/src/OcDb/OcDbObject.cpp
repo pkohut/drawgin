@@ -31,9 +31,19 @@
 
 //#include "stdafx.h"
 #include "OcCommon.h"
+
+#include "OcError.h"
+#include "OcTypes.h"
+#include "OcDbObjectId.h"
 #include "OcDbObject.h"
 
+#include "OcDbDwgVersion.h"
+#include "../OcBs/OcBsStreamIn.h"
+#include "../OcBs/DwgInArchive.h"
+
+
 BEGIN_OCTAVARIUM_NS
+using namespace std;
 
 OcDbObject::OcDbObject(void)
 {
@@ -42,6 +52,70 @@ OcDbObject::OcDbObject(void)
 
 OcDbObject::~OcDbObject(void)
 {
+}
+
+OcApp::ErrorStatus OcDbObject::DecodeData( DwgInArchive& ar )
+{
+    //     MS size of object, not including the CRC
+    //     BS object type
+    // R2000+
+    //     RL size of object in bits
+    // common
+    //     H object handle
+    //     BS size of extended object data
+    //     X extended object data
+    // R13-R14
+    //     RL size of object data in bits
+    // common
+    //     X Object data
+    // R2007+
+    //     X string data (optional)
+    //     B string stream present bit
+    // common
+    //     X handles associated with this object
+    //     RS crc
+
+    int32_t objSize;
+    BS_ARCHIVE(bitcode::MS, ar, objSize, "Object size = ");
+
+    int16_t objType;
+    BS_ARCHIVE(bitcode::BS, ar, objType, "Object type = ");
+    
+    int32_t objSizeInBits;
+    if(ar.Version() >= R2000) {
+        BS_ARCHIVE(bitcode::RL, ar, objSizeInBits, "Object size in bits = ");
+    }
+
+    OcDbObjectId objId;
+    BS_ARCHIVE(OcDbObjectId, ar, objId, "Object handle = ");
+    
+    int16_t extendedObjSize;
+    BS_ARCHIVE(bitcode::BS, ar, extendedObjSize, "extended object data size = ");
+    if(extendedObjSize) {
+
+    }
+
+    if(ar.Version() == R13 || ar.Version() == R14) {
+        BS_ARCHIVE(bitcode::RL, ar, objSizeInBits, "Object size in bits = ");
+    }
+
+    // read object data
+
+    if(ar.Version() >= R2007) {
+        // read string data
+        // get string stream data
+    }
+    vector<OcDbObjectId> objHandles;
+    uint16_t crc = 0;
+
+    return OcApp::eNotImplemented;
+}
+
+DwgInArchive& operator>>( DwgInArchive& ar, OcDbObject & data )
+{
+    ASSERT_ARCHIVE_NOT_LOADING(ar);
+    ar.SetError(data.DecodeData(ar));
+    return ar;
 }
 
 END_OCTAVARIUM_NS

@@ -42,7 +42,7 @@
 #include "DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
-#define ASSERT_ARCHIVE_NOT_LOADING assert(ArchiveFlag() == DwgInArchive::LOADING)
+#define ASSERT_NOT_LOADING assert(ArchiveFlag() == DwgInArchive::LOADING)
 
 DwgInArchive::DwgInArchive(OcBsStreamIn & in)
     : m_stream(in), m_archiveFlag(NOT_SET), m_archiveError(OcApp::eOk)
@@ -102,168 +102,168 @@ DwgInArchive::operator void*(void) const
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::B & b)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> b;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BB & bb)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bb;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BBBB & bbbb)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bbbb;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::RC & rc)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> rc;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::RS & rs)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> rs;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::RL & rl)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> rl;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::RD & rd)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> rd;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::RD2 & rd2)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> rd2;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::RD3 & rd3)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> rd3;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BS & bs)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bs;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BL & bl)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bl;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BD & bd)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bd;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BD2 & bd2)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bd2;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BD3 & bd3)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bd3;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::MC & mc)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> mc;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::MS & ms)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> ms;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BE & be)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> be;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::BT & bt)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> bt;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::CMC & cmc)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> cmc;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::TV & tv)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> tv;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::T & t)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> t;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::TU & tu)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> tu;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(bitcode::RC rc[])
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     m_stream >> rc;
     return *this;
 }
 
 DwgInArchive & DwgInArchive::ReadRC(bitcode::RC * pRc, size_t size, bool bSkipCrcTracking)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     uint16_t currentCrc = m_stream.CalcedCRC();
     for(size_t i = 0; i < size; ++i) {
         m_stream >> pRc[i];
@@ -275,7 +275,7 @@ DwgInArchive & DwgInArchive::ReadRC(bitcode::RC * pRc, size_t size, bool bSkipCr
 
 DwgInArchive & DwgInArchive::ReadRC(std::vector<bitcode::RC> & rc, size_t size, bool bSkipCrcTracking)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     uint16_t currentCrc = m_stream.CalcedCRC();
     rc.resize(size);
     for(size_t i = 0; i < size; ++i) {
@@ -288,7 +288,7 @@ DwgInArchive & DwgInArchive::ReadRC(std::vector<bitcode::RC> & rc, size_t size, 
 
 DwgInArchive & DwgInArchive::ReadRC(std::string & rc, size_t size, bool bSkipCrcTracking)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_NOT_LOADING;
     uint16_t currentCrc = m_stream.CalcedCRC();
     rc.resize(size);
     for(size_t i = 0; i < size; ++i) {
@@ -322,12 +322,14 @@ void DwgInArchive::SetVersion(DWG_VERSION version)
 
 DwgInArchive & DwgInArchive::ReadHandle(OcDbObjectId & objId)
 {
+    ASSERT_NOT_LOADING;
     m_stream.ReadHandle(objId);
     return *this;
 }
 
 DwgInArchive & DwgInArchive::operator>>(OcDbObjectId & objId)
 {
+    ASSERT_NOT_LOADING;
     m_stream >> objId;
     return *this;
 }
@@ -335,6 +337,7 @@ DwgInArchive & DwgInArchive::operator>>(OcDbObjectId & objId)
 
 DwgInArchive & DwgInArchive::ReadCRC( uint16_t & crc, bool bSkipCrcTracking)
 {
+    ASSERT_NOT_LOADING;
     m_stream.ReadCRC(crc, bSkipCrcTracking);
     return *this;
 }

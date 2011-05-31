@@ -31,10 +31,10 @@
 #ifndef OcBsDwgFileHeader_h__
 #define OcBsDwgFileHeader_h__
 
-#include "DwgInArchive.h"
+//#include "DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
-
+class DwgInArchive;
 struct OcApp;
 
 class OcBsDwgFileHeaderSection

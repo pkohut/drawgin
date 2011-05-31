@@ -1,10 +1,12 @@
 #ifndef OcDbDwgObjectMap_h__
 #define OcDbDwgObjectMap_h__
 
-#include "../OcBs/DwgInArchive.h"
+//#include "../OcBs/DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
 class OcDbDatabase;
+class DwgInArchive;
+class OcDbClasses;
 
 class OcDbDwgObjectMap
 {
@@ -12,7 +14,8 @@ public:
     OcDbDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize);
     virtual ~OcDbDwgObjectMap(void);
 
-    OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb);
+    OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb,
+                                     const OcDbClasses & classes);
 
 private:
     typedef std::pair<int32_t, int32_t> MapItem;

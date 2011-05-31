@@ -28,49 +28,27 @@
 **
 ****************************************************************************/
 
-#ifndef OCDBCLASS_H
-#define OCDBCLASS_H
+#ifndef OcDbEntity_h__
+#define OcDbEntity_h__
+
+
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbClass {
+class OcDbObject;
 
+class OcDbEntity : public OcDbObject
+{
 public:
-	OcDbClass();
-	virtual ~OcDbClass();
-
-    std::wstring DxfClassName(void) const;
-    std::wstring CppClassName(void) const;
+    OcDbEntity(void);
+    virtual ~OcDbEntity(void);
 
 private:
-private:
-    OcApp::ErrorStatus DecodeData(DwgInArchive& in);
-    friend DwgInArchive& operator>>(DwgInArchive& in,
-        OcDbClass & dwgClass);
-
-
-private:
-    // common
-    int16_t m_classNum;
-    // R13 - R2004 
-    int16_t m_version;  // in R14, becomes a flag indicating whether objects
-                        // can be moved, edited, etc.
-    // R2007+
-    int16_t m_proxyFlags;
-    // common
-    std::wstring m_appName;
-    std::wstring m_cppClassName;
-    std::wstring m_dxfClassName;
-    bool m_wasAZombie;
-    int16_t m_itemClassId;
-    // R2004+
-    int32_t m_numObjects;
-    int32_t m_dwgVersion;   // stored as int16_t for R2004
-    int32_t m_maintVersion; // stored as int16_t for R2004
-    int32_t m_unknown1;
-    int32_t m_unknown2;
+    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbEntity & data);
+    virtual OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
 };
+
 
 END_OCTAVARIUM_NS
 
-#endif // OCDBCLASS_H
+#endif // OcDbEntity_h__

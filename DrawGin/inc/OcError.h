@@ -79,6 +79,7 @@ struct OcApp {
         eInvalidObjectMapRecord,
         eInvalidObjectMapOffset,
         eInvalidCRCInObjectMap,
+        eOutsideOfClassMapRange,
 
     }; //ErrorStatus
 }; // OcApp

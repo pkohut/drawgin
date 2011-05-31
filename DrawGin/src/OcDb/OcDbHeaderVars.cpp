@@ -49,9 +49,6 @@
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-#define ASSERT_ARCHIVE_NOT_LOADING assert(in.ArchiveFlag() == DwgInArchive::LOADING)
-
-
 OcDbHeaderVars::OcDbHeaderVars(void)
 :
 m_unknown1(0.0), m_unknown2(0.0), m_unknown3(0.0), m_unknown4(0.0),
@@ -124,7 +121,7 @@ OcDbHeaderVars::~OcDbHeaderVars(void)
 OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 {
     VLOG(3) << "DecodeData entered";
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
 
     // match dwg header variables start sentinel
     bitcode::RC sentinelData[16];
@@ -739,7 +736,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
 
 DwgInArchive& operator>>(DwgInArchive& in, OcDbHeaderVars & dwgVars)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(dwgVars.DecodeData(in));
     return in;
 }

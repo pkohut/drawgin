@@ -45,9 +45,6 @@
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-#define ASSERT_ARCHIVE_NOT_LOADING \
-    assert(in.ArchiveFlag() == DwgInArchive::LOADING)
-
 OcDbClasses::OcDbClasses()
 {
     VLOG(3) << "Constructor entered";
@@ -61,7 +58,7 @@ OcDbClasses::~OcDbClasses()
 OcApp::ErrorStatus OcDbClasses::DecodeData(DwgInArchive& in)
 {
     VLOG(3) << "DecodeData entered";
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
 
     // match classes section start sentinel
     bitcode::RC sentinelData[16];
@@ -126,9 +123,14 @@ OcApp::ErrorStatus OcDbClasses::DecodeData(DwgInArchive& in)
 
 DwgInArchive& operator>>(DwgInArchive& in, OcDbClasses & dwgClasses)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(dwgClasses.DecodeData(in));
     return in;
+}
+
+const OcDbClass & OcDbClasses::ClassAt(size_t index) const
+{
+    return m_classes.at(index);
 }
 
 END_OCTAVARIUM_NS

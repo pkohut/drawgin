@@ -44,9 +44,6 @@ BEGIN_OCTAVARIUM_NS
 using namespace std;
 
 
-#define ASSERT_ARCHIVE_NOT_LOADING \
-    assert(in.ArchiveFlag() == DwgInArchive::LOADING)
-
 OcDbClass::OcDbClass()
     : m_classNum(0), m_version(0), m_proxyFlags(0), m_wasAZombie(false),
       m_itemClassId(0), m_numObjects(0), m_dwgVersion(0), m_maintVersion(0),
@@ -104,9 +101,22 @@ OcApp::ErrorStatus OcDbClass::DecodeData( DwgInArchive& in )
 
 DwgInArchive& operator>>(DwgInArchive& in, OcDbClass & dwgClass)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(dwgClass.DecodeData(in));
     return in;
 }
+
+std::wstring OcDbClass::DxfClassName( void ) const
+{
+    return m_dxfClassName;
+}
+
+std::wstring OcDbClass::CppClassName( void ) const
+{
+    return m_cppClassName;
+}
+
+
+
 
 END_OCTAVARIUM_NS

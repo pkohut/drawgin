@@ -42,6 +42,7 @@ set(PUBLIC_HEADERS
 	${HEADERS_DIR}/OcCommon.h
 	${HEADERS_DIR}/OcDbDatabase.h
 	${HEADERS_DIR}/OcDbDwgVersion.h
+	${HEADERS_DIR}/OcDbEntity.h
 	${HEADERS_DIR}/OcDbHardOwnershipId.h
 	${HEADERS_DIR}/OcDbObject.h
 	${HEADERS_DIR}/OcDbObjectId.h
@@ -85,6 +86,7 @@ set (OCDB_FILES
 	${OCDB_DIR}/OcDbDwgVersion.cpp
 	${OCDB_DIR}/OcDbDwgObjectMap.cpp
 	${OCDB_DIR}/OcDbDwgObjectMap.h
+	${OCDB_DIR}/OcDbEntity.cpp
 	${OCDB_DIR}/OcDbHardOwnershipId.cpp
 	${OCDB_DIR}/OcDbHeaderVars.cpp
 	${OCDB_DIR}/OcDbHeaderVars.h

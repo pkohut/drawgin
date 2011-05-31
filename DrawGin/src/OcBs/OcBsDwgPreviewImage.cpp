@@ -37,13 +37,11 @@
 #include "OcDbDwgVersion.h"
 
 #include "OcBsStreamIn.h"
+#include "DwgInArchive.h"
 #include "OcBsDwgPreviewImage.h"
 #include "OcBsDwgSentinels.h"
 
 BEGIN_OCTAVARIUM_NS
-
-#define ASSERT_ARCHIVE_NOT_LOADING assert(in.ArchiveFlag() == DwgInArchive::LOADING)
-
 
 OcBsDwgPreviewImage::OcBsDwgPreviewImage(void)
 {
@@ -70,7 +68,7 @@ const std::vector<byte_t> & OcBsDwgPreviewImage::WmfData(void) const
 
 OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
     if(!CompareSentinels(sentinelImageDataStart, sentinelData)) {
@@ -152,7 +150,7 @@ bool OcBsDwgPreviewImage::IsHeadDataAllNULL(const std::vector<byte_t>& data) con
 
 DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgPreviewImage & imgData)
 {
-    ASSERT_ARCHIVE_NOT_LOADING;
+    ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(imgData.DecodeData(in));
     return in;
 }

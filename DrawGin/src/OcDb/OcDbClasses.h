@@ -39,10 +39,12 @@ public:
 	OcDbClasses();
 	virtual ~OcDbClasses();
 
+    const OcDbClass & ClassAt(size_t index) const;
+
 private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& in);
     friend DwgInArchive& operator>>(DwgInArchive& in,
-                                    OcDbClasses & dwgClasses);
+                                    OcDbClasses & dwgClasses);    
 
     std::vector<OcDbClass> m_classes;
 };

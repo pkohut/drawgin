@@ -31,9 +31,11 @@
 #ifndef OcBsDwgPreviewImage_h__
 #define OcBsDwgPreviewImage_h__
 
-#include "DwgInArchive.h"
+//#include "DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
+
+class DwgInArchive;
 
 class OcBsDwgPreviewImage
 {

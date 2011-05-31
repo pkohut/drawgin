@@ -135,18 +135,21 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 
         int32_t filePos = ar.FilePosition();
 
-        // Read the Object Map portion from the file.
+        // Read the Object Map portion from the file. When
+        // done, OcDbDwgObjectMap will have a collection
+        // that tells where in the dwg file objects are located.
         OcDbDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
                                    dwgHdr.Record(2).size);
         ar >> dwgObjMap;
-
         if(ar.Error() != OcApp::eOk) {
             LOG(ERROR) << "Error processing object map section";
             return ar.Error();
         }
 
+        // Decode all of the objects that are in the object map
+        // collection.
         OcDbDatabase * pDb = this;
-        dwgObjMap.DecodeObjects(ar, pDb);
+        dwgObjMap.DecodeObjects(ar, pDb, dwgClasses);
         if(ar.Error() != OcApp::eOk) {
             LOG(ERROR) << "Error processing objects";
             return ar.Error();

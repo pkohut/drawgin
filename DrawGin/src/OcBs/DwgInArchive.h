@@ -33,6 +33,9 @@
 
 BEGIN_OCTAVARIUM_NS
 
+#define ASSERT_ARCHIVE_NOT_LOADING(ar) assert(ar.ArchiveFlag() \
+    == DwgInArchive::LOADING)
+
 class DwgInArchive
 {
 public:
