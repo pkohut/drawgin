@@ -28,7 +28,6 @@
 **
 ****************************************************************************/
 
-//#include "stdafx.h"
 #include "OcCommon.h"
 #include "OcDbObjectId.h"
 

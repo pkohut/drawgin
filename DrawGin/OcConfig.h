@@ -32,6 +32,6 @@
 #ifndef Config_h__
 #define Config_h__
 
-#define DG_DEBUG_LIVING_OBJECTS 1
+// #define OC_DEBUG_LIVING_OBJECTS 1
 
 #endif // Config_h__

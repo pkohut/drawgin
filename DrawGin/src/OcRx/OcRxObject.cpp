@@ -40,7 +40,6 @@
 /**************************************************************************/
 
 
-//#include "stdafx.h"
 #include "OcCommon.h"
 #include "OcRxObject.h"
 
@@ -66,6 +65,10 @@ OcRxObject::~OcRxObject(void)
 
 void OcRxObject::ShutDown(void)
 {
+#if defined(OC_DEBUG_LIVING_OBJECTS)
+    OcRxObject::m_debug_LivingObjects->clear();
+#endif
+
 #if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
     DLOG_IF(ERROR, DebugLivingObjects()->size())
             << "m_debug_LivingObject still has "

@@ -32,6 +32,9 @@
 #ifndef stdafx_h__
 #define stdafx_h__
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 
 #include "targetver.h"
 

@@ -170,8 +170,9 @@ void ProcessDrawing(const string_t & filename)
 int main(int argc, char* argv[])
 {
     InitGoogleLogging(argv[0]);
-    string_t filename;
+   
     try {
+        string_t filename;
         po::options_description desc("Allowed options");
         if(SetProgramOptionsDesc(desc)) {
             return 1;
@@ -217,5 +218,8 @@ int main(int argc, char* argv[])
         cerr << "Unknown exception caught";
         return 1;
     }
+#if defined(_WIN32)
+    _CrtDumpMemoryLeaks();
+#endif
     return 0;
 }

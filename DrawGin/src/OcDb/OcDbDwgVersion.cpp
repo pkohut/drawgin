@@ -28,9 +28,6 @@
 **
 ****************************************************************************/
 
-
-//#include "stdafx.h"
-
 #include <algorithm>
 #include <functional>
 #include <boost/bind.hpp>
@@ -51,10 +48,8 @@ OcDbDwgVersion::Pair pairs[] = { OcDbDwgVersion::Pair("", NONE),
                                  OcDbDwgVersion::Pair("AC1024", R2010),
                                };
 
-const std::vector<OcDbDwgVersion::Pair>
-OcDbDwgVersion::m_versions(&pairs[0],
-                           &pairs[sizeof(pairs) / sizeof(pairs[0])]);
-
+const int OcDbDwgVersion::m_numberOfElements =
+    sizeof(pairs) / sizeof(pairs[0]);
 
 OcDbDwgVersion::OcDbDwgVersion(void)
 {
@@ -67,30 +62,21 @@ OcDbDwgVersion::~OcDbDwgVersion(void)
 
 DWG_VERSION OcDbDwgVersion::GetVersionId(const std::string & sVersion)
 {
-    std::equal_to<std::string> comparator;
-    Pairs::const_iterator iter;
-    iter = std::find_if(m_versions.begin(), m_versions.end(),
-                        boost::bind(comparator,
-                                    boost::bind(&Pair::first, _1),
-                                    sVersion));
-    if(iter != m_versions.end()) {
-        return iter->second;
+    for(int i = 0; i < size(); ++i) {
+        if(sVersion == pairs[i].first)
+            return pairs[i].second;
     }
+
     return NONE;
 }
 
 const std::string & OcDbDwgVersion::GetVersionId(DWG_VERSION nVersionId)
 {
-    std::equal_to<DWG_VERSION> comparator;
-    Pairs::const_iterator iter;
-    iter = std::find_if(m_versions.begin(), m_versions.end(),
-                        boost::bind(comparator,
-                                    boost::bind(&Pair::second, _1),
-                                    nVersionId));
-    if(iter != m_versions.end()) {
-        return iter->first;
+    for(int i = 0; i < size(); ++i) {
+        if(nVersionId == pairs[i].second)
+            return pairs[i].first;
     }
-    return m_versions[NONE].first;
+    return pairs[NONE].first;
 }
 
 END_OCTAVARIUM_NS

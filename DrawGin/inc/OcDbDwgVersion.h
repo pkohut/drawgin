@@ -39,15 +39,17 @@ class OcDbDwgVersion
 {
 public:
     typedef std::pair<std::string, DWG_VERSION> Pair;
-    typedef std::vector<Pair> Pairs;
+//    typedef std::vector<Pair> Pairs;
 
     static DWG_VERSION GetVersionId(const std::string & sVersion);
     static const std::string & GetVersionId(DWG_VERSION nVersionId);
+    static int size(void) { return m_numberOfElements; }
 
 private:
     OcDbDwgVersion();
-    ~OcDbDwgVersion();
-    static const Pairs m_versions;
+    virtual ~OcDbDwgVersion();
+    static const int m_numberOfElements;
+//    static const Pairs m_versions;
 };
 
 END_OCTAVARIUM_NS

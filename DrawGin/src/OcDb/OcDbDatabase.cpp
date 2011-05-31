@@ -28,9 +28,6 @@
 **
 ****************************************************************************/
 
-
-
-//#include "stdafx.h"
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcDbDwgVersion.h"
@@ -39,6 +36,7 @@
 #include "OcGePoint3D.h"
 
 #include "OcRxObject.h"
+#include "OcDbObject.h"
 #include "OcDbHardOwnershipId.h"
 #include "OcDbDatabase.h"
 
@@ -55,7 +53,6 @@
 
 BEGIN_OCTAVARIUM_NS
 
-
 OcDbDatabase::OcDbDatabase(void)
 {
     INIT_OBJECT_NAME_FOR_DEBUG();
@@ -67,6 +64,7 @@ OcDbDatabase::~OcDbDatabase(void)
 
 OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 {
+
     OcBsStreamIn in;
     in.Open(filename);
 
@@ -155,7 +153,6 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             return ar.Error();
         }
     }
-
     return OcApp::eOk;
 }
 

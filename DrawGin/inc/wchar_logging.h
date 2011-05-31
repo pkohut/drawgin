@@ -52,4 +52,9 @@ inline std::string WStringToString(const wchar_t * str)
     return s;
 }
 
+inline std::string WStringToString(const std::wstring & ws)
+{
+    return WStringToString(ws.c_str());
+}
+
 #endif  // WCHAR_LOGGING_H_

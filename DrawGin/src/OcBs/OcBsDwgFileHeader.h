@@ -31,8 +31,6 @@
 #ifndef OcBsDwgFileHeader_h__
 #define OcBsDwgFileHeader_h__
 
-//#include "DwgInArchive.h"
-
 BEGIN_OCTAVARIUM_NS
 class DwgInArchive;
 struct OcApp;
@@ -41,7 +39,7 @@ class OcBsDwgFileHeaderSection
 {
 public:
     OcBsDwgFileHeaderSection() : recordNumber(0), seeker(0), size(0) {}
-    ~OcBsDwgFileHeaderSection() {}
+    virtual ~OcBsDwgFileHeaderSection() {}
     int8_t recordNumber;
     int32_t seeker;
     int32_t size;
@@ -76,7 +74,7 @@ private:
     int16_t m_codePage;
     int32_t m_nSections;
 
-    std::vector<OcBsDwgFileHeaderSection> m_headerSections;
+    std::vector<OcBsDwgFileHeaderSection> m_headerSections;    
 };
 
 END_OCTAVARIUM_NS

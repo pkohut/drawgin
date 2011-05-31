@@ -28,7 +28,6 @@
 **
 ****************************************************************************/
 
-//#include "stdafx.h"
 #include <assert.h>
 #include <fstream>
 #include <string>

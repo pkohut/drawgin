@@ -31,10 +31,17 @@
 #ifndef OcCommon_h__
 #define OcCommon_h__
 
+#if defined(_WIN32)
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#endif
+
 #include <algorithm>
 #include <assert.h>
 #include <fstream>
 #include <functional>
+#include <map>
 #include <set>
 #include <sstream>
 #include <string>
@@ -60,5 +67,7 @@
 
 #include "OcTypes.h"
 #include "OcRxObject.h"
+
+#include "../OcConfig.h"
 
 #endif // OcCommon_h__

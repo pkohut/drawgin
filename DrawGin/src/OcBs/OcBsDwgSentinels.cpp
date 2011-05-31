@@ -28,7 +28,6 @@
 **
 ****************************************************************************/
 
-//#include "stdafx.h"
 #include "OcCommon.h"
 //#include "../Oc/OcTypes.h"
 //#include "OcBsTypes.h"

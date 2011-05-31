@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <fstream>
 #include <functional>
+#include <map>
 #include <set>
 #include <sstream>
 #include <string>

@@ -28,7 +28,6 @@
 **
 ****************************************************************************/
 
-//#include "stdafx.h"
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcTypes.h"
@@ -140,7 +139,6 @@ OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
     }
     VLOG(4) << "*** Finished reading file header ***";
 
-
     return OcApp::eOk;
 }
 
@@ -156,7 +154,7 @@ const OcBsDwgFileHeaderSection& OcBsDwgFileHeader::Record(int nRecord) const
 }
 
 DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgFileHeader & hdr)
-{
+{    
     ASSERT_ARCHIVE_NOT_LOADING(in);
     // version ID, 3.2.1
     hdr.m_dwgVersion = hdr.DecodeVersionData(in);
