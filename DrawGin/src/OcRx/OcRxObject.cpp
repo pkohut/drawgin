@@ -46,7 +46,7 @@
 BEGIN_OCTAVARIUM_NS
 
 
-#if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
+#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
 std::set<OcRxObject *> *OcRxObject::m_debug_LivingObjects = NULL;
 #endif
 
@@ -58,7 +58,7 @@ OcRxObject::~OcRxObject(void)
             << "- illegal use of the 'delete' operator on an object.h Use OcPtr<> instead.\n"
             << "- explicit call to Object::incReference().\n\n";
 
-#if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
+#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
     DebugLivingObjects()->erase(this);
 #endif
 }
@@ -69,7 +69,7 @@ void OcRxObject::ShutDown(void)
     OcRxObject::m_debug_LivingObjects->clear();
 #endif
 
-#if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
+#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
     DLOG_IF(ERROR, DebugLivingObjects()->size())
             << "m_debug_LivingObject still has "
             << DebugLivingObjects()->size() << " live items.\n";

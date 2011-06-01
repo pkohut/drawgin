@@ -24,6 +24,7 @@ ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
 
 # Set the relative path to the source and header directories
 # for this library (these are private to the library)
+set (OCAP_DIR OcAp)
 set (OCBS_DIR OcBs)
 set (OCDB_DIR OcDb)
 set (OCGE_DIR OcGe)
@@ -39,7 +40,9 @@ string(REGEX REPLACE "/OcCommon.h$" "" HEADERS_DIR ${HEADERS_DIR})
 # in the MSVC IDE
 set(PUBLIC_HEADERS
 	${HEADERS_DIR}/ClassMacros.h
+	${HEADERS_DIR}/OcApApplication.h
 	${HEADERS_DIR}/OcCommon.h
+	${HEADERS_DIR}/OcConfig.h
 	${HEADERS_DIR}/OcDbDatabase.h
 	${HEADERS_DIR}/OcDbDwgVersion.h
 	${HEADERS_DIR}/OcDbEntity.h
@@ -50,9 +53,16 @@ set(PUBLIC_HEADERS
 	${HEADERS_DIR}/OcError.h
 	${HEADERS_DIR}/OcGePoint2D.h
 	${HEADERS_DIR}/OcGePoint3D.h
+	${HEADERS_DIR}/OcRxClass.h
 	${HEADERS_DIR}/OcRxObject.h
 	${HEADERS_DIR}/OcTypes.h
 	${HEADERS_DIR}/wchar_logging.h
+)
+
+# Private files in the OcAp directory. Will also be
+# used for the group filter OcAp in MSVC IDE
+set (OCAP_FILES
+	${OCAP_DIR}/OcApApplication.cpp
 )
 
 # Private files in the OcBs directory. Will also be
@@ -82,10 +92,11 @@ set (OCDB_FILES
 	${OCDB_DIR}/OcDbClass.h
 	${OCDB_DIR}/OcDbClasses.cpp
 	${OCDB_DIR}/OcDbClasses.h
-	${OCDB_DIR}/OcDbDatabase.cpp
-	${OCDB_DIR}/OcDbDwgVersion.cpp
+	${OCDB_DIR}/OcDbClassFactory.h
+	${OCDB_DIR}/OcDbDatabase.cpp	
 	${OCDB_DIR}/OcDbDwgObjectMap.cpp
 	${OCDB_DIR}/OcDbDwgObjectMap.h
+	${OCDB_DIR}/OcDbDwgVersion.cpp
 	${OCDB_DIR}/OcDbEntity.cpp
 	${OCDB_DIR}/OcDbHardOwnershipId.cpp
 	${OCDB_DIR}/OcDbHeaderVars.cpp
@@ -104,11 +115,13 @@ set (OCGE_FILES
 # Private files in the OcRx directory. Will also be
 # used for the group filter OcRx in MSVC IDE
 set (OCRX_FILES
+	${OCRX_DIR}/OcRxClass.cpp
 	${OCRX_DIR}/OcRxObject.cpp
 )
 
 # Add IDE file group filters
 source_group(PublicHeaders FILES ${PUBLIC_HEADERS})
+source_group(OcAp          FILES ${OCAP_FILES})
 source_group(OcBs          FILES ${OCBS_FILES})
 source_group(OcDb          FILES ${OCDB_FILES})
 source_group(OcGe          FILES ${OCGE_FILES})
@@ -128,6 +141,7 @@ endif(MSVC AND USE_PRECOMPILED_HEADER)
 
 add_library(libDrawGin
 		${PUBLIC_HEADERS}
+		${OCAP_FILES}
 		${OCBS_FILES}
 		${OCDB_FILES}
 		${OCGE_FILES}

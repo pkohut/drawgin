@@ -33,6 +33,7 @@
 
 #include <boost/intrusive_ptr.hpp>
 #include "ClassMacros.h"
+#include "OcConfig.h"
 
 BEGIN_OCTAVARIUM_NS
 class OcRxObject;
@@ -55,14 +56,14 @@ class OcRxObject
 public:
     OcRxObject() : m_nReferences(0), m_bAutomaticDelete(true) {
         INIT_OBJECT_NAME_FOR_DEBUG();
-#if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
+#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
         DebugLivingObjects()->insert(this);
 #endif
     }
     OcRxObject(const OcRxObject & other)
         : m_sObjectName(other.m_sObjectName),
           m_nReferences(0), m_bAutomaticDelete(true) {
-#if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
+#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
         DebugLivingObjects()->insert(this);
 #endif
     }
@@ -89,7 +90,7 @@ public:
     }
     static void ShutDown(void);
 
-#if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
+#if defined(OC_DEBUG_LIVING_OBJECTS)// && !defined(NDEBUG)
 private:
     static std::set< OcRxObject* >* m_debug_LivingObjects;
 public:

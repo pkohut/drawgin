@@ -28,6 +28,8 @@
 **
 ****************************************************************************/
 
+#include <boost/shared_ptr.hpp>
+
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcDbDwgVersion.h"
@@ -60,6 +62,7 @@ OcDbDatabase::OcDbDatabase(void)
 
 OcDbDatabase::~OcDbDatabase(void)
 {
+
 }
 
 OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
@@ -155,6 +158,5 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
     }
     return OcApp::eOk;
 }
-
 
 END_OCTAVARIUM_NS

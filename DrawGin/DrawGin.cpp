@@ -36,9 +36,13 @@
 
 #include "OcCommon.h"
 #include "OcError.h"
-#include "OcRxObject.h"
-#include "OcDbDatabase.h"
 #include "OcDbSmartPtrs.h"
+#include "OcRxObject.h"
+
+#include "OcDbDatabase.h"
+#include "OcApApplication.h"
+
+
 
 
 using namespace octavarium;
@@ -165,6 +169,8 @@ void ProcessDrawing(const string_t & filename)
     OcDbDatabasePtr pDb = new OcDbDatabase;
     OcApp::ErrorStatus es = pDb->Open(filename);
     LOG_IF(ERROR, es != OcApp::eOk) << "Error processing drawing.";
+//    app.SetWorkingDatabase(pDb);
+    Application()->SetWorkingDatabase(pDb);
 }
 
 int main(int argc, char* argv[])
@@ -172,6 +178,9 @@ int main(int argc, char* argv[])
     InitGoogleLogging(argv[0]);
 
     try {
+        // Must create the singleton object of OcApApplicationPtr
+        OcApApplicationPtr app(OcApApplication::Create());
+
         string_t filename;
         po::options_description desc("Allowed options");
         if(SetProgramOptionsDesc(desc)) {
@@ -210,7 +219,6 @@ int main(int argc, char* argv[])
         LOG(INFO) << "Begin decoding file: " << filename;
         ProcessDrawing(filename);
 
-        OcRxObject::ShutDown();
     } catch(exception & e) {
         cerr << e.what();
         return 1;
@@ -219,7 +227,13 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    // In debug mode and with OC_DEBUG_LIVING_OBJECTS defined, let
+    // OcRxObject do final object check of managed objects to ensure
+    // they have been released property.
+    ShutdownApplication();
+
 #if defined(_WIN32)
+    // Check for memory leaks in debug builds.
     _CrtDumpMemoryLeaks();
 #endif
     return 0;

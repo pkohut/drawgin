@@ -48,7 +48,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set (PROJECT_HEADER_FILES
-	OcConfig.h
 	stdafx.h
 	targetver.h
 )

@@ -28,23 +28,35 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbSmartPtrs_h__
-#define OcDbSmartPtrs_h__
+#ifndef OcApApplication_h__
+#define OcApApplication_h__
 
 BEGIN_OCTAVARIUM_NS
 
-class OcApApplication;
-class OcRxObject;
-class OcDbObject;
+OcApApplicationPtr Application(void);
+void ShutdownApplication(void);
+
 class OcDbDatabase;
 
-//typedef OcPtr<OcRxObject> OcRxObjectPtr;
-//typedef OcPtr<OcDbDatabase> OcDbDatabasePtr;
-typedef OcPtr<OcApApplication>::value_type OcApApplicationPtr;
-typedef OcPtr<OcRxObject>::value_type OcRxObjectPtr;
-typedef OcPtr<OcDbObject>::value_type OcDbObjectPtr;
-typedef OcPtr<OcDbDatabase>::value_type OcDbDatabasePtr;
+class OcApApplication : public OcRxObject
+{
+    OC_DECLARE_CLASS(OcApApplication, OcRxObject);
+protected:
+    OcApApplication(void);
+public:
+
+    virtual ~OcApApplication(void);
+
+    static OcApApplicationPtr Create(void);
+
+    OcDbDatabasePtr WorkingDatabase(void);
+    void SetWorkingDatabase(OcDbDatabasePtr database);
+
+private:
+    OcDbDatabasePtr m_database;
+
+};
 
 END_OCTAVARIUM_NS
 
-#endif // OcDbSmartPtrs_h__
+#endif // OcApApplication_h__

@@ -44,10 +44,4 @@
 #include <tchar.h>
 #endif
 
-#include "OcConfig.h"
-
-
-
-
-
 #endif // stdafx_h__

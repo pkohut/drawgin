@@ -68,6 +68,6 @@
 #include "OcTypes.h"
 #include "OcRxObject.h"
 
-#include "../OcConfig.h"
+#include "OcConfig.h"
 
 #endif // OcCommon_h__
