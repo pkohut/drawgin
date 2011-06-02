@@ -222,24 +222,6 @@ int main(int argc, char* argv[])
         OcDbEntity ent;
         OcRxClass rxClass;
 
-        int nValue = 0;
-        OcRxObjectPtr obj;
-//        obj = OcApApplication::NewRxClass(L"OcRxObject");
-//        nValue = obj->Value();
-
-        obj = OcApApplication::NewRxClass(L"OcRxClass");
-        nValue = obj->Value();
-
-        obj = OcApApplication::NewRxClass(L"OcDbDatabase");
-        nValue = obj->Value();
-
-        obj = OcApApplication::NewRxClass(L"OcDbEntity");
-        nValue = obj->Value();
-
-        obj = OcApApplication::NewRxClass(L"OcDbObject");
-        nValue = obj->Value();
-
-
         LOG(INFO) << "Begin decoding file: " << filename;
         ProcessDrawing(filename);
 

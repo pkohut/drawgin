@@ -45,8 +45,6 @@ public:
     OcDbDatabase(void);
     virtual ~OcDbDatabase(void);
 
-    int Value(void) { return 100; }
-
     OcApp::ErrorStatus Open(const string_t & filename);
 
 private:

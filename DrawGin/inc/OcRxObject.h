@@ -69,7 +69,6 @@ protected:
 #endif
     }
 public:
-    virtual int Value(void) { return 1; }
     virtual ~OcRxObject();
 
     static int RegisterRx(const std::wstring & className,

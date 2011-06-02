@@ -42,7 +42,6 @@ public:
     OcRxClass(void);
     virtual ~OcRxClass(void);
 
-    int Value(void) { return 0; }
 };
 
 END_OCTAVARIUM_NS

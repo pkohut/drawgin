@@ -111,11 +111,6 @@ OcApp::ErrorStatus OcDbObject::DecodeData(DwgInArchive& ar)
     return OcApp::eNotImplemented;
 }
 
-int OcDbObject::Value( void )
-{
-    return 27;
-}
-
 DwgInArchive& operator>>(DwgInArchive& ar, OcDbObject & data)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);

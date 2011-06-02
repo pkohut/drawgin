@@ -44,8 +44,6 @@ public:
     OcDbEntity(void);
     virtual ~OcDbEntity(void);
 
-    int Value(void) { return 44; }
-
 private:
     friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbEntity & data);
     virtual OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
