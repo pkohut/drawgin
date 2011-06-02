@@ -33,13 +33,14 @@
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbClasses {
-
+class OcDbClasses
+{
 public:
 	OcDbClasses();
 	virtual ~OcDbClasses();
 
     const OcDbClass & ClassAt(size_t index) const;
+    bool Has(const std::wstring & className) const;
 
 private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& in);

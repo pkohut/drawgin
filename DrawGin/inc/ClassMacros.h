@@ -37,12 +37,32 @@
 
 #define OC_DECLARE_BASE_CLASS(c) \
     public: \
-    virtual const char * ClassName(void) { return #c; }
+    virtual const wchar_t * ClassName(void) { return L ## #c; }
 
-#define OC_DECLARE_CLASS(c, d) \
+#define OC_DECLARE_BASE_RX_CLASS(c) \
+    OC_DECLARE_BASE_CLASS(c) \
+    static OcApClassFactory<c, c> m_factory;
+
+#define OC_DECLARE_CLASS(c, b) \
     OC_DECLARE_BASE_CLASS(c) \
     public: \
-    virtual const char * BaseClassName(void) { return #d; }
+    virtual const wchar_t * BaseClassName(void) { return L ## #b; }
+    
+
+#define OC_DECLARE_RX_CLASS(c, b) \
+    OC_DECLARE_CLASS(c, b) \
+    static OcApClassFactory<c, b> m_factory;
+
+
+#define OC_DEFINE_BASE_CLASS(b)
+
+#define OC_DEFINE_CLASS(c, b) \
+    OC_DEFINE_BASE_CLASS(c)
+
+
+#define OC_DEFINE_RX_CLASS(c, b) \
+    OcApClassFactory<c, b> c::m_factory(L ## # c);
+
 
 #ifndef NDEBUG
 #define INIT_OBJECT_NAME_FOR_DEBUG() \

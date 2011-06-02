@@ -39,11 +39,13 @@ class DwgInArchive;
 
 class OcDbDatabase : public OcRxObject
 {
-    OC_DECLARE_CLASS(OcDbDatabase, OcRxObject);
+    OC_DECLARE_RX_CLASS(OcDbDatabase, OcRxObject);
 public:
 
     OcDbDatabase(void);
     virtual ~OcDbDatabase(void);
+
+    int Value(void) { return 100; }
 
     OcApp::ErrorStatus Open(const string_t & filename);
 

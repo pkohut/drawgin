@@ -41,6 +41,7 @@ string(REGEX REPLACE "/OcCommon.h$" "" HEADERS_DIR ${HEADERS_DIR})
 set(PUBLIC_HEADERS
 	${HEADERS_DIR}/ClassMacros.h
 	${HEADERS_DIR}/OcApApplication.h
+	${HEADERS_DIR}/OcApClassFactory.h
 	${HEADERS_DIR}/OcCommon.h
 	${HEADERS_DIR}/OcConfig.h
 	${HEADERS_DIR}/OcDbDatabase.h
@@ -63,6 +64,7 @@ set(PUBLIC_HEADERS
 # used for the group filter OcAp in MSVC IDE
 set (OCAP_FILES
 	${OCAP_DIR}/OcApApplication.cpp
+	${OCAP_DIR}/OcApClassFactory.cpp
 )
 
 # Private files in the OcBs directory. Will also be
@@ -91,8 +93,7 @@ set (OCDB_FILES
 	${OCDB_DIR}/OcDbClass.cpp
 	${OCDB_DIR}/OcDbClass.h
 	${OCDB_DIR}/OcDbClasses.cpp
-	${OCDB_DIR}/OcDbClasses.h
-	${OCDB_DIR}/OcDbClassFactory.h
+	${OCDB_DIR}/OcDbClasses.h	
 	${OCDB_DIR}/OcDbDatabase.cpp	
 	${OCDB_DIR}/OcDbDwgObjectMap.cpp
 	${OCDB_DIR}/OcDbDwgObjectMap.h

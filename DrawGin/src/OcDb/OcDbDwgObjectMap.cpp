@@ -151,8 +151,6 @@ OcDbDwgObjectMap::~OcDbDwgObjectMap(void)
 {
 }
 
-
-
 OcApp::ErrorStatus OcDbDwgObjectMap::DecodeData(DwgInArchive& ar)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);
@@ -172,6 +170,7 @@ OcApp::ErrorStatus OcDbDwgObjectMap::DecodeData(DwgInArchive& ar)
 
     int32_t lastHandle = 0, lastOffset = 0;
 
+    // 6/2/2011 - seems to work.
     // Until I've seen some files which have more than one
     // section, not really sure how the data is coded.
     // Does lastOffset need to be reset to 0 for each section?
@@ -195,10 +194,11 @@ OcApp::ErrorStatus OcDbDwgObjectMap::DecodeData(DwgInArchive& ar)
             break;
         }
 
-        // Until I've seen some files which have more than one
-        // section, not really sure how the data is coded.
-        // Does lastOffset need to be reset to 0 for each section?
-        CHECK(sectionNumber == 0) << "Check file offsets for object addresses";
+        //// 6/2/2011 - seems to work, commented out the check.
+        //// Until I've seen some files which have more than one
+        //// section, not really sure how the data is coded.
+        //// Does lastOffset need to be reset to 0 for each section?
+        // CHECK(sectionNumber == 0) << "Check file offsets for object addresses";
 
         // endSection includes the 2 byte crc for this section, so
         // exclude 2 bytes when doing the loop.
@@ -254,10 +254,11 @@ OcApp::ErrorStatus OcDbDwgObjectMap::DecodeObjects(DwgInArchive& ar,
             LOG(ERROR) << "Object type outside of known range";
             LOG(ERROR) << "Sub type = " << hex << showbase << objType;
             return OcApp::eOutsideOfClassMapRange;
-        } else {            
+        } else {
             if(objType >= 500) {
                 const OcDbClass & className = classes.ClassAt(objType - 500);
-                VLOG(4) << "Classname = " << WStringToString(className.CppClassName());
+                VLOG(4) << "Classname = " <<
+                        WStringToString(className.CppClassName());
             } else {
                 SUB_CLASS_ID subClass = subClass = subClasses.at(objType);
                 VLOG(4) << "Sub class name = " << subClass.subClassName;

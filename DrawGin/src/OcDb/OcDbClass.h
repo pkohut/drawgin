@@ -33,8 +33,8 @@
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbClass {
-
+class OcDbClass
+{
 public:
 	OcDbClass();
 	virtual ~OcDbClass();

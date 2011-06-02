@@ -55,6 +55,9 @@
 
 BEGIN_OCTAVARIUM_NS
 
+//OcApClassFactory<OcDbDatabase, OcRxObject> OcDbDatabase::m_factory(L"OcDbDatabase");
+OC_DEFINE_RX_CLASS(OcDbDatabase, OcRxObject)
+
 OcDbDatabase::OcDbDatabase(void)
 {
     INIT_OBJECT_NAME_FOR_DEBUG();
@@ -133,6 +136,23 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             LOG(ERROR) << "Error processing classes section";
             return ar.Error();
         }
+
+
+        // The AcRxObject base type should not be in the drawing,
+        // but need to know for sure. Log these other types too, to
+        // see if they ever show up. Don't think they will.
+        bool bFound = false;
+        CHECK(!dwgClasses.Has(L"AcRxObject")) <<
+            "Found suspicious class AcRxObject";
+        CHECK(!dwgClasses.Has(L"AcRxClass")) <<
+            "Found suspicious class AcRxClass";
+        CHECK(!dwgClasses.Has(L"AcDbObject")) <<
+            "Found suspicious class AcDbObject";
+        CHECK(!dwgClasses.Has(L"AcObjectId")) <<
+            "Found suspicious class AcObjectId";
+        CHECK(!dwgClasses.Has(L"AcDbHandle")) <<
+            "Found suspicious class AcDbHandle";
+
 
         int32_t filePos = ar.FilePosition();
 

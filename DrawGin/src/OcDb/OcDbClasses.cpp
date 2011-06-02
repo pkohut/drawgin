@@ -131,4 +131,14 @@ const OcDbClass & OcDbClasses::ClassAt(size_t index) const
     return m_classes.at(index);
 }
 
+bool OcDbClasses::Has( const std::wstring & className ) const
+{
+    BOOST_FOREACH(const OcDbClass & obj, m_classes) {
+        if(obj.CppClassName() == className)
+            return true;
+    }
+    return false;
+}
+
+
 END_OCTAVARIUM_NS

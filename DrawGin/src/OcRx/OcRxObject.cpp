@@ -39,7 +39,6 @@
 /*  All rights reserved.                                                  */
 /**************************************************************************/
 
-
 #include "OcCommon.h"
 #include "OcRxObject.h"
 
@@ -49,6 +48,10 @@ BEGIN_OCTAVARIUM_NS
 #if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
 std::set<OcRxObject *> *OcRxObject::m_debug_LivingObjects = NULL;
 #endif
+
+//OcApClassFactory<OcRxObject, OcRxObject> OcRxObject::m_factory(L"OcRxObject");
+//OC_DEFINE_RX_CLASS(OcRxObject, OcRxObject)
+OC_DEFINE_BASE_CLASS(OcRxObject)
 
 OcRxObject::~OcRxObject(void)
 {
@@ -63,11 +66,18 @@ OcRxObject::~OcRxObject(void)
 #endif
 }
 
-void OcRxObject::ShutDown(void)
+int OcRxObject::RegisterRx(const std::wstring & className,
+                           OcRxObject::BaseClassFactory * pCreator)
 {
-#if defined(OC_DEBUG_LIVING_OBJECTS)
-    OcRxObject::m_debug_LivingObjects->clear();
-#endif
+    return __Register_Rx_Class__(className, pCreator);
+}
+
+
+void OcRxObject::ShutdownObjectTracking(void)
+{
+//#if defined(OC_DEBUG_LIVING_OBJECTS)
+//    OcRxObject::m_debug_LivingObjects->clear();
+//#endif
 
 #if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
     DLOG_IF(ERROR, DebugLivingObjects()->size())

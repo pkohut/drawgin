@@ -30,11 +30,10 @@
 
 #ifndef OcApApplication_h__
 #define OcApApplication_h__
-
 BEGIN_OCTAVARIUM_NS
 
 OcApApplicationPtr Application(void);
-void ShutdownApplication(void);
+//void ShutdownApplication(void);
 
 class OcDbDatabase;
 
@@ -47,13 +46,55 @@ public:
 
     virtual ~OcApApplication(void);
 
-    static OcApApplicationPtr Create(void);
-
     OcDbDatabasePtr WorkingDatabase(void);
     void SetWorkingDatabase(OcDbDatabasePtr database);
 
+    // Factory class to create the singleton of this class.
+    // m_pApplication points back to this class, so do not manually
+    // delete it, just set it to NULL in the destructor.
+    static OcApApplicationPtr Create(void);
+
+    // Returns a smart pointer of the single OcApApplication raw pointer.
+    // This is the preferred method to get this instance.
+    // Note: although it would be tempting to check if if m_pApplication
+    // is NULL and then return a new pointer, don't do it.
+    // The proper way to create the singleton is by calling the
+    // OcApApplication::Create function with the application.
+    static OcApApplicationPtr Application(void);
+
+    // Function only has purpose in debug mode and with
+    // OC_DEBUG_LIVING_OBJECTS defined.
+    // Let OcRxObject do final object check of managed objects to ensure
+    // they have been released property.
+    // This function should be called right before the application exits.
+    // Not calling it will produce memory leaks.
+    // If OC_DEBUG_LIVING_OBJECTS is not defined, then no need to call
+    // the function.
+    static void Shutdown(void);
+
+    static int RegisterRxClass(const std::wstring & className,
+                               OcRxObject::BaseClassFactory * pCreator);
+
+    // Creates an instance of a class based on the class name. The name
+    // must already be registered with RegisterRxClass.
+    // Return NULL if the class is not found.
+    // Example usage to create a class based on the class name
+    // OcRxObjectPtr obj = OcApApplication::NewRxClass(L"OcDbObject");
+    static OcRxObjectPtr NewRxClass(const std::wstring & className);
+
 private:
     OcDbDatabasePtr m_database;
+    typedef std::map<std::wstring, OcRxObject::BaseClassFactory *> RegClasses;
+    typedef std::pair<std::wstring, OcRxObject::BaseClassFactory *> RegClass;
+    static boost::shared_ptr<RegClasses> m_classes;
+
+    // A singleton object, managed by OcApApplication and created by
+    // the OcApApplication::Create class factory. The object simply
+    // points to the single instance of this class. Functions should
+    // never return the raw pointer, also wrap it in a smart pointer.
+    // In the destructor simply set to the pointer to NULL, never
+    // delete it.
+    static OcApApplication * m_pApplication;
 
 };
 

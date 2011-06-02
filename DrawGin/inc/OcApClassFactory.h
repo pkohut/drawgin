@@ -28,22 +28,53 @@
 **
 ****************************************************************************/
 
-#ifndef OcRxClass_h__
-#define OcRxClass_h__
+#ifndef OcApClassFactory_h__
+#define OcApClassFactory_h__
 
 BEGIN_OCTAVARIUM_NS
 
 class OcRxObject;
 
-class OcRxClass : public OcRxObject
-{
-    OC_DECLARE_RX_CLASS(OcRxClass, OcRxObject);
-public:
-    OcRxClass(void);
-    virtual ~OcRxClass(void);
+// See OcApApplication::NewRxClass for an example of how to
+// create an instance of a class based on the class name
 
-    int Value(void) { return 0; }
+template<class RootBase>
+class OcApClassFactoryBase
+{
+public:
+    OcApClassFactoryBase(const wchar_t * key) {
+        // register the key name and the factory
+        RootBase::RegisterRx(key, this);
+    }
+    virtual ~OcApClassFactoryBase() {}
+    virtual RootBase * createInstance() = 0;
 };
 
+template<class Derived, class RootBase>
+class OcApClassFactory : public OcApClassFactoryBase<RootBase>
+{
+public:
+    OcApClassFactory(const wchar_t * key)
+        : OcApClassFactoryBase(key)
+    {}
+    virtual ~OcApClassFactory() {}
+
+    // Create an instance of the object, returning its root base
+    virtual RootBase * createInstance() {
+        return new Derived;
+    }
+};
+
+
+// Helper function so the OcRx based classes can self register
+// themselves. The function is not meant to be used directly
+// by application code because the second parameter is not
+// type safe.
+// For normal application code, use the type safe function
+// OcApApplication::RegisterRxClass instead.
+int __Register_Rx_Class__(const std::wstring & className,
+                          void * pCreator);
+
 END_OCTAVARIUM_NS
-#endif // OcRxClass_h__
+
+#endif // OcApClassFactory_h__

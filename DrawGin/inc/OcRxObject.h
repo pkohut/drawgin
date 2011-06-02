@@ -31,9 +31,10 @@
 #ifndef OcRxObject_h__
 #define OcRxObject_h__
 
-#include <boost/intrusive_ptr.hpp>
 #include "ClassMacros.h"
 #include "OcConfig.h"
+
+#include "OcApClassFactory.h"
 
 BEGIN_OCTAVARIUM_NS
 class OcRxObject;
@@ -47,13 +48,13 @@ void intrusive_ptr_release(octavarium::OcRxObject * p);
 
 BEGIN_OCTAVARIUM_NS
 
-class OcRxObject;
-//    typedef OcPtr<Oc::OcRxObject> OcRxObjectPtr;
-
 class OcRxObject
 {
     OC_DECLARE_BASE_CLASS(OcRxObject);
 public:
+    typedef OcApClassFactoryBase<OcRxObject> BaseClassFactory;
+
+protected:
     OcRxObject() : m_nReferences(0), m_bAutomaticDelete(true) {
         INIT_OBJECT_NAME_FOR_DEBUG();
 #if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
@@ -67,18 +68,22 @@ public:
         DebugLivingObjects()->insert(this);
 #endif
     }
-
+public:
+    virtual int Value(void) { return 1; }
     virtual ~OcRxObject();
+
+    static int RegisterRx(const std::wstring & className,
+        OcRxObject::BaseClassFactory * pCreator);
 
     OcRxObject & operator=(const OcRxObject & other) {
         m_sObjectName = other.m_sObjectName;
         return *this;
     }
 
-    const std::string & ObjectName(void) const {
+    const std::wstring & ObjectName(void) const {
         return m_sObjectName;
     }
-    void SetObjectName(const std::string & name) {
+    void SetObjectName(const std::wstring & name) {
         m_sObjectName = name;
     }
 
@@ -88,9 +93,9 @@ public:
     bool AutomaticDelete(void) {
         return m_bAutomaticDelete;
     }
-    static void ShutDown(void);
+    static void ShutdownObjectTracking(void);
 
-#if defined(OC_DEBUG_LIVING_OBJECTS)// && !defined(NDEBUG)
+#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
 private:
     static std::set< OcRxObject* >* m_debug_LivingObjects;
 public:
@@ -103,7 +108,7 @@ public:
 #endif
 
 protected:
-    std::string m_sObjectName;
+    std::wstring m_sObjectName;
 
 private:
     long    m_nReferences;

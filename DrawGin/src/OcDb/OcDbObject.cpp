@@ -42,6 +42,9 @@
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
+//OcApClassFactory<OcDbObject, OcRxObject> OcDbObject::m_factory(L"OcDbObject");
+OC_DEFINE_RX_CLASS(OcDbObject, OcRxObject)
+
 OcDbObject::OcDbObject(void)
 {
     INIT_OBJECT_NAME_FOR_DEBUG();
@@ -106,6 +109,11 @@ OcApp::ErrorStatus OcDbObject::DecodeData(DwgInArchive& ar)
     uint16_t crc = 0;
 
     return OcApp::eNotImplemented;
+}
+
+int OcDbObject::Value( void )
+{
+    return 27;
 }
 
 DwgInArchive& operator>>(DwgInArchive& ar, OcDbObject & data)

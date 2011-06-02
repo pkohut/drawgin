@@ -38,10 +38,14 @@ class DwgInArchive;
 
 class OcDbObject : public OcRxObject
 {
-    OC_DECLARE_CLASS(OcDbObject, OcRxObject);
+    OC_DECLARE_RX_CLASS(OcDbObject, OcRxObject);
 public:
     OcDbObject(void);
     virtual ~OcDbObject(void);
+    int Value(void);
+
+    //static OcApClassFactory<OcDbObject, OcRxObject> m_factory;
+    //static OcApp::ErrorStatus RegisterRx(void);
 
 private:
     friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbObject & data);

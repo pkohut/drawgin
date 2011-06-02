@@ -28,22 +28,25 @@
 **
 ****************************************************************************/
 
-#ifndef OcRxClass_h__
-#define OcRxClass_h__
+#include "OcCommon.h"
+#include "OcError.h"
+#include "OcRxObject.h"
+#include "OcDbSmartPtrs.h"
+#include "OcApClassFactory.h"
+#include "OcApApplication.h"
+
 
 BEGIN_OCTAVARIUM_NS
 
-class OcRxObject;
-
-class OcRxClass : public OcRxObject
+// Helper function so the OcRx based classes can self register
+// themselves. The function is not meant to be used directly
+// by application code because the second parameter is not
+// type safe.
+// For normal application code, use the type safe function
+// OcApApplication::RegisterRxClass instead.
+int octavarium::__Register_Rx_Class__(const std::wstring & className, void * pCreator)
 {
-    OC_DECLARE_RX_CLASS(OcRxClass, OcRxObject);
-public:
-    OcRxClass(void);
-    virtual ~OcRxClass(void);
-
-    int Value(void) { return 0; }
-};
+    return OcApApplication::RegisterRxClass(className, (OcRxObject::BaseClassFactory*) pCreator);
+}
 
 END_OCTAVARIUM_NS
-#endif // OcRxClass_h__

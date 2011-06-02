@@ -49,6 +49,10 @@
 #include <utility>
 #include <vector>
 
+#include <boost/foreach.hpp>
+#include <boost/intrusive_ptr.hpp>
+#include <boost/shared_ptr.hpp>
+
 #ifdef NDEBUG
 //#define GOOGLE_STRIP_LOG 1
 #endif

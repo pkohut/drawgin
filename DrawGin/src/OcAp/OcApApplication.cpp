@@ -40,31 +40,15 @@
 
 BEGIN_OCTAVARIUM_NS
 
-// A singleton object, managed by OcApApplication and created by
-// the OcApApplication::Create class factory. The object is under
-// control a smart pointer and should never be deleted manually.
-// Simply NULL g_pOcApplication in OcApApplication's destructor.
-OcApApplication * g_pOcApplication = NULL;
+OC_DEFINE_CLASS(OcApApplication, OcRxObject)
 
-// Returns a smart pointer of the single OcApApplication instance.
-// This is the preferred method to get the instance.
+OcApApplication * OcApApplication::m_pApplication = NULL;
+boost::shared_ptr<OcApApplication::RegClasses >OcApApplication::m_classes;
+
+
 OcApApplicationPtr Application(void)
 {
-    DLOG_IF(ERROR, !g_pOcApplication) << "OcApApplication instance is NULL.";
-    return g_pOcApplication;
-}
-
-// Function only has purpose in debug mode and with
-// OC_DEBUG_LIVING_OBJECTS defined.
-// Let OcRxObject do final object check of managed objects to ensure
-// they have been released property.
-// This function should be called right before the application exits.
-// Not calling it will produce memory leaks.
-// If OC_DEBUG_LIVING_OBJECTS is not defined, then no need to call
-// the function.
-void ShutdownApplication(void)
-{
-    OcRxObject::ShutDown();
+    return OcApApplication::Application();
 }
 
 OcApApplication::OcApApplication(void)
@@ -74,8 +58,9 @@ OcApApplication::OcApApplication(void)
 
 OcApApplication::~OcApApplication(void)
 {
-    // Don't delete g_pOcApplication, just set it to NULL.
-    g_pOcApplication = NULL;
+    // Do not delete m_pApplication, just set it to NULL.
+    m_pApplication = NULL;
+    m_classes.reset();
 }
 
 OcDbDatabasePtr OcApApplication::WorkingDatabase(void)
@@ -88,15 +73,44 @@ void OcApApplication::SetWorkingDatabase(OcDbDatabasePtr database)
     m_database = database;
 }
 
-// Factory class. Returns a shared pointer to the singleton
-// instance of g_pOcApplication.
-// Do not manually delete g_pOcApplication.
 octavarium::OcApApplicationPtr OcApApplication::Create(void)
 {
-    if(!g_pOcApplication) {
-        g_pOcApplication = new OcApApplication;
+    if(!m_pApplication) {
+        m_pApplication = new OcApApplication;
     }
-    return g_pOcApplication;
+    return m_pApplication;
+}
+
+octavarium::OcApApplicationPtr OcApApplication::Application(void)
+{
+    // Don't call Create if m_pApplication is NULL, it returns a smart pointer
+    // and will go out of scope when this function ends.
+    DLOG_IF(ERROR, !m_pApplication) << "OcApApplication instance is NULL.";
+    return m_pApplication;
+}
+
+void OcApApplication::Shutdown(void)
+{
+    OcRxObject::ShutdownObjectTracking();
+}
+
+int OcApApplication::RegisterRxClass(const std::wstring & className, OcRxObject::BaseClassFactory * pCreator)
+{
+    if(!m_classes)
+        m_classes.reset(new OcApApplication::RegClasses);
+    m_classes->insert(OcApApplication::RegClass(className, pCreator));
+    return 0;
+}
+
+octavarium::OcRxObjectPtr OcApApplication::NewRxClass(const std::wstring & className)
+{
+    if(m_classes->find(className) != (*m_classes).end()) {
+        return (*m_classes)[className]->createInstance();
+//        OcRxObject::BaseClassFactory * f = (*m_classes)[className];
+//        return f->createInstance();
+
+    }
+    return NULL;
 }
 
 END_OCTAVARIUM_NS
