@@ -39,7 +39,7 @@ class OcDbDatabase;
 
 class OcApApplication : public OcRxObject
 {
-    OC_DECLARE_CLASS(OcApApplication, OcRxObject);
+//    OC_DECLARE_CLASS(OcApApplication, OcRxObject);
 protected:
     OcApApplication(void);
 public:
@@ -72,21 +72,26 @@ public:
     // the function.
     static void Shutdown(void);
 
-    static int RegisterRxClass(const std::wstring & className,
-                               OcRxObject::BaseClassFactory * pCreator);
+    static OcApp::ErrorStatus RegisterRxClass(const std::string & className,
+            BaseClassFactory * pCreator);
 
     // Creates an instance of a class based on the class name. The name
     // must already be registered with RegisterRxClass.
     // Return NULL if the class is not found.
     // Example usage to create a class based on the class name
     // OcRxObjectPtr obj = OcApApplication::NewRxClass(L"OcDbObject");
-    static OcRxObjectPtr NewRxClass(const std::wstring & className);
+    static OcRxObjectPtr
+    OcApApplication::NewRxClass(const std::string & className);
 
 private:
     OcDbDatabasePtr m_database;
-    typedef std::map<std::wstring, OcRxObject::BaseClassFactory *> RegClasses;
-    typedef std::pair<std::wstring, OcRxObject::BaseClassFactory *> RegClass;
-    static boost::shared_ptr<RegClasses> m_classes;
+    typedef std::map<std::string, OcRxObject::BaseClassFactory *> RegClasses;
+    typedef std::pair<std::string, OcRxObject::BaseClassFactory *> RegClass;
+
+    // Map to hold class names and the OcApClassFactoryBase associated with it.
+    // MS VS will false report that as a memory leak. See destructor
+    // for more info.
+    static RegClasses m_classes;
 
     // A singleton object, managed by OcApApplication and created by
     // the OcApApplication::Create class factory. The object simply

@@ -34,12 +34,10 @@
 
 BEGIN_OCTAVARIUM_NS
 
-//OcApClassFactory<OcRxClass, OcRxObject> OcRxClass::m_factory(L"OcRxClass");
-OC_DEFINE_RX_CLASS(OcRxClass, OcRxObject)
+OC_DEFINE_RX_CLASS(OcRxClass);
 
 OcRxClass::OcRxClass(void)
 {
-    INIT_OBJECT_NAME_FOR_DEBUG();
 }
 
 OcRxClass::~OcRxClass(void)

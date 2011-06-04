@@ -49,14 +49,10 @@ BEGIN_OCTAVARIUM_NS
 std::set<OcRxObject *> *OcRxObject::m_debug_LivingObjects = NULL;
 #endif
 
-//OcApClassFactory<OcRxObject, OcRxObject> OcRxObject::m_factory(L"OcRxObject");
-//OC_DEFINE_RX_CLASS(OcRxObject, OcRxObject)
-OC_DEFINE_BASE_CLASS(OcRxObject)
-
 OcRxObject::~OcRxObject(void)
 {
     DLOG_IF(ERROR, m_nReferences && !AutomaticDelete())
-            << "Object " << m_sObjectName << "is being deleted having still "
+            << "Object " << typeid(*this).name() << "is being deleted having still "
             << m_nReferences << "references. Possible causes:\n"
             << "- illegal use of the 'delete' operator on an object.h Use OcPtr<> instead.\n"
             << "- explicit call to Object::incReference().\n\n";
@@ -66,19 +62,8 @@ OcRxObject::~OcRxObject(void)
 #endif
 }
 
-int OcRxObject::RegisterRx(const std::wstring & className,
-                           OcRxObject::BaseClassFactory * pCreator)
-{
-    return __Register_Rx_Class__(className, pCreator);
-}
-
-
 void OcRxObject::ShutdownObjectTracking(void)
 {
-//#if defined(OC_DEBUG_LIVING_OBJECTS)
-//    OcRxObject::m_debug_LivingObjects->clear();
-//#endif
-
 #if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
     DLOG_IF(ERROR, DebugLivingObjects()->size())
             << "m_debug_LivingObject still has "
@@ -88,6 +73,11 @@ void OcRxObject::ShutdownObjectTracking(void)
     delete OcRxObject::m_debug_LivingObjects;
     OcRxObject::m_debug_LivingObjects = NULL;
 #endif
+}
+
+int OcRxObject::RegisterRx(const std::string & className, BaseClassFactory * pCreator)
+{
+    return __Register_Rx_Class__(className, pCreator);
 }
 
 END_OCTAVARIUM_NS

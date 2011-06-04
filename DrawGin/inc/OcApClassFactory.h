@@ -35,36 +35,28 @@ BEGIN_OCTAVARIUM_NS
 
 class OcRxObject;
 
-// See OcApApplication::NewRxClass for an example of how to
-// create an instance of a class based on the class name
-
-template<class RootBase>
 class OcApClassFactoryBase
 {
 public:
-    OcApClassFactoryBase(const wchar_t * key) {
-        // register the key name and the factory
-        RootBase::RegisterRx(key, this);
-    }
+    OcApClassFactoryBase(const char * key);
     virtual ~OcApClassFactoryBase() {}
-    virtual RootBase * createInstance() = 0;
+    virtual OcRxObject * createInstance() = 0;
 };
 
-template<class Derived, class RootBase>
-class OcApClassFactory : public OcApClassFactoryBase<RootBase>
+
+template<class T>
+class OcApClassFactory : OcApClassFactoryBase
 {
 public:
-    OcApClassFactory(const wchar_t * key)
+    OcApClassFactory(const char * key)
         : OcApClassFactoryBase(key)
     {}
     virtual ~OcApClassFactory() {}
 
-    // Create an instance of the object, returning its root base
-    virtual RootBase * createInstance() {
-        return new Derived;
+    virtual OcRxObject * createInstance() {
+        return new T;
     }
 };
-
 
 // Helper function so the OcRx based classes can self register
 // themselves. The function is not meant to be used directly
@@ -72,8 +64,7 @@ public:
 // type safe.
 // For normal application code, use the type safe function
 // OcApApplication::RegisterRxClass instead.
-int __Register_Rx_Class__(const std::wstring & className,
-                          void * pCreator);
+int __Register_Rx_Class__(const std::string & className, void * pCreator);
 
 END_OCTAVARIUM_NS
 

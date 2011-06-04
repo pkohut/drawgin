@@ -39,7 +39,7 @@ class DwgInArchive;
 
 class OcDbDatabase : public OcRxObject
 {
-    OC_DECLARE_RX_CLASS(OcDbDatabase, OcRxObject);
+    OC_DECLARE_RX_CLASS(OcDbDatabase);
 public:
 
     OcDbDatabase(void);

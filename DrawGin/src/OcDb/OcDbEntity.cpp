@@ -42,8 +42,7 @@
 
 BEGIN_OCTAVARIUM_NS
 
-//OcApClassFactory<OcDbEntity, OcRxObject> OcDbEntity::m_factory(L"OcDbEntity");
-OC_DEFINE_RX_CLASS(OcDbEntity, OcRxObject)
+OC_DEFINE_RX_CLASS(OcDbEntity);
 
 OcDbEntity::OcDbEntity(void)
 {

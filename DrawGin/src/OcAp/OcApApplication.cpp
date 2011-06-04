@@ -34,17 +34,15 @@
 #include "OcRxObject.h"
 #include "OcDbDatabase.h"
 
-
-
 #include "OcApApplication.h"
 
 BEGIN_OCTAVARIUM_NS
 
-OC_DEFINE_CLASS(OcApApplication, OcRxObject)
+OC_DEFINE_CLASS(OcApApplication);
 
 OcApApplication * OcApApplication::m_pApplication = NULL;
-boost::shared_ptr<OcApApplication::RegClasses >OcApApplication::m_classes;
-
+//boost::shared_ptr<OcApApplication::RegClasses>OcApApplication::m_classes;
+OcApApplication::RegClasses OcApApplication::m_classes;
 
 OcApApplicationPtr Application(void)
 {
@@ -53,14 +51,21 @@ OcApApplicationPtr Application(void)
 
 OcApApplication::OcApApplication(void)
 {
-    INIT_OBJECT_NAME_FOR_DEBUG();
 }
 
 OcApApplication::~OcApApplication(void)
 {
     // Do not delete m_pApplication, just set it to NULL.
     m_pApplication = NULL;
-    m_classes.reset();
+
+    // since m_classes is static clear it, otherwise VS will
+    // report each item as as a memory leak.
+    // Sadly, VS falsely reports the instance of m_classes itself
+    // as a memory leak.  If m_classes is a pointer and delete
+    // then VS does not report a memory leak, but then pointer
+    // dereferening needs to be done and that is ugly. For now
+    // just live with the false report.
+    m_classes.clear();
 }
 
 OcDbDatabasePtr OcApApplication::WorkingDatabase(void)
@@ -94,23 +99,21 @@ void OcApApplication::Shutdown(void)
     OcRxObject::ShutdownObjectTracking();
 }
 
-int OcApApplication::RegisterRxClass(const std::wstring & className, OcRxObject::BaseClassFactory * pCreator)
+OcApp::ErrorStatus
+OcApApplication::RegisterRxClass(const std::string & className,
+                                 BaseClassFactory * pCreator)
 {
-    if(!m_classes)
-        m_classes.reset(new OcApApplication::RegClasses);
-    m_classes->insert(OcApApplication::RegClass(className, pCreator));
-    return 0;
+    m_classes.insert(OcApApplication::RegClass(className, pCreator));
+    return OcApp::eOk;
 }
 
-octavarium::OcRxObjectPtr OcApApplication::NewRxClass(const std::wstring & className)
+octavarium::OcRxObjectPtr OcApApplication::NewRxClass(const std::string & className)
 {
-    if(m_classes->find(className) != (*m_classes).end()) {
-        return (*m_classes)[className]->createInstance();
-//        OcRxObject::BaseClassFactory * f = (*m_classes)[className];
-//        return f->createInstance();
-
+    if(m_classes.find(className) != m_classes.end()) {
+        return m_classes[className]->createInstance();
     }
     return NULL;
 }
+
 
 END_OCTAVARIUM_NS

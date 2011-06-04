@@ -46,7 +46,6 @@
 #include "../OcBs/DwgInArchive.h"
 #include "../OcBs/OcBsDwgFileHeader.h"
 #include "../OcBs/OcBsDwgPreviewImage.h"
-//#include "../OcBs/OcBsDwgObjectMap.h"
 
 #include "OcDbHeaderVars.h"
 #include "OcDbClass.h"
@@ -55,12 +54,10 @@
 
 BEGIN_OCTAVARIUM_NS
 
-//OcApClassFactory<OcDbDatabase, OcRxObject> OcDbDatabase::m_factory(L"OcDbDatabase");
-OC_DEFINE_RX_CLASS(OcDbDatabase, OcRxObject)
+OC_DEFINE_RX_CLASS(OcDbDatabase);
 
 OcDbDatabase::OcDbDatabase(void)
 {
-    INIT_OBJECT_NAME_FOR_DEBUG();
 }
 
 OcDbDatabase::~OcDbDatabase(void)
@@ -143,15 +140,15 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
         // see if they ever show up. Don't think they will.
         bool bFound = false;
         CHECK(!dwgClasses.Has(L"AcRxObject")) <<
-            "Found suspicious class AcRxObject";
+                                              "Found suspicious class AcRxObject";
         CHECK(!dwgClasses.Has(L"AcRxClass")) <<
-            "Found suspicious class AcRxClass";
+                                             "Found suspicious class AcRxClass";
         CHECK(!dwgClasses.Has(L"AcDbObject")) <<
-            "Found suspicious class AcDbObject";
+                                              "Found suspicious class AcDbObject";
         CHECK(!dwgClasses.Has(L"AcObjectId")) <<
-            "Found suspicious class AcObjectId";
+                                              "Found suspicious class AcObjectId";
         CHECK(!dwgClasses.Has(L"AcDbHandle")) <<
-            "Found suspicious class AcDbHandle";
+                                              "Found suspicious class AcDbHandle";
 
 
         int32_t filePos = ar.FilePosition();

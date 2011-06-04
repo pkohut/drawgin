@@ -42,12 +42,10 @@
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-//OcApClassFactory<OcDbObject, OcRxObject> OcDbObject::m_factory(L"OcDbObject");
-OC_DEFINE_RX_CLASS(OcDbObject, OcRxObject)
+OC_DEFINE_RX_CLASS(OcDbObject);
 
 OcDbObject::OcDbObject(void)
-{
-    INIT_OBJECT_NAME_FOR_DEBUG();
+{    
 }
 
 OcDbObject::~OcDbObject(void)

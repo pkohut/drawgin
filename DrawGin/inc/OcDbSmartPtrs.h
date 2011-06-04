@@ -37,13 +37,13 @@ class OcApApplication;
 class OcRxObject;
 class OcDbObject;
 class OcDbDatabase;
+class OcDbEntity;
 
-//typedef OcPtr<OcRxObject> OcRxObjectPtr;
-//typedef OcPtr<OcDbDatabase> OcDbDatabasePtr;
 typedef OcPtr<OcApApplication>::value_type OcApApplicationPtr;
 typedef OcPtr<OcRxObject>::value_type OcRxObjectPtr;
 typedef OcPtr<OcDbObject>::value_type OcDbObjectPtr;
 typedef OcPtr<OcDbDatabase>::value_type OcDbDatabasePtr;
+typedef OcPtr<OcDbEntity>::value_type OcDbEntityPtr;
 
 END_OCTAVARIUM_NS
 

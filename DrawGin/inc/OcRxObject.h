@@ -51,19 +51,14 @@ BEGIN_OCTAVARIUM_NS
 class OcRxObject
 {
     OC_DECLARE_BASE_CLASS(OcRxObject);
-public:
-    typedef OcApClassFactoryBase<OcRxObject> BaseClassFactory;
-
 protected:
     OcRxObject() : m_nReferences(0), m_bAutomaticDelete(true) {
-        INIT_OBJECT_NAME_FOR_DEBUG();
 #if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
         DebugLivingObjects()->insert(this);
 #endif
     }
     OcRxObject(const OcRxObject & other)
-        : m_sObjectName(other.m_sObjectName),
-          m_nReferences(0), m_bAutomaticDelete(true) {
+        : m_nReferences(0), m_bAutomaticDelete(true) {
 #if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
         DebugLivingObjects()->insert(this);
 #endif
@@ -71,20 +66,13 @@ protected:
 public:
     virtual ~OcRxObject();
 
-    static int RegisterRx(const std::wstring & className,
-        OcRxObject::BaseClassFactory * pCreator);
-
     OcRxObject & operator=(const OcRxObject & other) {
-        m_sObjectName = other.m_sObjectName;
         return *this;
     }
 
-    const std::wstring & ObjectName(void) const {
-        return m_sObjectName;
-    }
-    void SetObjectName(const std::wstring & name) {
-        m_sObjectName = name;
-    }
+    typedef OcApClassFactoryBase BaseClassFactory;
+    static int RegisterRx(const std::string & className,
+                          BaseClassFactory * pCreator);
 
     void SetAutomaticDelete(bool bAutomaticDelete) {
         m_bAutomaticDelete = bAutomaticDelete;
@@ -105,9 +93,6 @@ public:
         return m_debug_LivingObjects;
     }
 #endif
-
-protected:
-    std::wstring m_sObjectName;
 
 private:
     long    m_nReferences;
@@ -132,7 +117,8 @@ inline void intrusive_ptr_add_ref(octavarium::OcRxObject * p)
 inline void intrusive_ptr_release(octavarium::OcRxObject * p)
 {
     DLOG_IF(ERROR, !p->m_nReferences)
-            << p->ClassName() << " still has pointer references";
+//            << p->ClassName() << " still has pointer references";
+            << typeid(*p).name() << " still has pointer references";
 
     // decrement reference count, and delete object when reference count reaches 0
 #if OC_THREAD_SAFE_INTRUSIVE_PTR == 1

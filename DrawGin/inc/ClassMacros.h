@@ -36,40 +36,26 @@
 #endif
 
 #define OC_DECLARE_BASE_CLASS(c) \
-    public: \
-    virtual const wchar_t * ClassName(void) { return L ## #c; }
+    // empty
 
-#define OC_DECLARE_BASE_RX_CLASS(c) \
-    OC_DECLARE_BASE_CLASS(c) \
-    static OcApClassFactory<c, c> m_factory;
-
-#define OC_DECLARE_CLASS(c, b) \
-    OC_DECLARE_BASE_CLASS(c) \
-    public: \
-    virtual const wchar_t * BaseClassName(void) { return L ## #b; }
-    
-
-#define OC_DECLARE_RX_CLASS(c, b) \
-    OC_DECLARE_CLASS(c, b) \
-    static OcApClassFactory<c, b> m_factory;
+#define OC_DECLARE_CLASS(c) \
+    // empty
 
 
-#define OC_DEFINE_BASE_CLASS(b)
-
-#define OC_DEFINE_CLASS(c, b) \
-    OC_DEFINE_BASE_CLASS(c)
-
-
-#define OC_DEFINE_RX_CLASS(c, b) \
-    OcApClassFactory<c, b> c::m_factory(L ## # c);
+#define OC_DECLARE_RX_CLASS(c) \
+    OC_DECLARE_CLASS(c) \
+    static OcApClassFactory<c> m_factory;
 
 
-#ifndef NDEBUG
-#define INIT_OBJECT_NAME_FOR_DEBUG() \
-    m_sObjectName = ClassName()
-#else
-#define INIT_OBJECT_NAME_FOR_DEBUG()
-#endif
+#define OC_DEFINE_BASE_CLASS(c) \
+    // empty
+
+#define OC_DEFINE_CLASS(c) \
+    // empty
+
+#define OC_DEFINE_RX_CLASS(c) \
+    OC_DEFINE_CLASS(c) \
+    OcApClassFactory<c> c::m_factory(# c);
 
 
 //#define OcPtr boost::intrusive_ptr

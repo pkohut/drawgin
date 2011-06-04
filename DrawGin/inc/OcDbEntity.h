@@ -39,10 +39,12 @@ class OcDbObject;
 
 class OcDbEntity : public OcDbObject
 {
-    OC_DECLARE_RX_CLASS(OcDbEntity, OcRxObject);
+    OC_DECLARE_RX_CLASS(OcDbEntity);
+
 public:
     OcDbEntity(void);
     virtual ~OcDbEntity(void);
+
 
 private:
     friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbEntity & data);

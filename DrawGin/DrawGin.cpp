@@ -45,9 +45,6 @@
 #include "OcRxClass.h"
 #include "OcDbEntity.h"
 
-
-
-
 using namespace octavarium;
 using namespace google;
 using namespace std;
@@ -219,11 +216,8 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        OcDbEntity ent;
-        OcRxClass rxClass;
-
         LOG(INFO) << "Begin decoding file: " << filename;
-        ProcessDrawing(filename);
+//        ProcessDrawing(filename);
 
     } catch(exception & e) {
         cerr << e.what();
