@@ -217,8 +217,7 @@ int main(int argc, char* argv[])
         }
 
         LOG(INFO) << "Begin decoding file: " << filename;
-//        ProcessDrawing(filename);
-
+        ProcessDrawing(filename);
     } catch(exception & e) {
         cerr << e.what();
         return 1;

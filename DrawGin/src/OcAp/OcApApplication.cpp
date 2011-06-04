@@ -28,6 +28,8 @@
 **
 ****************************************************************************/
 
+#include <boost/shared_ptr.hpp>
+
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcDbSmartPtrs.h"
@@ -37,12 +39,12 @@
 #include "OcApApplication.h"
 
 BEGIN_OCTAVARIUM_NS
+using namespace std;
+using namespace boost;
 
 OC_DEFINE_CLASS(OcApApplication);
 
 OcApApplication * OcApApplication::m_pApplication = NULL;
-//boost::shared_ptr<OcApApplication::RegClasses>OcApApplication::m_classes;
-OcApApplication::RegClasses OcApApplication::m_classes;
 
 OcApApplicationPtr Application(void)
 {
@@ -58,14 +60,10 @@ OcApApplication::~OcApApplication(void)
     // Do not delete m_pApplication, just set it to NULL.
     m_pApplication = NULL;
 
-    // since m_classes is static clear it, otherwise VS will
-    // report each item as as a memory leak.
-    // Sadly, VS falsely reports the instance of m_classes itself
-    // as a memory leak.  If m_classes is a pointer and delete
-    // then VS does not report a memory leak, but then pointer
-    // dereferening needs to be done and that is ugly. For now
-    // just live with the false report.
-    m_classes.clear();
+    // The registered classes are stored in a static container
+    // and need to be cleared to keep MSVC's dbg leak checker
+    // from falsly reporting them.
+    OcApApplication::RegisteredClasses().clear();
 }
 
 OcDbDatabasePtr OcApApplication::WorkingDatabase(void)
@@ -99,21 +97,31 @@ void OcApApplication::Shutdown(void)
     OcRxObject::ShutdownObjectTracking();
 }
 
+OcApApplication::RegClasses& OcApApplication::RegisteredClasses( void )
+{
+    // Sadly, VS falsely reports the instance of the static 
+    // container as a memory leak.  If the containm_classes is a pointer
+    // and deleted then VS does not report a memory leak, but that defeats
+    // the purpose of having a static instance.
+    static RegClasses pClasses;
+    return pClasses;
+}
+
 OcApp::ErrorStatus
-OcApApplication::RegisterRxClass(const std::string & className,
+OcApApplication::RegisterRxClass(const string & className,
                                  BaseClassFactory * pCreator)
 {
-    m_classes.insert(OcApApplication::RegClass(className, pCreator));
+    OcApApplication::RegisteredClasses().insert(make_pair(className, pCreator));
     return OcApp::eOk;
 }
 
-octavarium::OcRxObjectPtr OcApApplication::NewRxClass(const std::string & className)
+octavarium::OcRxObjectPtr OcApApplication::NewRxClass(const string & className)
 {
-    if(m_classes.find(className) != m_classes.end()) {
-        return m_classes[className]->createInstance();
+    RegClasses& classes = OcApApplication::RegisteredClasses();
+    if(classes.find(className) != classes.end()) {
+        return classes[className]->createInstance();
     }
     return NULL;
 }
-
 
 END_OCTAVARIUM_NS

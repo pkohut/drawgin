@@ -43,7 +43,7 @@ class OcApApplication : public OcRxObject
 protected:
     OcApApplication(void);
 public:
-
+    typedef std::map<std::string, OcRxObject::BaseClassFactory *> RegClasses;
     virtual ~OcApApplication(void);
 
     OcDbDatabasePtr WorkingDatabase(void);
@@ -72,6 +72,18 @@ public:
     // the function.
     static void Shutdown(void);
 
+    // Returns a reference to the static container (map) in
+    // RegisteredClasses.
+    // The container holds class names and the OcApClassFactoryBase
+    // associated with it.
+    // Note 1: that MSVC's debug memory leak detector falsely reports
+    // the static container as a leak, it can be ignored.
+    // Note 2: The static container was changed from a static member
+    // variable, to this implementation to get rid of the static
+    // initialization order fiasco bug described at
+    // http://www.parashift.com/c++-faq-lite/ctors.html#faq-10.14
+    static RegClasses& RegisteredClasses(void);
+
     static OcApp::ErrorStatus RegisterRxClass(const std::string & className,
             BaseClassFactory * pCreator);
 
@@ -85,13 +97,13 @@ public:
 
 private:
     OcDbDatabasePtr m_database;
-    typedef std::map<std::string, OcRxObject::BaseClassFactory *> RegClasses;
+
     typedef std::pair<std::string, OcRxObject::BaseClassFactory *> RegClass;
 
     // Map to hold class names and the OcApClassFactoryBase associated with it.
     // MS VS will false report that as a memory leak. See destructor
     // for more info.
-    static RegClasses m_classes;
+    //static RegClasses m_classes;
 
     // A singleton object, managed by OcApApplication and created by
     // the OcApApplication::Create class factory. The object simply
