@@ -31,7 +31,7 @@
 #include "OcCommon.h"
 #include "OcTypes.h"
 #include "OcError.h"
-#include "OcDbDwgVersion.h"
+#include "OcDfDwgVersion.h"
 #include "OcDbObjectId.h"
 #include "OcDbHardOwnershipId.h"
 #include "OcGePoint2D.h"
@@ -39,7 +39,7 @@
 
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
-#include "OcDbHeaderVars.h"
+#include "OcDfHeaderVars.h"
 #include "../OcBs/OcBsDwgSentinels.h"
 
 
@@ -47,7 +47,7 @@
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-OcDbHeaderVars::OcDbHeaderVars(void)
+OcDfHeaderVars::OcDfHeaderVars(void)
 :
 m_unknown1(0.0), m_unknown2(0.0), m_unknown3(0.0), m_unknown4(0.0),
 m_unknown9(0), m_unknown10(0), m_unknown11(0), m_dimaso(false),
@@ -111,12 +111,12 @@ m_unknown56(0), m_unknown57(0), m_crc(0)
     VLOG(3) << "Constructor entered";
 }
 
-OcDbHeaderVars::~OcDbHeaderVars(void)
+OcDfHeaderVars::~OcDfHeaderVars(void)
 {
     VLOG(3) << "Destructor entered";
 }
 
-OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
+OcApp::ErrorStatus OcDfHeaderVars::DecodeData(DwgInArchive& in)
 {
     VLOG(3) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING(in);
@@ -732,7 +732,7 @@ OcApp::ErrorStatus OcDbHeaderVars::DecodeData(DwgInArchive& in)
     return OcApp::eOk;
 }
 
-DwgInArchive& operator>>(DwgInArchive& in, OcDbHeaderVars & dwgVars)
+DwgInArchive& operator>>(DwgInArchive& in, OcDfHeaderVars & dwgVars)
 {
     ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(dwgVars.DecodeData(in));

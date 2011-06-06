@@ -44,6 +44,8 @@ protected:
     OcApApplication(void);
 public:
     typedef std::map<std::string, OcRxObject::BaseClassFactory *> RegClasses;
+    typedef std::map<std::string, std::string> RegAc2OcPairs;
+
     virtual ~OcApApplication(void);
 
     OcDbDatabasePtr WorkingDatabase(void);
@@ -93,7 +95,12 @@ public:
     // Example usage to create a class based on the class name
     // OcRxObjectPtr obj = OcApApplication::NewRxClass(L"OcDbObject");
     static OcRxObjectPtr
-    OcApApplication::NewRxClass(const std::string & className);
+    NewRxClass(const std::string & className);
+
+    static RegAc2OcPairs& RegisteredAcToOcPairs(void);
+
+    static OcApp::ErrorStatus RegisterAcToOcClass(const std::string & acClass,
+            const std::string & ocClass);
 
 private:
     OcDbDatabasePtr m_database;

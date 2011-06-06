@@ -34,7 +34,7 @@
 
 BEGIN_OCTAVARIUM_NS
 
-OC_DEFINE_RX_CLASS(OcRxClass);
+OC_DEFINE_RX_CLASS(OcRxClass, AcRxClass);
 
 OcRxClass::OcRxClass(void)
 {

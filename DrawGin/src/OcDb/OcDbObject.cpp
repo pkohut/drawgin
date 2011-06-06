@@ -35,14 +35,14 @@
 #include "OcDbObjectId.h"
 #include "OcDbObject.h"
 
-#include "OcDbDwgVersion.h"
+#include "../OcDf/OcDfDwgVersion.h"
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-OC_DEFINE_RX_CLASS(OcDbObject);
+OC_DEFINE_RX_CLASS(OcDbObject, AcDbObject);
 
 OcDbObject::OcDbObject(void)
 {    

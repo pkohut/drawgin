@@ -35,14 +35,14 @@
 #include "OcDbObject.h"
 #include "OcDbEntity.h"
 
-#include "OcDbDwgVersion.h"
+#include "../OcDf/OcDfDwgVersion.h"
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
 
 
 BEGIN_OCTAVARIUM_NS
 
-OC_DEFINE_RX_CLASS(OcDbEntity);
+OC_DEFINE_RX_CLASS(OcDbEntity, AcDbEntity);
 
 OcDbEntity::OcDbEntity(void)
 {

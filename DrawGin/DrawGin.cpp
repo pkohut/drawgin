@@ -86,7 +86,8 @@ int SetProgramOptionsDesc(po::options_description & desc)
     try {
         // predefine dynamic string
         string sLogFiles = "If specified, logfiles are written into this "
-                           "directory instead of the default logging directory.\n"
+                           "directory instead of the default logging "
+                           "directory.\n"
                            "Defaults to ";
         sLogFiles += DefaultLogDir();
 
@@ -140,7 +141,8 @@ int SetProgramOptionsDesc(po::options_description & desc)
          "be silently overridden to 1.\n"
          "Defaults to 1800")
 
-        ("stop_logging_if_full_disk", po::value<bool>(&FLAGS_stop_logging_if_full_disk),
+        ("stop_logging_if_full_disk",
+         po::value<bool>(&FLAGS_stop_logging_if_full_disk),
          "Stop attempting to log to disk if the disk is full.\n"
          "Defaults to 0")
 

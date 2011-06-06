@@ -28,49 +28,38 @@
 **
 ****************************************************************************/
 
-#ifndef OCDBCLASS_H
-#define OCDBCLASS_H
+#ifndef OcDfDwgObjectMap_h__
+#define OcDfDwgObjectMap_h__
+
+//#include "../OcBs/DwgInArchive.h"
 
 BEGIN_OCTAVARIUM_NS
+class OcDbDatabase;
+class DwgInArchive;
+class OcDfClasses;
+class OcDbObject;
 
-class OcDbClass
+class OcDfDwgObjectMap
 {
 public:
-	OcDbClass();
-	virtual ~OcDbClass();
+    OcDfDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize);
+    virtual ~OcDfDwgObjectMap(void);
 
-    std::wstring DxfClassName(void) const;
-    std::wstring CppClassName(void) const;
-
-private:
-private:
-    OcApp::ErrorStatus DecodeData(DwgInArchive& in);
-    friend DwgInArchive& operator>>(DwgInArchive& in,
-        OcDbClass & dwgClass);
-
+    OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb,
+                                     const OcDfClasses & classes);
 
 private:
-    // common
-    int16_t m_classNum;
-    // R13 - R2004 
-    int16_t m_version;  // in R14, becomes a flag indicating whether objects
-                        // can be moved, edited, etc.
-    // R2007+
-    int16_t m_proxyFlags;
-    // common
-    std::wstring m_appName;
-    std::wstring m_cppClassName;
-    std::wstring m_dxfClassName;
-    bool m_wasAZombie;
-    int16_t m_itemClassId;
-    // R2004+
-    int32_t m_numObjects;
-    int32_t m_dwgVersion;   // stored as int16_t for R2004
-    int32_t m_maintVersion; // stored as int16_t for R2004
-    int32_t m_unknown1;
-    int32_t m_unknown2;
+    typedef std::pair<int32_t, int32_t> MapItem;
+    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDfDwgObjectMap & imgData);
+    OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+
+    // pair::first = handle, pair::second = fileposition
+    std::vector<std::pair<int32_t, int32_t> > m_objMapItems;
+
+    int32_t m_objMapFilePos;
+    int32_t m_objMapSize;
 };
 
 END_OCTAVARIUM_NS
 
-#endif // OCDBCLASS_H
+#endif // OcDfDwgObjectMap_h__

@@ -35,7 +35,7 @@
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcDbObjectId.h"
-#include "OcDbDwgVersion.h"
+#include "../OcDf/OcDfDwgVersion.h"
 #include "OcBsTypes.h"
 #include "OcBsStreamIn.h"
 #include "DwgInArchive.h"

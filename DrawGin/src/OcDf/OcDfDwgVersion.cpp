@@ -34,33 +34,33 @@
 
 
 #include "OcCommon.h"
-#include "OcDbDwgVersion.h"
+#include "OcDfDwgVersion.h"
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-OcDbDwgVersion::Pair pairs[] = { OcDbDwgVersion::Pair("", NONE),
-                                 OcDbDwgVersion::Pair("AC1012", R13),
-                                 OcDbDwgVersion::Pair("AC1014", R14),
-                                 OcDbDwgVersion::Pair("AC1015", R2000),
-                                 OcDbDwgVersion::Pair("AC1018", R2004),
-                                 OcDbDwgVersion::Pair("AC1021", R2007),
-                                 OcDbDwgVersion::Pair("AC1024", R2010),
+OcDfDwgVersion::Pair pairs[] = { OcDfDwgVersion::Pair("", NONE),
+                                 OcDfDwgVersion::Pair("AC1012", R13),
+                                 OcDfDwgVersion::Pair("AC1014", R14),
+                                 OcDfDwgVersion::Pair("AC1015", R2000),
+                                 OcDfDwgVersion::Pair("AC1018", R2004),
+                                 OcDfDwgVersion::Pair("AC1021", R2007),
+                                 OcDfDwgVersion::Pair("AC1024", R2010),
                                };
 
-const int OcDbDwgVersion::m_numberOfElements =
+const int OcDfDwgVersion::m_numberOfElements =
     sizeof(pairs) / sizeof(pairs[0]);
 
-OcDbDwgVersion::OcDbDwgVersion(void)
+OcDfDwgVersion::OcDfDwgVersion(void)
 {
 }
 
-OcDbDwgVersion::~OcDbDwgVersion(void)
+OcDfDwgVersion::~OcDfDwgVersion(void)
 {
 }
 
 
-DWG_VERSION OcDbDwgVersion::GetVersionId(const std::string & sVersion)
+DWG_VERSION OcDfDwgVersion::GetVersionId(const std::string & sVersion)
 {
     for(int i = 0; i < size(); ++i) {
         if(sVersion == pairs[i].first)
@@ -70,7 +70,7 @@ DWG_VERSION OcDbDwgVersion::GetVersionId(const std::string & sVersion)
     return NONE;
 }
 
-const std::string & OcDbDwgVersion::GetVersionId(DWG_VERSION nVersionId)
+const std::string & OcDfDwgVersion::GetVersionId(DWG_VERSION nVersionId)
 {
     for(int i = 0; i < size(); ++i) {
         if(nVersionId == pairs[i].second)

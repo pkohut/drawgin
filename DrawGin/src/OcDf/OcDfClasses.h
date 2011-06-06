@@ -28,38 +28,28 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbDwgObjectMap_h__
-#define OcDbDwgObjectMap_h__
-
-//#include "../OcBs/DwgInArchive.h"
+#ifndef OCDFCLASSES_H
+#define OCDFCLASSES_H
 
 BEGIN_OCTAVARIUM_NS
-class OcDbDatabase;
-class DwgInArchive;
-class OcDbClasses;
-class OcDbObject;
 
-class OcDbDwgObjectMap : public OcDbObject
+class OcDfClasses
 {
 public:
-    OcDbDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize);
-    virtual ~OcDbDwgObjectMap(void);
+	OcDfClasses();
+	virtual ~OcDfClasses();
 
-    OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb,
-                                     const OcDbClasses & classes);
+    const OcDfClass & ClassAt(size_t index) const;
+    bool Has(const std::wstring & className) const;
 
 private:
-    typedef std::pair<int32_t, int32_t> MapItem;
-    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbDwgObjectMap & imgData);
-    OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+    OcApp::ErrorStatus DecodeData(DwgInArchive& in);
+    friend DwgInArchive& operator>>(DwgInArchive& in,
+                                    OcDfClasses & dwgClasses);    
 
-    // pair::first = handle, pair::second = fileposition
-    std::vector<std::pair<int32_t, int32_t> > m_objMapItems;
-
-    int32_t m_objMapFilePos;
-    int32_t m_objMapSize;
+    std::vector<OcDfClass> m_classes;
 };
 
 END_OCTAVARIUM_NS
 
-#endif // OcDbDwgObjectMap_h__
+#endif // OCDFCLASSES_H

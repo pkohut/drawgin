@@ -72,6 +72,7 @@ public:
 
     typedef OcApClassFactoryBase BaseClassFactory;
     static int RegisterRx(const std::string & className,
+                          const std::string & acClassName,
                           BaseClassFactory * pCreator);
 
     void SetAutomaticDelete(bool bAutomaticDelete) {

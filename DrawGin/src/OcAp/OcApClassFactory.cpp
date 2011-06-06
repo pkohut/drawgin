@@ -42,9 +42,10 @@ BEGIN_OCTAVARIUM_NS
 // Constructor for OcApClassFactoryBase template.
 // Needs to be moved out of the header because OcRxObject
 // an incomplete class definition in the header.
-OcApClassFactoryBase::OcApClassFactoryBase(const char * key)
+OcApClassFactoryBase::OcApClassFactoryBase(const char * key,
+                                           const char * acClassName)
 {
-    OcRxObject::RegisterRx(key, this);
+    OcRxObject::RegisterRx(key, acClassName, this);
 }
 
 // Helper function so the OcRx based classes can self register
@@ -61,5 +62,10 @@ int octavarium::__Register_Rx_Class__(const std::string & className,
                                             pCreator);
 }
 
+int octavarium::__Register_AcToOc_Pair__(const std::string & acClassName,
+                                         const std::string & ocClassName)
+{
+    return OcApApplication::RegisterAcToOcClass(acClassName, ocClassName);
+}
 
 END_OCTAVARIUM_NS

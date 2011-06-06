@@ -1,3 +1,13 @@
+/**
+ *	@file
+ *  @brief Common macros, headers, etc.
+ *
+ *  Usually the first file included all the cpp files.
+ *  Defines common macros, headers, and configurations
+ *  definitions which is used application wide.
+ *
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -32,6 +42,10 @@
 #define OcCommon_h__
 
 #if defined(_WIN32)
+// Enable CRT deubbing on Windows. Will report false positives for things
+// like static or global instances of some types of objects.
+// For example, static member variables that are std::map will report
+// a memory leak, these can be ignored.
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -51,8 +65,12 @@
 
 #include <boost/foreach.hpp>
 #include <boost/intrusive_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
+
+// When GOOGLE_STRIP_LOG a VALUE is defined, the strings log strings below
+// the logging level of VALUE are removed from the compiled application.
 #ifdef NDEBUG
 //#define GOOGLE_STRIP_LOG 1
 #endif
@@ -61,12 +79,34 @@
 #include <tchar.h>
 #endif
 
+// Google's logging library.
 #include <glog/logging.h>
+
+// Add wstring and wchar_t support to GLog.
 #include "wchar_logging.h"
 
+/**
+ *	Macro that can be used in place of the ++ namespace keyword.<br>
+ *  Source code formatting programs will not add extra indentation because
+ *  they will not see the opening bracket.
+ *  @note Must be paired with the END_OCTAVARIUM_NS macro
+ */
 #define BEGIN_OCTAVARIUM_NS namespace octavarium {
+
+/**
+ *	Macro that defines the closing bracket for the BEGIN_OCTAVARIUM_NS
+ *  macro.<br>
+ *  Source code formatting programs will not add extra indentation because
+ *  they will not see the closing bracket. Also makes the namespace self
+ *  documenting.
+ */
 #define END_OCTAVARIUM_NS }
 
+/**
+ *	Macro that can be used in place of the using namespace keywords.
+ *  Especially nice since I can't seem to spell octavarium correctly
+ *  most of the time.
+ */
 #define USING_OCTAVARIUM_NS using namespace octavarium;
 
 #include "OcTypes.h"

@@ -64,6 +64,7 @@ OcApApplication::~OcApApplication(void)
     // and need to be cleared to keep MSVC's dbg leak checker
     // from falsly reporting them.
     OcApApplication::RegisteredClasses().clear();
+    OcApApplication::RegisteredAcToOcPairs().clear();
 }
 
 OcDbDatabasePtr OcApApplication::WorkingDatabase(void)
@@ -97,14 +98,14 @@ void OcApApplication::Shutdown(void)
     OcRxObject::ShutdownObjectTracking();
 }
 
-OcApApplication::RegClasses& OcApApplication::RegisteredClasses( void )
+OcApApplication::RegClasses& OcApApplication::RegisteredClasses(void)
 {
-    // Sadly, VS falsely reports the instance of the static 
+    // Sadly, VS falsely reports the instance of the static
     // container as a memory leak.  If the containm_classes is a pointer
     // and deleted then VS does not report a memory leak, but that defeats
     // the purpose of having a static instance.
-    static RegClasses pClasses;
-    return pClasses;
+    static RegClasses classes;
+    return classes;
 }
 
 OcApp::ErrorStatus
@@ -122,6 +123,24 @@ octavarium::OcRxObjectPtr OcApApplication::NewRxClass(const string & className)
         return classes[className]->createInstance();
     }
     return NULL;
+}
+
+OcApApplication::RegAc2OcPairs& OcApApplication::RegisteredAcToOcPairs(void)
+{
+    // Sadly, VS falsely reports the instance of the static
+    // container as a memory leak.  If the containm_classes is a pointer
+    // and deleted then VS does not report a memory leak, but that defeats
+    // the purpose of having a static instance.
+    static RegAc2OcPairs ac2ocPairs;
+    return ac2ocPairs;
+}
+
+OcApp::ErrorStatus
+OcApApplication::RegisterAcToOcClass(const std::string & acClass,
+                                     const std::string & ocClass)
+{
+    OcApApplication::RegisteredAcToOcPairs().insert(make_pair(acClass, ocClass));
+    return OcApp::eOk;
 }
 
 END_OCTAVARIUM_NS

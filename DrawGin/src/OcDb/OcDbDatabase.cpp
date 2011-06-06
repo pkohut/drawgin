@@ -32,7 +32,7 @@
 
 #include "OcCommon.h"
 #include "OcError.h"
-#include "OcDbDwgVersion.h"
+#include "../OcDf/OcDfDwgVersion.h"
 
 #include "OcGePoint2D.h"
 #include "OcGePoint3D.h"
@@ -47,14 +47,14 @@
 #include "../OcBs/OcBsDwgFileHeader.h"
 #include "../OcBs/OcBsDwgPreviewImage.h"
 
-#include "OcDbHeaderVars.h"
-#include "OcDbClass.h"
-#include "OcDbClasses.h"
-#include "OcDbDwgObjectMap.h"
+#include "../OcDf/OcDfHeaderVars.h"
+#include "../OcDf/OcDfClass.h"
+#include "../OcDf/OcDfClasses.h"
+#include "../OcDf/OcDfDwgObjectMap.h"
 
 BEGIN_OCTAVARIUM_NS
 
-OC_DEFINE_RX_CLASS(OcDbDatabase);
+OC_DEFINE_RX_CLASS(OcDbDatabase, AcDbDatabase);
 
 OcDbDatabase::OcDbDatabase(void)
 {
@@ -112,7 +112,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
                 << "Section locator record 0 offset does not "
                 "match current file position";
 
-        OcDbHeaderVars hdrVars;
+        OcDfHeaderVars hdrVars;
         ar >> hdrVars;
 
         if(ar.Error() != OcApp::eOk) {
@@ -126,7 +126,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
                 << "Section locater record 1 offset does not "
                 "match current file position";
 
-        OcDbClasses dwgClasses;
+        OcDfClasses dwgClasses;
         ar >> dwgClasses;
 
         if(ar.Error() != OcApp::eOk) {
@@ -154,9 +154,9 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
         int32_t filePos = ar.FilePosition();
 
         // Read the Object Map portion from the file. When
-        // done, OcDbDwgObjectMap will have a collection
+        // done, OcDfDwgObjectMap will have a collection
         // that tells where in the dwg file objects are located.
-        OcDbDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
+        OcDfDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
                                    dwgHdr.Record(2).size);
         ar >> dwgObjMap;
         if(ar.Error() != OcApp::eOk) {

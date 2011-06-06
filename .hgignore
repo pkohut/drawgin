@@ -70,3 +70,7 @@ Makefile
 #*.pbxproj
 [Bb]uild/
 *.xcodeproj/*
+
+# Docs
+
+[Dd]ocs

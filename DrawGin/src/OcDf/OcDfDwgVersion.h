@@ -28,28 +28,31 @@
 **
 ****************************************************************************/
 
-#ifndef OCDBCLASSES_H
-#define OCDBCLASSES_H
+#ifndef OcDfDwgVersion_h__
+#define OcDfDwgVersion_h__
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbClasses
+enum DWG_VERSION { NONE = 0, R13, R14, R2000, R2004, R2007, R2010, };
+
+class OcDfDwgVersion
 {
 public:
-	OcDbClasses();
-	virtual ~OcDbClasses();
+    typedef std::pair<std::string, DWG_VERSION> Pair;
+//    typedef std::vector<Pair> Pairs;
 
-    const OcDbClass & ClassAt(size_t index) const;
-    bool Has(const std::wstring & className) const;
+    static DWG_VERSION GetVersionId(const std::string & sVersion);
+    static const std::string & GetVersionId(DWG_VERSION nVersionId);
+    static int size(void) { return m_numberOfElements; }
 
 private:
-    OcApp::ErrorStatus DecodeData(DwgInArchive& in);
-    friend DwgInArchive& operator>>(DwgInArchive& in,
-                                    OcDbClasses & dwgClasses);    
-
-    std::vector<OcDbClass> m_classes;
+    OcDfDwgVersion();
+    virtual ~OcDfDwgVersion();
+    static const int m_numberOfElements;
+//    static const Pairs m_versions;
 };
 
 END_OCTAVARIUM_NS
 
-#endif // OCDBCLASSES_H
+
+#endif // OcDfDwgVersion_h__

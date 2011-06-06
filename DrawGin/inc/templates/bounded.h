@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -28,48 +32,69 @@
 **
 ****************************************************************************/
 
-#ifndef OcApClassFactory_h__
-#define OcApClassFactory_h__
+#ifndef bounded_h__
+#define bounded_h__
 
 BEGIN_OCTAVARIUM_NS
 
-class OcRxObject;
-
-class OcApClassFactoryBase
+/**
+ *  \brief Creates a bounded range object
+ *
+ *	Creates a bounded range object of type V. The default Ctor sets the
+ *  object to min.
+ *  @throws out_of_range if value is outside of allowed range.
+ *
+ */
+template<typename V, int min, int max>
+class bounded
 {
+    /**
+     *	Ensure template parameter min < template parameter max.
+     */
+    BOOST_STATIC_ASSERT(min < max);
+
+    V m_t;
+
 public:
-    OcApClassFactoryBase(const char * key, const char * acClassName);
-    virtual ~OcApClassFactoryBase() {}
-    virtual OcRxObject * createInstance() = 0;
-};
+    /**
+     *	Default Ctor, V t is set to min.
+     */
+    explicit bounded(void) : m_t(min) {}
 
+    /**
+     *	Copy Ctor, V t is validated.
+     *  @throws out_of_range if V t is outside of allowed range.
+     */
+    explicit bounded(const V & t): m_t(t) {
+        if(t < min || t > max)
+            throw std::out_of_range("Bounded value outside of valid range");
+    }
 
-template<class T>
-class OcApClassFactory : OcApClassFactoryBase
-{
-public:
-    OcApClassFactory(const char * key, const char * acClassName)
-        : OcApClassFactoryBase(key, acClassName)
-    {}
-    virtual ~OcApClassFactory() {}
+    /**
+     *	Dtor
+     */
+    ~bounded() {}
 
-    virtual OcRxObject * createInstance() {
-        return new T;
+    /**
+     *	Function operator
+     *  @return type V
+     */
+    const V &operator()() const {
+        return m_t;
+    }
+
+    /**
+     *	Function operator
+     *  @param v must within range of min and max.
+     *  @throws out_of_range if V v is outside of allowed range.
+     */
+    void operator()(const V & t) {
+        throw std::out_of_range("Bounded value outside of valid range");
+        m_t = t;
     }
 };
 
-// Helper function so the OcRx based classes can self register
-// themselves. The function is not meant to be used directly
-// by application code because the second parameter is not
-// type safe.
-// For normal application code, use the type safe function
-// OcApApplication::RegisterRxClass instead.
-int __Register_Rx_Class__(const std::string & className,
-                          void * pCreator);
-
-int __Register_AcToOc_Pair__(const std::string & acClassName,
-                          const std::string & ocClassName);
 
 END_OCTAVARIUM_NS
 
-#endif // OcApClassFactory_h__
+#endif // bounded_h__

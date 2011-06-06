@@ -40,6 +40,7 @@
 /**************************************************************************/
 
 #include "OcCommon.h"
+#include "OcError.h"
 #include "OcRxObject.h"
 
 BEGIN_OCTAVARIUM_NS
@@ -75,9 +76,17 @@ void OcRxObject::ShutdownObjectTracking(void)
 #endif
 }
 
-int OcRxObject::RegisterRx(const std::string & className, BaseClassFactory * pCreator)
+int OcRxObject::RegisterRx(const std::string & className,
+                           const std::string & acClassName,
+                           BaseClassFactory * pCreator)
 {
-    return __Register_Rx_Class__(className, pCreator);
+    OcApp::ErrorStatus es = (OcApp::ErrorStatus)
+                            __Register_Rx_Class__(className, pCreator);
+    if(es == OcApp::eOk) {
+        es = (OcApp::ErrorStatus)
+             __Register_AcToOc_Pair__(acClassName, className);
+    }
+    return es;
 }
 
 END_OCTAVARIUM_NS

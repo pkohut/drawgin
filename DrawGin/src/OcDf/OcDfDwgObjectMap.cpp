@@ -32,16 +32,16 @@
 
 #include "OcCommon.h"
 #include "OcError.h"
-#include "OcDbDwgVersion.h"
+#include "OcDfDwgVersion.h"
 #include "OcTypes.h"
 #include "OcDbObjectId.h"
 #include "OcDbObject.h"
-#include "OcDbDwgObjectMap.h"
+#include "OcDfDwgObjectMap.h"
 
-#include "OcDbClass.h"
-#include "OcDbClasses.h"
+#include "OcDfClass.h"
+#include "OcDfClasses.h"
 
-#include "OcDbDwgVersion.h"
+#include "OcDfDwgVersion.h"
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
 
@@ -142,16 +142,16 @@ SUB_CLASS_ID _subClasses[] = {
 #define ELEMENTS(x) sizeof(x)/sizeof(x[0])
 
 
-OcDbDwgObjectMap::OcDbDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize)
+OcDfDwgObjectMap::OcDfDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize)
     : m_objMapFilePos(objMapFilePos), m_objMapSize(objMapSize)
 {
 }
 
-OcDbDwgObjectMap::~OcDbDwgObjectMap(void)
+OcDfDwgObjectMap::~OcDfDwgObjectMap(void)
 {
 }
 
-OcApp::ErrorStatus OcDbDwgObjectMap::DecodeData(DwgInArchive& ar)
+OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);
     VLOG(3) << "DecodeObjectMap entered";
@@ -233,9 +233,9 @@ OcApp::ErrorStatus OcDbDwgObjectMap::DecodeData(DwgInArchive& ar)
     return OcApp::eOk;
 }
 
-OcApp::ErrorStatus OcDbDwgObjectMap::DecodeObjects(DwgInArchive& ar,
+OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
         OcDbDatabase *& pDb,
-        const OcDbClasses & classes)
+        const OcDfClasses & classes)
 {
     std::vector<SUB_CLASS_ID> subClasses(&_subClasses[0],
                                          &_subClasses[ELEMENTS(_subClasses)]);
@@ -256,7 +256,7 @@ OcApp::ErrorStatus OcDbDwgObjectMap::DecodeObjects(DwgInArchive& ar,
             return OcApp::eOutsideOfClassMapRange;
         } else {
             if(objType >= 500) {
-                const OcDbClass & className = classes.ClassAt(objType - 500);
+                const OcDfClass & className = classes.ClassAt(objType - 500);
                 VLOG(4) << "Classname = " <<
                         WStringToString(className.CppClassName());
             } else {
@@ -268,7 +268,7 @@ OcApp::ErrorStatus OcDbDwgObjectMap::DecodeObjects(DwgInArchive& ar,
     return OcApp::eOk;
 }
 
-DwgInArchive& operator>>(DwgInArchive& ar, OcDbDwgObjectMap & hdr)
+DwgInArchive& operator>>(DwgInArchive& ar, OcDfDwgObjectMap & hdr)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);
     ar.SetError(hdr.DecodeData(ar));

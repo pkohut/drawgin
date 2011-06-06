@@ -106,7 +106,7 @@ private:
 // helper template function to ensure T is dereferenced before
 // calling archive.
 template<typename BC, typename T>
-DwgInArchive& Archive(DwgInArchive & ar, T & t)
+DwgInArchive& Archive(DwgInArchive & ar, const T & t)
 {
     ar >> (BC&) t;
     return ar;
@@ -114,7 +114,7 @@ DwgInArchive& Archive(DwgInArchive & ar, T & t)
 
 
 template<typename BC, typename T>
-DwgInArchive& Archive(DwgInArchive & ar, T & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const T & t, const char * pStr)
 {
     Archive<BC, T>(ar, t);
     VLOG(4) << pStr << ": " << t;
@@ -123,7 +123,7 @@ DwgInArchive& Archive(DwgInArchive & ar, T & t, const char * pStr)
 
 // handle when t is a char and print t as an int
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, int8_t & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const int8_t & t, const char * pStr)
 {
     Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (int) t;
@@ -131,7 +131,7 @@ DwgInArchive& Archive(DwgInArchive & ar, int8_t & t, const char * pStr)
 }
 
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, bool & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const bool & t, const char * pStr)
 {
     Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (t == true ? "true" : "false");
@@ -139,7 +139,7 @@ DwgInArchive& Archive(DwgInArchive & ar, bool & t, const char * pStr)
 }
 
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, byte_t & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const byte_t & t, const char * pStr)
 {
     Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (int) t;
@@ -147,7 +147,7 @@ DwgInArchive& Archive(DwgInArchive & ar, byte_t & t, const char * pStr)
 }
 
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, bitcode::CMC & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const bitcode::CMC & t, const char * pStr)
 {
     Archive<BC>(ar, t);
     VLOG(4) << pStr << ": " << (bitcode::BCCMC&)t;
@@ -155,7 +155,7 @@ DwgInArchive& Archive(DwgInArchive & ar, bitcode::CMC & t, const char * pStr)
 }
 
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, std::wstring & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const std::wstring & t, const char * pStr)
 {
     // need to figure out why wstring and wchar_t can not be streamed directly.
     // If it is streamed directly right now it prints the hex address of
@@ -180,7 +180,7 @@ DwgInArchive& Archive(DwgInArchive & ar, std::wstring & t, const char * pStr)
 }
 
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, wchar_t * t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const wchar_t * t, const char * pStr)
 {
     Archive<BC>(ar, t);
     VLOG(4) << pStr << ": \"" << t << "\"";
@@ -188,7 +188,7 @@ DwgInArchive& Archive(DwgInArchive & ar, wchar_t * t, const char * pStr)
 }
 
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, double & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const double & t, const char * pStr)
 {
     Archive<BC>(ar, t);
     VLOG(4) << std::showpoint << pStr << ": " << t;
@@ -196,7 +196,7 @@ DwgInArchive& Archive(DwgInArchive & ar, double & t, const char * pStr)
 }
 
 template<typename BC>
-DwgInArchive& Archive(DwgInArchive & ar, OcDbObjectId & t, const char * pStr)
+DwgInArchive& Archive(DwgInArchive & ar, const OcDbObjectId & t, const char * pStr)
 {
     Archive<BC>(ar, t);
     VLOG(4) << std::showpoint << pStr << ": " << t;

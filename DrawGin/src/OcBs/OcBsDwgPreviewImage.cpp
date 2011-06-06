@@ -33,7 +33,7 @@
 #include "OcError.h"
 #include "OcTypes.h"
 #include "OcDbObjectId.h"
-#include "OcDbDwgVersion.h"
+#include "../OcDf/OcDfDwgVersion.h"
 
 #include "OcBsStreamIn.h"
 #include "DwgInArchive.h"

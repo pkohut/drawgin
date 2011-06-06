@@ -32,7 +32,7 @@
 #include "OcError.h"
 #include "OcTypes.h"
 #include "OcDbObjectId.h"
-#include "OcDbDwgVersion.h"
+#include "../OcDf/OcDfDwgVersion.h"
 
 #include "OcBsStreamIn.h"
 #include "DwgInArchive.h"
@@ -77,7 +77,7 @@ DWG_VERSION OcBsDwgFileHeader::DecodeVersionData(DwgInArchive& in)
 {
     std::string sVersion;
     in.ReadRC(sVersion, 6);
-    return OcDbDwgVersion::GetVersionId(sVersion);
+    return OcDfDwgVersion::GetVersionId(sVersion);
 }
 
 OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
@@ -85,7 +85,7 @@ OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
     using namespace bitcode;
     VLOG(4) << "*** Begin reading file header ***";
     const char * pcszVersion =
-        OcDbDwgVersion::GetVersionId(m_dwgVersion).c_str();
+        OcDfDwgVersion::GetVersionId(m_dwgVersion).c_str();
 
     in.SetCalcedCRC(crc8(0, pcszVersion, 6));
     VLOG(4) << "File ID = " << pcszVersion;

@@ -32,7 +32,7 @@
 
 #include "OcCommon.h"
 #include "OcDbObjectId.h"
-#include "OcDbDwgVersion.h"
+#include "../OcDf/OcDfDwgVersion.h"
 #include "OcBsStreamIn.h"
 #include "OcBsDwgCrc.h"
 

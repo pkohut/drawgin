@@ -53,9 +53,9 @@
 #define OC_DEFINE_CLASS(c) \
     // empty
 
-#define OC_DEFINE_RX_CLASS(c) \
+#define OC_DEFINE_RX_CLASS(c, a) \
     OC_DEFINE_CLASS(c) \
-    OcApClassFactory<c> c::m_factory(# c);
+    OcApClassFactory<c> c::m_factory(# c, # a);
 
 
 //#define OcPtr boost::intrusive_ptr

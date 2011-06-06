@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -31,90 +35,81 @@
 #include "OcCommon.h"
 #include "OcTypes.h"
 #include "OcError.h"
-#include "OcDbDwgVersion.h"
+#include "OcDfDwgVersion.h"
 #include "OcDbObjectId.h"
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
-#include "OcDbClass.h"
+#include "OcDfClass.h"
 #include "../OcBs/OcBsDwgSentinels.h"
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
 
-OcDbClass::OcDbClass()
-    : m_classNum(0), m_version(0), m_proxyFlags(0), m_wasAZombie(false),
-      m_itemClassId(0), m_numObjects(0), m_dwgVersion(0), m_maintVersion(0),
-      m_unknown1(0), m_unknown2(0)
+OcDfClass::OcDfClass()
 {
     VLOG(3) << "Constructor entered";
 }
 
-OcDbClass::~OcDbClass()
+OcDfClass::~OcDfClass()
 {
     VLOG(3) << "Destructor entered";
 }
 
-OcApp::ErrorStatus OcDbClass::DecodeData( DwgInArchive& in )
+OcApp::ErrorStatus OcDfClass::DecodeData(DwgInArchive& in)
 {
     VLOG(3) << "DecodeData entered";
 
-    BS_ARCHIVE(bitcode::BS, in, m_classNum, "class number");
+    BS_ARCHIVE(bitcode::BS, in, ClassNumber(), "class number");
+    if(ClassNumber() < 500) {
+        int y =0;
+        y++;
+    }
 
     if(in.Version() <= R2004)
-        BS_ARCHIVE(bitcode::BS, in, m_version, "version");
+        BS_ARCHIVE(bitcode::BS, in, Version(), "version");
 
     if(in.Version() >= R2007)
-        BS_ARCHIVE(bitcode::BS, in, m_proxyFlags, "proxy flags");
+        BS_ARCHIVE(bitcode::BS, in, ProxyFlags(), "proxy flags");
 
     if(in.Version() <= R2004) {
-        BS_ARCHIVE(bitcode::TV, in, m_appName, "app name");
-        BS_ARCHIVE(bitcode::TV, in, m_cppClassName, "cpp ClassName");
-        BS_ARCHIVE(bitcode::TV, in, m_dxfClassName, "class DXF name");
+        BS_ARCHIVE(bitcode::TV, in, AppName(), "app name");
+        BS_ARCHIVE(bitcode::TV, in, CppClassName(), "cpp ClassName");
+        BS_ARCHIVE(bitcode::TV, in, DxfClassName(), "class DXF name");
     } else {
-        BS_ARCHIVE(bitcode::TU, in, m_appName, "app name");
-        BS_ARCHIVE(bitcode::TU, in, m_cppClassName, "cpp ClassName");
-        BS_ARCHIVE(bitcode::TU, in, m_dxfClassName, "class DXF name");
+        BS_ARCHIVE(bitcode::TU, in, AppName(), "app name");
+        BS_ARCHIVE(bitcode::TU, in, CppClassName(), "cpp ClassName");
+        BS_ARCHIVE(bitcode::TU, in, DxfClassName(), "class DXF name");
     }
 
-    BS_ARCHIVE(bitcode::B,  in, m_wasAZombie, "was a zombie");
-    BS_ARCHIVE(bitcode::BS, in, m_itemClassId, "item class id");
+    BS_ARCHIVE(bitcode::B,  in, WasAZombie(), "was a zombie");
+    BS_ARCHIVE(bitcode::BS, in, ItemClassId(), "item class id");
 
     if(in.Version() >= R2004) {
-        BS_ARCHIVE(bitcode::BL, in, m_numObjects, "number of objects");
+        BS_ARCHIVE(bitcode::BL, in, NumberOfObjects(), "number of objects");
         if(in.Version() == R2004) {
-            BS_ARCHIVE(bitcode::BS, in, m_dwgVersion, "dwg version");
-            BS_ARCHIVE(bitcode::BS, in, m_maintVersion, "maintenance version");
+            BS_ARCHIVE(bitcode::BS, in, DwgVersion(), "dwg version");
+            BS_ARCHIVE(bitcode::BS, in, MaintenanceVersion(),
+                       "maintenance version");
         } else {
-            BS_ARCHIVE(bitcode::BL, in, m_dwgVersion, "dwg version");
-            BS_ARCHIVE(bitcode::BL, in, m_maintVersion, "maintenance version");
+            BS_ARCHIVE(bitcode::BL, in, DwgVersion(), "dwg version");
+            BS_ARCHIVE(bitcode::BL, in, MaintenanceVersion(),
+                       "maintenance version");
         }
-        BS_ARCHIVE(bitcode::BL, in, m_unknown1, "unknown1");
-        BS_ARCHIVE(bitcode::BL, in, m_unknown2, "unknown2");
+        BS_ARCHIVE(bitcode::BL, in, Unknown1(), "unknown1");
+        BS_ARCHIVE(bitcode::BL, in, Unknown2(), "unknown2");
     }
-    
+
     VLOG(3) << "Successfully decoded Class";
     return OcApp::eOk;
 }
 
-DwgInArchive& operator>>(DwgInArchive& in, OcDbClass & dwgClass)
+DwgInArchive& operator>>(DwgInArchive& in, OcDfClass & dwgClass)
 {
     ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(dwgClass.DecodeData(in));
     return in;
 }
-
-std::wstring OcDbClass::DxfClassName( void ) const
-{
-    return m_dxfClassName;
-}
-
-std::wstring OcDbClass::CppClassName( void ) const
-{
-    return m_cppClassName;
-}
-
-
 
 
 END_OCTAVARIUM_NS

@@ -27,6 +27,7 @@ ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
 set (OCAP_DIR OcAp)
 set (OCBS_DIR OcBs)
 set (OCDB_DIR OcDb)
+set (OCDF_DIR OcDf)
 set (OCGE_DIR OcGe)
 set (OCRX_DIR OcRx)
 
@@ -44,8 +45,7 @@ set(PUBLIC_HEADERS
 	${HEADERS_DIR}/OcApClassFactory.h
 	${HEADERS_DIR}/OcCommon.h
 	${HEADERS_DIR}/OcConfig.h
-	${HEADERS_DIR}/OcDbDatabase.h
-	${HEADERS_DIR}/OcDbDwgVersion.h
+	${HEADERS_DIR}/OcDbDatabase.h	
 	${HEADERS_DIR}/OcDbEntity.h
 	${HEADERS_DIR}/OcDbHardOwnershipId.h
 	${HEADERS_DIR}/OcDbObject.h
@@ -58,6 +58,11 @@ set(PUBLIC_HEADERS
 	${HEADERS_DIR}/OcRxObject.h
 	${HEADERS_DIR}/OcTypes.h
 	${HEADERS_DIR}/wchar_logging.h
+)
+
+set(PUBLIC_HEADERS_TEMPLATES
+	${HEADERS_DIR}/templates/accessors.h
+	${HEADERS_DIR}/templates/bounded.h
 )
 
 # Private files in the OcAp directory. Will also be
@@ -90,20 +95,24 @@ set (OCBS_FILES
 # Private files in the OcDb directory. Will also be
 # used for the group filter OcDb in MSVC IDE
 set (OCDB_FILES
-	${OCDB_DIR}/OcDbClass.cpp
-	${OCDB_DIR}/OcDbClass.h
-	${OCDB_DIR}/OcDbClasses.cpp
-	${OCDB_DIR}/OcDbClasses.h	
 	${OCDB_DIR}/OcDbDatabase.cpp	
-	${OCDB_DIR}/OcDbDwgObjectMap.cpp
-	${OCDB_DIR}/OcDbDwgObjectMap.h
-	${OCDB_DIR}/OcDbDwgVersion.cpp
 	${OCDB_DIR}/OcDbEntity.cpp
 	${OCDB_DIR}/OcDbHardOwnershipId.cpp
-	${OCDB_DIR}/OcDbHeaderVars.cpp
-	${OCDB_DIR}/OcDbHeaderVars.h
 	${OCDB_DIR}/OcDbObject.cpp
 	${OCDB_DIR}/OcDbObjectId.cpp
+)
+
+set (OCDF_FILES
+	${OCDF_DIR}/OcDfClass.cpp
+	${OCDF_DIR}/OcDfClass.h
+	${OCDF_DIR}/OcDfClasses.cpp
+	${OCDF_DIR}/OcDfClasses.h	
+	${OCDF_DIR}/OcDfDwgObjectMap.cpp
+	${OCDF_DIR}/OcDfDwgObjectMap.h
+	${OCDF_DIR}/OcDfDwgVersion.cpp
+	${OCDF_DIR}/OcDfDwgVersion.h
+	${OCDF_DIR}/OcDfHeaderVars.cpp
+	${OCDF_DIR}/OcDfHeaderVars.h
 )
 
 # Private files in the OcGe directory. Will also be
@@ -121,10 +130,12 @@ set (OCRX_FILES
 )
 
 # Add IDE file group filters
-source_group(PublicHeaders FILES ${PUBLIC_HEADERS})
+source_group("Public Headers" FILES ${PUBLIC_HEADERS})
+source_group("Public Headers\\Templates"	   FILES ${PUBLIC_HEADERS_TEMPLATES})
 source_group(OcAp          FILES ${OCAP_FILES})
 source_group(OcBs          FILES ${OCBS_FILES})
 source_group(OcDb          FILES ${OCDB_FILES})
+source_group(OcDf          FILES ${OCDF_FILES})
 source_group(OcGe          FILES ${OCGE_FILES})
 source_group(OcRx          FILES ${OCRX_FILES})
 
@@ -142,9 +153,11 @@ endif(MSVC AND USE_PRECOMPILED_HEADER)
 
 add_library(libDrawGin
 		${PUBLIC_HEADERS}
+		${PUBLIC_HEADERS_TEMPLATES}
 		${OCAP_FILES}
 		${OCBS_FILES}
 		${OCDB_FILES}
+		${OCDF_FILES}
 		${OCGE_FILES}
 		${OCRX_FILES}
 		${PRECOMP_FILES}

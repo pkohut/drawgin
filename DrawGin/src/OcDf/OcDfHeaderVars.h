@@ -28,23 +28,23 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbHeaderVars_h__
-#define OcDbHeaderVars_h__
+#ifndef OcDfHeaderVars_h__
+#define OcDfHeaderVars_h__
 
 BEGIN_OCTAVARIUM_NS
 
 class OcDbObjectId;
 
-class OcDbHeaderVars
+class OcDfHeaderVars
 {
 public:
-    OcDbHeaderVars(void);
-    virtual ~OcDbHeaderVars(void);
+    OcDfHeaderVars(void);
+    virtual ~OcDfHeaderVars(void);
 
 private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& in);
     friend DwgInArchive& operator>>(DwgInArchive& in,
-                                    OcDbHeaderVars & dwgVars);
+                                    OcDfHeaderVars & dwgVars);
 
 private: // header variables
     /*********************************************************************
@@ -546,7 +546,7 @@ private: // header variables
 END_OCTAVARIUM_NS
 
 
-#endif // OcDbHeaderVars_h__
+#endif // OcDfHeaderVars_h__
 
 ///////////////////////////////////////////////////////////////////////////
 //// DWG Header Variables, in sequence order as found in drawing files ////
