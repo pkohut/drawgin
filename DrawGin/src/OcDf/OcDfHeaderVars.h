@@ -30,6 +30,7 @@
 
 #ifndef OcDfHeaderVars_h__
 #define OcDfHeaderVars_h__
+#include "templates/accessors.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -46,7 +47,7 @@ private:
     friend DwgInArchive& operator>>(DwgInArchive& in,
                                     OcDfHeaderVars & dwgVars);
 
-private: // header variables
+public: // header variables
     /*********************************************************************
      * As this class is to be reusable for all drawing versions, the
      * listed order of the variables below is not necssarily in the
@@ -61,257 +62,310 @@ private: // header variables
      *********************************************************************/
     //
     // common
-    double m_unknown1;
-    double m_unknown2;
-    double m_unknown3;
-    double m_unknown4;
-    std::wstring m_unknown5;
-    std::wstring m_unknown6;
-    std::wstring m_unknown7;
-    std::wstring m_unknown8;
-    int32_t m_unknown9;
-    int32_t m_unknown10;
+    /*-------------------- Common --------------------*/
+    
+    accessors<double> unknown1;
+    accessors<double> unknown2;
+    accessors<double> unknown3;
+    accessors<double> unknown4;
+    accessors<std::wstring> unknown5;
+    accessors<std::wstring> unknown6;
+    accessors<std::wstring> unknown7;
+    accessors<std::wstring> unknown8;
+    accessors<int32_t> unknown9;
+    accessors<int32_t> unknown10;
     // R13 - R14
-    int16_t m_unknown11;
+    /*------------------- R13 - R14 ------------------*/
+    
+    accessors<int16_t> unknown11;
     // Pre-2004
-    OcDbHardOwnershipId m_currentVpId;
+    /*-------------------- Pre-2004 ------------------*/
+    accessors<OcDbHardOwnershipId> currentVpId;
 
 
     // common
-    bool m_dimaso;
-    bool m_dimsho;
+    /*-------------------- Common --------------------*/
+    accessors<bool> dimaso;
+    accessors<bool> dimsho;
     // R13 - R14
-    bool m_dimsav;
+    /*------------------- R13 - R14 ------------------*/
+    accessors<bool> dimsav;
     // common
-    bool m_plinegen;
-    bool m_orthomode;
-    bool m_regenmode;
-    bool m_fillmode;
-    bool m_qtextmode;
-    bool m_psltscale;
-    bool m_limcheck;
+    /*-------------------- Common --------------------*/    
+    accessors<bool> plinegen;
+    accessors<bool> orthomode;
+    accessors<bool> regenmode;
+    accessors<bool> fillmode;
+    accessors<bool> qtextmode;
+    accessors<bool> psltscale;
+    accessors<bool> limcheck;
     // R13 - R14
-    bool m_blipmode;
+    /*------------------- R13 - R14 ------------------*/
+    accessors<bool> blipmode;
 
     // R2004+
-    bool m_undocumented;
+    /*-------------------- R2004+ --------------------*/
+    accessors<bool> undocumented;
+
     // common
-    bool m_usertimer;
-    bool m_skpoly;
-    bool m_angdir;
-    bool m_splframe;
+    /*-------------------- Common --------------------*/    
+    accessors<bool> usertimer;
+    accessors<bool> skpoly;
+    accessors<bool> angdir;
+    accessors<bool> splframe;
     // R13 - R14
-    bool m_attreq;
-    bool m_attdia;
+    /*------------------- R13 - R14 ------------------*/
+    accessors<bool> attreq;
+    accessors<bool> attdia;
+
     // common
-    bool m_mirrtext;
-    bool m_worldview;
+    /*-------------------- Common --------------------*/    
+    accessors<bool> mirrtext;
+    accessors<bool> worldview;
+
     // R13 - R14
-    bool m_wireframe;
+    /*------------------- R13 - R14 ------------------*/
+    accessors<bool> wireframe;
+
     // common
-    bool m_tilemode;
-    bool m_plimcheck;
-    bool m_visretain;
+    /*-------------------- Common --------------------*/    
+    accessors<bool> tilemode;
+    accessors<bool> plimcheck;
+    accessors<bool> visretain;
+
     // R13 - R14
-    bool m_delobj;
+    /*------------------- R13 - R14 ------------------*/
+    accessors<bool> delobj;
+
     // common
-    bool m_dispsilh;
-    bool m_pellipse;
-    int16_t m_saveimages; // proxygraphics R14 - R2000)
+    /*-------------------- Common --------------------*/    
+    accessors<bool> dispsilh;
+    accessors<bool> pellipse;
+    accessors<int16_t> saveimages; // proxygraphics R14 - R2000)
+
     // R13 - R14
-    int16_t m_dragmode;
+    /*------------------- R13 - R14 ------------------*/
+    accessors<int16_t> dragmode;
+
     //common
-    int16_t m_treedepth;
-    int16_t m_lunits;
-    int16_t m_luprec;
-    int16_t m_aunits;
-    int16_t m_auprec;
-    // R13 - R14
-    int16_t m_osmode;
-    // common
-    int16_t m_attmode;
-    // R13 - R14
-    int16_t m_coords;
-    // common
-    int16_t m_pdmode;
-    // R13 - R14
-    int16_t m_pickstyle;
-    // R2004+
-    int32_t m_unknown12;
-    int32_t m_unknown13;
-    int32_t m_unknown14;
-    // common
-    int16_t m_useri1;
-    int16_t m_useri2;
-    int16_t m_useri3;
-    int16_t m_useri4;
-    int16_t m_useri5;
-    int16_t m_splinesegs;
-    int16_t m_surfu;
-    int16_t m_surfv;
-    int16_t m_surftype;
-    int16_t m_surftab1;
-    int16_t m_surftab2;
-    int16_t m_splinetype;
-    int16_t m_shadedge;
-    int16_t m_shadedif;
-    int16_t m_unitmode;
-    int16_t m_maxactvp;
-    int16_t m_isolines;
-    int16_t m_cmljust;
-    int16_t m_textqlty;
-    double m_ltscale;
-    double m_textsize;
-    double m_tracewid;
-    double m_sketchinc;
-    double m_filletrad;
-    double m_thickness;
-    double m_angbase;
-    double m_pdsize;
-    double m_plinewid;
-    double m_userr1;
-    double m_userr2;
-    double m_userr3;
-    double m_userr4;
-    double m_userr5;
+    /*-------------------- Common --------------------*/    
+    accessors<int16_t> treedepth;
+    accessors<int16_t> lunits;
+    accessors<int16_t> luprec;
+    accessors<int16_t> aunits;
+    accessors<int16_t> auprec;
 
-    double m_chamfera;
-    double m_chamferb;
-    double m_chamferc;
-    double m_chamferd;
-    double m_facetres;
-    double m_cmlscale;
-    double m_celtscale;
-    std::wstring m_menuname;
-    int32_t m_tdcreate_day;
-    int32_t m_tdcreate_ms;
-    int32_t m_tdupdate_day;
-    int32_t m_tdupdate_ms;
-    // R2004+
-    int32_t m_unknown15;
-    int32_t m_unknown16;
-    int32_t m_unknown17;
+    // R13 - R14
+    /*------------------- R13 - R14 ------------------*/
+    accessors<int16_t> osmode;
+
     // common
-    int32_t m_tdindwg_days;
-    int32_t m_tdindwg_ms;
-    int32_t m_tdusrtimer_days;
-    int32_t m_tdusrtimer_ms;
-    bitcode::CMC m_cecolor;
-    OcDbObjectId m_handseed;
-    OcDbObjectId m_clayer;
-    OcDbObjectId m_textstyle;
-    OcDbObjectId m_celtype;
+    /*-------------------- Common --------------------*/    
+    accessors<int16_t> attmode;
+
+    // R13 - R14
+    /*------------------- R13 - R14 ------------------*/
+    accessors<int16_t> coords;
+
+    // common
+    /*-------------------- Common --------------------*/    
+    accessors<int16_t> pdmode;
+
+    // R13 - R14
+    /*------------------- R13 - R14 ------------------*/
+    accessors<int16_t> pickstyle;
+
+    // R2004+
+    /*-------------------- R2004+ --------------------*/
+    accessors<int32_t> unknown12;
+    accessors<int32_t> unknown13;
+    accessors<int32_t> unknown14;
+
+    // common
+    /*-------------------- Common --------------------*/    
+    accessors<int16_t> useri1;
+    accessors<int16_t> useri2;
+    accessors<int16_t> useri3;
+    accessors<int16_t> useri4;
+    accessors<int16_t> useri5;
+    accessors<int16_t> splinesegs;
+    accessors<int16_t> surfu;
+    accessors<int16_t> surfv;
+    accessors<int16_t> surftype;
+    accessors<int16_t> surftab1;
+    accessors<int16_t> surftab2;
+    accessors<int16_t> splinetype;
+    accessors<int16_t> shadedge;
+    accessors<int16_t> shadedif;
+    accessors<int16_t> unitmode;
+    accessors<int16_t> maxactvp;
+    accessors<int16_t> isolines;
+    accessors<int16_t> cmljust;
+    accessors<int16_t> textqlty;
+    accessors<double> ltscale;
+    accessors<double> textsize;
+    accessors<double> tracewid;
+    accessors<double> sketchinc;
+    accessors<double> filletrad;
+    accessors<double> thickness;
+    accessors<double> angbase;
+    accessors<double> pdsize;
+    accessors<double> plinewid;
+    accessors<double> userr1;
+    accessors<double> userr2;
+    accessors<double> userr3;
+    accessors<double> userr4;
+    accessors<double> userr5;
+
+    accessors<double> chamfera;
+    accessors<double> chamferb;
+    accessors<double> chamferc;
+    accessors<double> chamferd;
+    accessors<double> facetres;
+    accessors<double> cmlscale;
+    accessors<double> celtscale;
+    accessors<std::wstring> menuname;
+    accessors<int32_t> tdcreate_day;
+    accessors<int32_t> tdcreate_ms;
+    accessors<int32_t> tdupdate_day;
+    accessors<int32_t> tdupdate_ms;
+
+    // R2004+
+    /*-------------------- R2004+ --------------------*/
+    accessors<int32_t> unknown15;
+    accessors<int32_t> unknown16;
+    accessors<int32_t> unknown17;
+
+    // common
+     /*-------------------- Common --------------------*/
+    accessors<int32_t> tdindwg_days;
+    accessors<int32_t> tdindwg_ms;
+    accessors<int32_t> tdusrtimer_days;
+    accessors<int32_t> tdusrtimer_ms;
+    accessors<bitcode::CMC> cecolor;
+    accessors<OcDbObjectId> handseed;
+    accessors<OcDbObjectId> clayer;
+    accessors<OcDbObjectId> textstyle;
+    accessors<OcDbObjectId> celtype;
 
     // R2007+
-    OcDbObjectId m_cmaterial;
+    /*-------------------- R2007+ --------------------*/
+    accessors<OcDbObjectId> cmaterial;
 
     // common
-    OcDbObjectId m_dimstyle;
-    OcDbObjectId m_cmlstyle;
+     /*-------------------- Common --------------------*/
+    accessors<OcDbObjectId> dimstyle;
+    accessors<OcDbObjectId> cmlstyle;
 
     // R2000+
-    double m_psvpscale;
+    /*-------------------- R2000+ --------------------*/
+    accessors<double> psvpscale;
 
     // common
-//    double m_insbase[3];
-    OcGePoint3D m_pinsbase;
-//    double m_extmin[3];
-    OcGePoint3D m_pextmin;
-//    double m_extmax[3];
-    OcGePoint3D m_pextmax;
-//    double m_limmin[2];
-    OcGePoint2D m_plimmin;
-//    double m_limmax[2];
-    OcGePoint2D m_plimmax;
+     /*-------------------- Common --------------------*/
+//    accessors<double> insbase[3];
+    accessors<OcGePoint3D> pinsbase;
+//    accessors<double> extmin[3];
+    accessors<OcGePoint3D> pextmin;
+//    accessors<double> extmax[3];
+    accessors<OcGePoint3D> pextmax;
+//    accessors<double> limmin[2];
+    accessors<OcGePoint2D> plimmin;
+//    accessors<double> limmax[2];
+    accessors<OcGePoint2D> plimmax;
 
-    double m_pelevation;
-//   double m_ucsorg[3];
-    OcGePoint3D m_pucsorg;
-//    double m_ucsxdir[3];
-    OcGePoint3D m_pucsxdir;
-//    double m_ucsydir[3];
-    OcGePoint3D m_pucsydir;
-    OcDbObjectId m_pucsname;
+    accessors<double> pelevation;
+//   accessors<double> ucsorg[3];
+    accessors<OcGePoint3D> pucsorg;
+//    accessors<double> ucsxdir[3];
+    accessors<OcGePoint3D> pucsxdir;
+//    accessors<double> ucsydir[3];
+    accessors<OcGePoint3D> pucsydir;
+    accessors<OcDbObjectId> pucsname;
 
 
     // R2000+
-    OcDbObjectId m_pucsbase;
-    int16_t m_pucsorthoview;
-    OcDbObjectId m_pucsorthoref;
-    OcGePoint3D m_pucsorgtop;
-    OcGePoint3D m_pucsorgbottom;
-    OcGePoint3D m_pucsorgleft;
-    OcGePoint3D m_pucsorgright;
-    OcGePoint3D m_pucsorgfront;
-    OcGePoint3D m_pucsorgback;
+    /*-------------------- R2000+ --------------------*/
+    accessors<OcDbObjectId> pucsbase;
+    accessors<int16_t> pucsorthoview;
+    accessors<OcDbObjectId> pucsorthoref;
+    accessors<OcGePoint3D> pucsorgtop;
+    accessors<OcGePoint3D> pucsorgbottom;
+    accessors<OcGePoint3D> pucsorgleft;
+    accessors<OcGePoint3D> pucsorgright;
+    accessors<OcGePoint3D> pucsorgfront;
+    accessors<OcGePoint3D> pucsorgback;
 
     // common
-    //    double m_insbase[3];
-    OcGePoint3D m_insbase;
-    //    double m_extmin[3];
-    OcGePoint3D m_extmin;
-    //    double m_extmax[3];
-    OcGePoint3D m_extmax;
-    //    double m_limmin[2];
-    OcGePoint2D m_limmin;
-    //    double m_limmax[2];
-    OcGePoint2D m_limmax;
+     /*-------------------- Common --------------------*/
+    //    accessors<double> insbase[3];
+    accessors<OcGePoint3D> insbase;
+    //    accessors<double> extmin[3];
+    accessors<OcGePoint3D> extmin;
+    //    accessors<double> extmax[3];
+    accessors<OcGePoint3D> extmax;
+    //    accessors<double> limmin[2];
+    accessors<OcGePoint2D> limmin;
+    //    accessors<double> limmax[2];
+    accessors<OcGePoint2D> limmax;
 
-    double m_elevation;
-    //   double m_ucsorg[3];
-    OcGePoint3D m_ucsorg;
-    //    double m_ucsxdir[3];
-    OcGePoint3D m_ucsxdir;
-    //    double m_ucsydir[3];
-    OcGePoint3D m_ucsydir;
-    OcDbObjectId m_ucsname;
+    accessors<double> elevation;
+    //   accessors<double> ucsorg[3];
+    accessors<OcGePoint3D> ucsorg;
+    //    accessors<double> ucsxdir[3];
+    accessors<OcGePoint3D> ucsxdir;
+    //    accessors<double> ucsydir[3];
+    accessors<OcGePoint3D> ucsydir;
+    accessors<OcDbObjectId> ucsname;
 
     // R2000+
-    OcDbObjectId m_ucsbase;
-    int16_t m_ucsorthoview;
-    OcDbObjectId m_ucsorthoref;
-    OcGePoint3D m_ucsorgtop;
-    OcGePoint3D m_ucsorgbottom;
-    OcGePoint3D m_ucsorgleft;
-    OcGePoint3D m_ucsorgright;
-    OcGePoint3D m_ucsorgfront;
-    OcGePoint3D m_ucsorgback;
-    std::wstring m_dimpost;
-    std::wstring m_dimapost;
+    /*-------------------- R2000+ --------------------*/
+    accessors<OcDbObjectId> ucsbase;
+    accessors<int16_t> ucsorthoview;
+    accessors<OcDbObjectId> ucsorthoref;
+    accessors<OcGePoint3D> ucsorgtop;
+    accessors<OcGePoint3D> ucsorgbottom;
+    accessors<OcGePoint3D> ucsorgleft;
+    accessors<OcGePoint3D> ucsorgright;
+    accessors<OcGePoint3D> ucsorgfront;
+    accessors<OcGePoint3D> ucsorgback;
+    accessors<std::wstring> dimpost;
+    accessors<std::wstring> dimapost;
 
     // R13 - R14
+    /*------------------- R13 - R14 ------------------*/
     //////////////////////////////////////////////////////////////////////////
-    bool m_dimtol;
-    bool m_dimlim;
-    bool m_dimtih;
-    bool m_dimtoh;
-    bool m_dimse1;
-    bool m_dimse2;
-    bool m_dimalt;
-    bool m_dimtofl;
-    bool m_dimsah;
-    bool m_dimtix;
-    bool m_dimsoxd;
+    accessors<bool> dimtol;
+    accessors<bool> dimlim;
+    accessors<bool> dimtih;
+    accessors<bool> dimtoh;
+    accessors<bool> dimse1;
+    accessors<bool> dimse2;
+    accessors<bool> dimalt;
+    accessors<bool> dimtofl;
+    accessors<bool> dimsah;
+    accessors<bool> dimtix;
+    accessors<bool> dimsoxd;
 
-    int16_t m_dimaltd; // RC in R13-R14
-    int16_t m_dimzin; // RC in R13-R14
-    bool m_dimsd1;
-    bool m_dimsd2;
-    int16_t m_dimtolj; // RC in R13-R14
-    int16_t m_dimjust; // RC in R13-R14
-    byte_t m_dimfit;
-    bool m_dimupt;
-    int16_t m_dimtzin; // RC in R13-R14
-    int16_t m_dimaltz; // RC in R13-R14
-    int16_t m_dimalttz; // RC in R13-R14
-    int16_t m_dimtad; // RC in R13-R14
-    int16_t m_dimunit;
-    int16_t m_dimaunit;
-    int16_t m_dimdec;
-    int16_t m_dimtdec;
-    int16_t m_dimaltu;
-    int16_t m_dimalttd;
-    OcDbObjectId m_dimtxsty;
+    accessors<int16_t> dimaltd; // RC in R13-R14
+    accessors<int16_t> dimzin; // RC in R13-R14
+    accessors<bool> dimsd1;
+    accessors<bool> dimsd2;
+    accessors<int16_t> dimtolj; // RC in R13-R14
+    accessors<int16_t> dimjust; // RC in R13-R14
+    accessors<byte_t> dimfit;
+    accessors<bool> dimupt;
+    accessors<int16_t> dimtzin; // RC in R13-R14
+    accessors<int16_t> dimaltz; // RC in R13-R14
+    accessors<int16_t> dimalttz; // RC in R13-R14
+    accessors<int16_t> dimtad; // RC in R13-R14
+    accessors<int16_t> dimunit;
+    accessors<int16_t> dimaunit;
+    accessors<int16_t> dimdec;
+    accessors<int16_t> dimtdec;
+    accessors<int16_t> dimaltu;
+    accessors<int16_t> dimalttd;
+    accessors<OcDbObjectId> dimtxsty;
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
@@ -321,144 +375,164 @@ private: // header variables
     ///////////////////////////////////////////////////////////////////////
 
 // common
-    double          m_dimscale;
-    double          m_dimasz;
-    double          m_dimexo;
-    double          m_dimdli;
-    double          m_dimexe;
-    double          m_dimrnd;
-    double          m_dimdle;
-    double          m_dimtp;
-    double          m_dimtm;
+     /*-------------------- Common --------------------*/
+    accessors<double>          dimscale;
+    accessors<double>          dimasz;
+    accessors<double>          dimexo;
+    accessors<double>          dimdli;
+    accessors<double>          dimexe;
+    accessors<double>          dimrnd;
+    accessors<double>          dimdle;
+    accessors<double>          dimtp;
+    accessors<double>          dimtm;
 
 // R2007+
-    double          m_dimfxl;
-    double          m_dimjogang;
-    int16_t         m_dimtfill;
-    bitcode::CMC    m_dimtfillclr;
+    /*-------------------- R2007+ --------------------*/
+    accessors<double>          dimfxl;
+    accessors<double>          dimjogang;
+    accessors<int16_t>         dimtfill;
+    accessors<bitcode::CMC>    dimtfillclr;
 
 // R2000+
-//    bool            m_dimtol;
-//    bool            m_dimlim;
-//    bool            m_dimtih;
-//    bool            m_dimtoh;
-//    bool            m_dimse1;
-//    bool            m_dimse2;
-//    int16_t         m_dimtad;
-//    int16_t         m_dimzin;
-    int16_t         m_dimazin;
+    /*-------------------- R2000+ --------------------*/
+//    accessors<bool>            dimtol;
+//    accessors<bool>            dimlim;
+//    accessors<bool>            dimtih;
+//    accessors<bool>            dimtoh;
+//    accessors<bool>            dimse1;
+//    accessors<bool>            dimse2;
+//    accessors<int16_t>         dimtad;
+//    accessors<int16_t>         dimzin;
+    accessors<int16_t>         dimazin;
 
 // R2007+
-    int16_t         m_dimarcsym;
+    /*-------------------- R2007+ --------------------*/
+    accessors<int16_t>         dimarcsym;
 
 // common
-    double          m_dimtxt;
-    double          m_dimcen;
-    double          m_dimtsz;
-    double          m_dimaltf;
-    double          m_dimlfac;
-    double          m_dimtvp;
-    double          m_dimtfac;
-    double          m_dimgap;
+     /*-------------------- Common --------------------*/
+    accessors<double>          dimtxt;
+    accessors<double>          dimcen;
+    accessors<double>          dimtsz;
+    accessors<double>          dimaltf;
+    accessors<double>          dimlfac;
+    accessors<double>          dimtvp;
+    accessors<double>          dimtfac;
+    accessors<double>          dimgap;
 
 // R13-R14
-    // std::wstring    m_dimpost;
-    // std::wstring    m_dimapost;
-    std::wstring    m_dimblk;
-    std::wstring    m_dimblk1;
-    std::wstring    m_dimblk2;
+    /*------------------- R13 - R14 ------------------*/
+    // accessors<std::wstring>    dimpost;
+    // accessors<std::wstring>    dimapost;
+    accessors<std::wstring>    dimblk;
+    accessors<std::wstring>    dimblk1;
+    accessors<std::wstring>    dimblk2;
 
 // R2000+
-    double          m_dimaltrnd;
-    // bool            m_dimalt;
-    // int16_t         m_dimaltd;
-    // bool            m_dimtofl;
-    // bool            m_dimsah;
-    // bool            m_dimtix;
-    // bool            m_dimsoxd;
+    /*-------------------- R2000+ --------------------*/
+    accessors<double>          dimaltrnd;
+    // accessors<bool>            dimalt;
+    // accessors<int16_t>         dimaltd;
+    // accessors<bool>            dimtofl;
+    // accessors<bool>            dimsah;
+    // accessors<bool>            dimtix;
+    // accessors<bool>            dimsoxd;
 
 // common
-    bitcode::CMC    m_dimclrd;
-    bitcode::CMC    m_dimclre;
-    bitcode::CMC    m_dimclrt;
+     /*-------------------- Common --------------------*/
+    accessors<bitcode::CMC>    dimclrd;
+    accessors<bitcode::CMC>    dimclre;
+    accessors<bitcode::CMC>    dimclrt;
 
 // R2000+
-    int16_t         m_dimadec;
-    // int16_t         m_dimdec;
-    // int16_t         m_dimtdec;
-    // int16_t         m_dimaltu;
-    // int16_t         m_dimalttd;
-    // int16_t         m_dimaunit;
-    int16_t         m_dimfrac;
-    int16_t         m_dimlunit;
-    int16_t         m_dimdsep;
-    int16_t         m_dimtmove;
-    // int16_t         m_dimjust;
-    // bool            m_dimsd1;
-    // bool            m_dimsd2;
-    // int16_t         m_dimtolj;
-    // int16_t         m_dimtzin;
-    // int16_t         m_dimaltz;
-    // int16_t         m_dimalttz;
-    // bool            m_dimupt;
-    int16_t         m_dimatfit;
+    /*-------------------- R2000+ --------------------*/
+    accessors<int16_t>         dimadec;
+    // accessors<int16_t>         dimdec;
+    // accessors<int16_t>         dimtdec;
+    // accessors<int16_t>         dimaltu;
+    // accessors<int16_t>         dimalttd;
+    // accessors<int16_t>         dimaunit;
+    accessors<int16_t>         dimfrac;
+    accessors<int16_t>         dimlunit;
+    accessors<int16_t>         dimdsep;
+    accessors<int16_t>         dimtmove;
+    // accessors<int16_t>         dimjust;
+    // accessors<bool>            dimsd1;
+    // accessors<bool>            dimsd2;
+    // accessors<int16_t>         dimtolj;
+    // accessors<int16_t>         dimtzin;
+    // accessors<int16_t>         dimaltz;
+    // accessors<int16_t>         dimalttz;
+    // accessors<bool>            dimupt;
+    accessors<int16_t>         dimatfit;
 
 // R2007+
-    bool            m_dimfxlon;
+    /*-------------------- R2007+ --------------------*/
+    accessors<bool>            dimfxlon;
 
 // R2000+
-    // OcDbObjectId    m_dimtxtsty;
-    OcDbObjectId    m_dimldrblk;
-    OcDbObjectId    m_dimblkId;
-    OcDbObjectId    m_dimblk1Id;
-    OcDbObjectId    m_dimblk2Id;
+    /*-------------------- R2000+ --------------------*/
+    // accessors<OcDbObjectId>    dimtxtsty;
+    accessors<OcDbObjectId>    dimldrblk;
+    accessors<OcDbObjectId>    dimblkId;
+    accessors<OcDbObjectId>    dimblk1Id;
+    accessors<OcDbObjectId>    dimblk2Id;
 
 // R2007+
-    OcDbObjectId    m_dimltype;
-    OcDbObjectId    m_dimltex1;
-    OcDbObjectId    m_dimltex2;
+    /*-------------------- R2007+ --------------------*/
+    accessors<OcDbObjectId>    dimltype;
+    accessors<OcDbObjectId>    dimltex1;
+    accessors<OcDbObjectId>    dimltex2;
 
 // R2000+
-    int16_t         m_dimlwd;
-    int16_t         m_dimlwe;
+    /*-------------------- R2000+ --------------------*/
+    accessors<int16_t>         dimlwd;
+    accessors<int16_t>         dimlwe;
 
 // common
-    OcDbObjectId    m_blockCtrlId;    // CONTROL OBJECT
-    OcDbObjectId    m_layerCtrlId;    // CONTROL OBJECT
-    OcDbObjectId    m_styleCtrlId;    // CONTROL OBJECT
-    OcDbObjectId    m_linetypeCtrlId; // CONTROL OBJECT
-    OcDbObjectId    m_viewCtrlId;     // CONTROL OBJECT
-    OcDbObjectId    m_ucsCtrlId;      // CONTROL OBJECT
-    OcDbObjectId    m_vportCtrlId;    // CONTROL OBJECT
-    OcDbObjectId    m_appidCtrlId;    // CONTROL OBJECT
-    OcDbObjectId    m_dimstyleCtrlId; // CONTROL OBJECT
+     /*-------------------- Common --------------------*/
+    accessors<OcDbObjectId>    blockCtrlId;    // CONTROL OBJECT
+    accessors<OcDbObjectId>    layerCtrlId;    // CONTROL OBJECT
+    accessors<OcDbObjectId>    styleCtrlId;    // CONTROL OBJECT
+    accessors<OcDbObjectId>    linetypeCtrlId; // CONTROL OBJECT
+    accessors<OcDbObjectId>    viewCtrlId;     // CONTROL OBJECT
+    accessors<OcDbObjectId>    ucsCtrlId;      // CONTROL OBJECT
+    accessors<OcDbObjectId>    vportCtrlId;    // CONTROL OBJECT
+    accessors<OcDbObjectId>    appidCtrlId;    // CONTROL OBJECT
+    accessors<OcDbObjectId>    dimstyleCtrlId; // CONTROL OBJECT
 
 // R13-R15
-    OcDbObjectId    m_viewport; // ENTITY HEADER CONTROL OBJECT
+    /*------------------- R13 - R15 ------------------*/
+    accessors<OcDbObjectId>    viewport; // ENTITY HEADER CONTROL OBJECT
 
 // common
-    OcDbObjectId    m_dictionaryGroupId;      // (ACAD_GROUP)
-    OcDbObjectId    m_dictionaryMLineStyleId; // (ACAD_MLINESTYLE)
-    OcDbObjectId    m_dictionaryNamedObjsId;   // (NAMED OBJECTS)
+     /*-------------------- Common --------------------*/
+    accessors<OcDbObjectId>    dictionaryGroupId;      // (ACAD_GROUP)
+    accessors<OcDbObjectId>    dictionaryMLineStyleId; // (ACAD_MLINESTYLE)
+    accessors<OcDbObjectId>    dictionaryNamedObjsId;   // (NAMED OBJECTS)
 
 // R2000+
-    int16_t         m_tstackalign;
-    int16_t         m_tstacksize;
-    std::wstring    m_hyperlinkbase;
-    std::wstring    m_stylesheet;
-    OcDbObjectId    m_dictionaryLayoutsId;   // (LAYOUTS)
-    OcDbObjectId    m_dictionaryPlotSettingsId;   // (PLOTSETTINGS)
-    OcDbObjectId    m_dictionaryPlotStylesId;   // (PLOTSTYLES)
+    /*-------------------- R2000+ --------------------*/
+    accessors<int16_t>         tstackalign;
+    accessors<int16_t>         tstacksize;
+    accessors<std::wstring>    hyperlinkbase;
+    accessors<std::wstring>    stylesheet;
+    accessors<OcDbObjectId>    dictionaryLayoutsId;   // (LAYOUTS)
+    accessors<OcDbObjectId>    dictionaryPlotSettingsId;   // (PLOTSETTINGS)
+    accessors<OcDbObjectId>    dictionaryPlotStylesId;   // (PLOTSTYLES)
 
 // R2004+
-    OcDbObjectId    m_dictionaryMaterialsId;   // (MATERIALS)
-    OcDbObjectId    m_dictionaryColorsId;   // (COLORS)
+    /*-------------------- R2004+ --------------------*/
+    accessors<OcDbObjectId>    dictionaryMaterialsId;   // (MATERIALS)
+    accessors<OcDbObjectId>    dictionaryColorsId;   // (COLORS)
 
 // R2007+
-    OcDbObjectId    m_dictionaryVisualStyleId;   // (VISUALSTYLE)
+    /*-------------------- R2007+ --------------------*/
+    accessors<OcDbObjectId>    dictionaryVisualStyleId;   // (VISUALSTYLE)
 
 // R2000+
-    int32_t         m_flags;
+    /*-------------------- R2000+ --------------------*/
+    accessors<int32_t>         flags;
 //                      CELWEIGHT       Flags & 0x001F
 //                      ENDCAPS         Flags & 0x0060
 //                      JOINSTYLE       Flags & 0x0180
@@ -467,76 +541,81 @@ private: // header variables
 //                      EXTNAMES        Flags & 0x0800
 //                      PSTYLEMODE      Flags & 0x2000
 //                      OLESTARTUP      Flags & 0x4000
-    int16_t         m_insunits;
-    int16_t         m_cepsntype;
-    OcDbObjectId    m_cpsnid;       // (present only if CEPSNTYPE == 3)
-    std::wstring    m_fingerprintguid;
-    std::wstring    m_versionguid;
+    accessors<int16_t>         insunits;
+    accessors<int16_t>         cepsntype;
+    accessors<OcDbObjectId>    cpsnid;       // (present only if CEPSNTYPE == 3)
+    accessors<std::wstring>    fingerprintguid;
+    accessors<std::wstring>    versionguid;
 
 // R2004+
-    byte_t          m_sortents;
-    byte_t          m_indexctl;
-    byte_t          m_hidetext;
-    byte_t          m_xclipframe;
-    byte_t          m_dimassoc;
-    byte_t          m_halogap;
-    int16_t         m_obscuredcolor;
-    int16_t         m_intersectioncolor;
-    byte_t          m_obscuredltype;
-    byte_t          m_intersectiondisplay;
-    std::wstring    m_projectname;
+    /*-------------------- R2004+ --------------------*/
+    accessors<byte_t>          sortents;
+    accessors<byte_t>          indexctl;
+    accessors<byte_t>          hidetext;
+    accessors<byte_t>          xclipframe;
+    accessors<byte_t>          dimassoc;
+    accessors<byte_t>          halogap;
+    accessors<int16_t>         obscuredcolor;
+    accessors<int16_t>         intersectioncolor;
+    accessors<byte_t>          obscuredltype;
+    accessors<byte_t>          intersectiondisplay;
+    accessors<std::wstring>    projectname;
 
 // common
-    OcDbObjectId    m_block_recordPsId;  // (*PAPER_SPACE)
-    OcDbObjectId    m_block_recordMsId;  // (*MODEL_SPACE)
-    OcDbObjectId    m_ltypeByLayerId;         // (BYLAYER)
-    OcDbObjectId    m_ltypeByBlockId;         // (BYBLOCK)
-    OcDbObjectId    m_ltypeContinuousId;         // (CONTINUOUS)
+     /*-------------------- Common --------------------*/
+    accessors<OcDbObjectId>    block_recordPsId;  // (*PAPER_SPACE)
+    accessors<OcDbObjectId>    block_recordMsId;  // (*MODEL_SPACE)
+    accessors<OcDbObjectId>    ltypeByLayerId;         // (BYLAYER)
+    accessors<OcDbObjectId>    ltypeByBlockId;         // (BYBLOCK)
+    accessors<OcDbObjectId>    ltypeContinuousId;         // (CONTINUOUS)
 
 // R2007+
-    bool            m_cameradisplay;
-    int32_t         m_unknown21;
-    int32_t         m_unknown22;
-    double          m_unknown23;
-    double          m_stepspersec;
-    double          m_stepsize;
-    double          m_3ddwfprec;
-    double          m_lenslength;
-    double          m_cameraheight;
-    byte_t          m_solidhist;
-    byte_t          m_showhist;
-    double          m_psolwidth;
-    double          m_psolheight;
-    double          m_loftang1;
-    double          m_loftang2;
-    double          m_loftmag1;
-    double          m_logtmag2;
-    int16_t         m_loftparam;
-    byte_t          m_loftnormals;
-    double          m_latitude;
-    double          m_longitude;
-    double          m_northdirection;
-    int32_t         m_timezone;
-    byte_t          m_lightglyphdisplay;
-    byte_t          m_tilemodelightsynch;
-    byte_t          m_dwfframe;
-    byte_t          m_dgnframe;
-    bool            m_unknown47;
-    bitcode::CMC    m_interferecolor;
-    OcDbObjectId    m_interfereobjvsId;
-    OcDbObjectId    m_interferevpvsId;
-    OcDbObjectId    m_dragvsId;
-    byte_t          m_cshadow;
-    double          m_unknown53;
+    /*-------------------- R2007+ --------------------*/
+    accessors<bool>            cameradisplay;
+    accessors<int32_t>         unknown21;
+    accessors<int32_t>         unknown22;
+    accessors<double>          unknown23;
+    accessors<double>          stepspersec;
+    accessors<double>          stepsize;
+    accessors<double>          dwfprec3d;
+    accessors<double>          lenslength;
+    accessors<double>          cameraheight;
+    accessors<byte_t>          solidhist;
+    accessors<byte_t>          showhist;
+    accessors<double>          psolwidth;
+    accessors<double>          psolheight;
+    accessors<double>          loftang1;
+    accessors<double>          loftang2;
+    accessors<double>          loftmag1;
+    accessors<double>          logtmag2;
+    accessors<int16_t>         loftparam;
+    accessors<byte_t>          loftnormals;
+    accessors<double>          latitude;
+    accessors<double>          longitude;
+    accessors<double>          northdirection;
+    accessors<int32_t>         timezone;
+    accessors<byte_t>          lightglyphdisplay;
+    accessors<byte_t>          tilemodelightsynch;
+    accessors<byte_t>          dwfframe;
+    accessors<byte_t>          dgnframe;
+    accessors<bool>            unknown47;
+    accessors<bitcode::CMC>    interferecolor;
+    accessors<OcDbObjectId>    interfereobjvsId;
+    accessors<OcDbObjectId>    interferevpvsId;
+    accessors<OcDbObjectId>    dragvsId;
+    accessors<byte_t>          cshadow;
+    accessors<double>          unknown53;
 
 // R14+
-    int16_t         m_unknown54;  // short(type 5 / 6 only)  these do not seem to be required,
-    int16_t         m_unknown55;  // short(type 5 / 6 only)  even for type 5.
-    int16_t         m_unknown56;  // short(type 5 / 6 only)
-    int16_t         m_unknown57;  // short(type 5 / 6 only)
+    /*---------------------- R14+ ---------------------*/
+    accessors<int16_t>         unknown54;  // short(type 5 / 6 only)  these do not seem to be required,
+    accessors<int16_t>         unknown55;  // short(type 5 / 6 only)  even for type 5.
+    accessors<int16_t>         unknown56;  // short(type 5 / 6 only)
+    accessors<int16_t>         unknown57;  // short(type 5 / 6 only)
 
 // common
-    uint16_t        m_crc;      // for the data section, starting after the
+     /*-------------------- Common --------------------*/
+    accessors<uint16_t>        crc;      // for the data section, starting after the
     // sentinel. Use 0xC0C1 for the initial value.
 
 
