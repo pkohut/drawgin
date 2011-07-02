@@ -54,7 +54,7 @@ OcApClassFactoryBase::OcApClassFactoryBase(const char * key,
 // type safe.
 // For normal application code, use the type safe function
 // OcApApplication::RegisterRxClass instead.
-int octavarium::__Register_Rx_Class__(const std::string & className,
+int __Register_Rx_Class__(const std::string & className,
                                       void * pCreator)
 {
     return OcApApplication::RegisterRxClass(className,
@@ -62,7 +62,7 @@ int octavarium::__Register_Rx_Class__(const std::string & className,
                                             pCreator);
 }
 
-int octavarium::__Register_AcToOc_Pair__(const std::string & acClassName,
+int __Register_AcToOc_Pair__(const std::string & acClassName,
                                          const std::string & ocClassName)
 {
     return OcApApplication::RegisterAcToOcClass(acClassName, ocClassName);

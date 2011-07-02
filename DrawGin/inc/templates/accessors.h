@@ -31,7 +31,7 @@ class accessors;
  *	@brief lvalue template definition for class accessors
  *
  *  Provides light weight (0 runtime cost) getter/setter operations on
- *  class member variables via overloaded function operators.  
+ *  class member variables via overloaded function operators.
  */
 template<typename V>
 class accessors<V, lvalue>
@@ -54,7 +54,7 @@ public:
     ~accessors() {}
 
     /**
-     *  Overloaded Function operator	
+     *  Overloaded Function operator
      *  @return m_v
      */
     const V &operator()() const {
@@ -65,9 +65,9 @@ public:
      *	Overloaded function operator
      *  @return m_v
      */
-    V &operator()() const {
-        return m_v;
-    }
+//    V &operator()() const {
+//        return m_v;
+//    }
 
     /**
      *	Overloaded function operator
@@ -82,7 +82,7 @@ public:
  *	@brief rvalue template definition for class accessors
  *
  *  Provides light weight (0 runtime cost) getter/setter operations on
- *  class member variables via overloaded function operators.  
+ *  class member variables via overloaded function operators.
  */
 template<typename V>
 class accessors<V, rvalue>
@@ -126,7 +126,7 @@ public:
  *  class accessors
  *
  *  Provides light weight (0 runtime cost) getter/setter operations on
- *  class member variables via overloaded function operators.  
+ *  class member variables via overloaded function operators.
  */
 template<typename V>
 class accessors<boost::scoped_ptr<V>, rvalue>
@@ -171,7 +171,7 @@ public:
  *  for class accessors
  *
  *  Provides light weight (0 runtime cost) getter/setter operations on
- *  class member variables via overloaded function operators.  
+ *  class member variables via overloaded function operators.
  */
 template<typename V>
 class accessors<const boost::scoped_ptr<V>, rvalue>
@@ -197,7 +197,7 @@ public:
  *  class accessors
  *
  *  Provides light weight (0 runtime cost) getter/setter operations on
- *  class member variables via overloaded function operators.  
+ *  class member variables via overloaded function operators.
  */
 template<typename V>
 class accessors<boost::intrusive_ptr<V>, rvalue>
@@ -222,7 +222,7 @@ public:
  *  definition for class accessors.
  *
  *  Provides light weight (0 runtime cost) getter/setter operations on
- *  class member variables via overloaded function operators.  
+ *  class member variables via overloaded function operators.
  */
 template<typename V>
 class accessors<const boost::intrusive_ptr<V>, rvalue>

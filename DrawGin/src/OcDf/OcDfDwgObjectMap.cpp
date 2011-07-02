@@ -260,7 +260,7 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
                 VLOG(4) << "Classname = " <<
                         WStringToString(className.CppClassName());
             } else {
-                SUB_CLASS_ID subClass = subClass = subClasses.at(objType);
+                SUB_CLASS_ID subClass = subClasses.at(objType);
                 VLOG(4) << "Sub class name = " << subClass.subClassName;
             }
         }
