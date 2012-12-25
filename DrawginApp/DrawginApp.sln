@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrawginApp", "DrawginApp\DrawginApp.vcproj", "{325E4AF6-7979-4E06-ADB9-195EAD146ED7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrawginLib", "..\DrawginLib\DrawginLib.vcproj", "{7C527866-DC5C-44B9-94EE-E3EBF19B59C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{325E4AF6-7979-4E06-ADB9-195EAD146ED7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{325E4AF6-7979-4E06-ADB9-195EAD146ED7}.Debug|Win32.Build.0 = Debug|Win32
+		{325E4AF6-7979-4E06-ADB9-195EAD146ED7}.Release|Win32.ActiveCfg = Release|Win32
+		{325E4AF6-7979-4E06-ADB9-195EAD146ED7}.Release|Win32.Build.0 = Release|Win32
+		{7C527866-DC5C-44B9-94EE-E3EBF19B59C2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7C527866-DC5C-44B9-94EE-E3EBF19B59C2}.Debug|Win32.Build.0 = Debug|Win32
+		{7C527866-DC5C-44B9-94EE-E3EBF19B59C2}.Release|Win32.ActiveCfg = Release|Win32
+		{7C527866-DC5C-44B9-94EE-E3EBF19B59C2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
