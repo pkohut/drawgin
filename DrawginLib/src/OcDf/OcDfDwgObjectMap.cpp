@@ -58,7 +58,7 @@ SUB_CLASS_ID _subClasses[] = {
     {0x01, "AcDbText"},                 // text
     {0x02, "AcDbAttribute"},            // attrib
     {0x03, "AcDbAttributeDefinition"},  // attdef
-    {0x04, "AcDbBlockBegn"},            // block
+    {0x04, "AcDbBlockBegin"},           // block
     {0x05, "AcDbBlockEnd"},             // endblk
     {0x06, "AcDbSequenceEnd"},          // seqend
     {0x07, "AcDbBlockReference"},       // insert

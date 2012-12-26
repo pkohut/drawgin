@@ -1,0 +1,52 @@
+.dwg read and write feature status.
+Update this page to the project wiki too at
+Note: The Google Wiki page interprets R### as a revision number and makes a html link from it, which points to an invalid page. Because of this use R_## to represent the support drawing format.
+
+<<BEGIN CUT>>
+#summary Feature information.
+
+= Support and Planned Feature Status =
+{{{
+(R = read (stable),   W = write (stable),   - = Not supported)
+(r = read (unstable), w = write (unstable), - = Not supported)
+}}}
+|| *bit code data types* || *R_13 - R_2010*||
+|| B :bit                || R-           ||
+|| BB :2 bits            || R-    ||
+|| BS :bitshort          || R-    ||
+|| BL :bitlong           || R-    ||
+|| BD :bitdouble         || R-    ||
+|| 2BD :2D point         || R-    ||
+|| 3BD :3D point         || R-    ||
+|| RC :raw char          || R-    ||
+|| RS :raw short         || R-    ||
+|| RD :raw double        || R-    ||
+|| RL :raw long          || R-    ||
+|| 2RD :2 raw doubles    || R-    ||
+|| 3RD :3 raw doubles    || R-    ||
+|| MC  :modular char     || r-    ||
+|| MS  :modular short    || r-    ||
+|| H   :handle reference || R-    ||
+|| T   :text             || R-    ||
+|| TU  :unicode text     || R-    ||
+|| TV  :variable text    || R-    ||
+|| X   :special form     || --    ||
+|| SN  :16 byte sentinel || R-    ||
+|| BE  :bit extrusion    || r-    ||
+|| DD  :bit double w/dflt|| --    ||
+|| BT  :bit thickness    || r-    ||
+|| 3DD :3D point         || --    ||
+|| CMC :CmColor value    || R-    ||
+
+|| *.dwg file*           || *R_13* || *R_14* || *R_2000* || *R_2004* || *R_2007* || *R_2010* ||
+|| file header           || r-    || R-    || r-      || --      || --      || --      ||
+|| Preview Image         || r-    || R-    || r-      || --      ||         ||         ||
+|| dwg Header Variables  || r-    || R-    || r-      || --      ||         ||         ||
+
+|| *Object Types*        || *R_13* || *R_14* || *R_2000* || *R_2004* || *R_2007* || *R_2010* ||
+|| Handle                || r-    || R-    || r-      || --      || --      || --      ||
+||                       ||       ||       ||         ||         ||         ||         ||
+||                       ||       ||       ||         ||         ||         ||         ||
+<<END CUT>>
+
+||                       ||       ||       ||         || --      || --      || --      ||
