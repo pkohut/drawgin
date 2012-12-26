@@ -41,11 +41,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="inc;$(BOOST);$(GLOG)\src\windows;$(GLOG)\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="OcCommon.h"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -104,6 +106,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="inc;$(BOOST);$(GLOG)\src\windows;$(GLOG)\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -148,29 +151,185 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\src\OcCommon.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
 			<Filter
 				Name="OcDb"
 				>
+				<File
+					RelativePath=".\src\OcDb\OcDbDatabase.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbEntity.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbHardOwnershipId.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbObject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbObjectId.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="OcAp"
 				>
+				<File
+					RelativePath=".\src\OcAp\OcApApplication.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcAp\OcApClassFactory.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="OcBs"
 				>
+				<File
+					RelativePath=".\src\OcBs\DwgInArchive.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\DwgInArchive.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgCrc.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgCrc.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgFileHeader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgFileHeader.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgPreviewImage.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgPreviewImage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgSentinels.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsDwgSentinels.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsStream.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsStream.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsStreamIn.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsStreamIn.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcBs\OcBsTypes.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="OcDf"
 				>
+				<File
+					RelativePath=".\src\OcDf\OcDfClass.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfClass.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfClasses.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfClasses.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDwgObjectMap.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDwgObjectMap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDwgVersion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDwgVersion.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfHeaderVars.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfHeaderVars.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="OcGe"
 				>
+				<File
+					RelativePath=".\src\OcGe\OcGePoint2D.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcGe\OcGePoint3D.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="OcRx"
 				>
+				<File
+					RelativePath=".\src\OcRx\OcRxClass.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcRx\OcRxObject.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -188,6 +347,94 @@
 		<Filter
 			Name="Public Headers"
 			>
+			<File
+				RelativePath=".\inc\ClassMacros.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcApApplication.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcApClassFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcCommon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcConfig.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcDbDatabase.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcDbEntity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcDbHardOwnershipId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcDbObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcDbObjectId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcDbSmartPtrs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcError.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcGePoint2D.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcGePoint3D.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcLogger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcRxClass.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcRxObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcTypes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\wchar_logging.h"
+				>
+			</File>
+			<Filter
+				Name="templates"
+				>
+				<File
+					RelativePath=".\inc\templates\accessors.h"
+					>
+				</File>
+				<File
+					RelativePath=".\inc\templates\bounded.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
