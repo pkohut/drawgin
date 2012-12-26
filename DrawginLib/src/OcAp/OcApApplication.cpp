@@ -95,7 +95,7 @@ octavarium::OcApApplicationPtr OcApApplication::Application(void)
 
 void OcApApplication::Shutdown(void)
 {
-    OcRxObject::ShutdownObjectTracking();
+
 }
 
 OcApApplication::RegClasses& OcApApplication::RegisteredClasses(void)

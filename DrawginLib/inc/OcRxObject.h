@@ -52,52 +52,21 @@ class OcRxObject
 {
     OC_DECLARE_BASE_CLASS(OcRxObject);
 protected:
-    OcRxObject() : m_nReferences(0), m_bAutomaticDelete(true) {
-#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
-        DebugLivingObjects()->insert(this);
-#endif
-    }
-    OcRxObject(const OcRxObject & other)
-        : m_nReferences(0), m_bAutomaticDelete(true) {
-#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
-        DebugLivingObjects()->insert(this);
-#endif
-    }
+    OcRxObject();
+    OcRxObject(const OcRxObject & other);
 public:
     virtual ~OcRxObject();
 
-    OcRxObject & operator=(const OcRxObject & other) {
-        return *this;
-    }
+    OcRxObject & operator=(const OcRxObject & other);
 
     typedef OcApClassFactoryBase BaseClassFactory;
     static int RegisterRx(const std::string & className,
                           const std::string & acClassName,
                           BaseClassFactory * pCreator);
 
-    void SetAutomaticDelete(bool bAutomaticDelete) {
-        m_bAutomaticDelete = bAutomaticDelete;
-    }
-    bool AutomaticDelete(void) {
-        return m_bAutomaticDelete;
-    }
-    static void ShutdownObjectTracking(void);
-
-#if defined(OC_DEBUG_LIVING_OBJECTS) && !defined(NDEBUG)
-private:
-    static std::set< OcRxObject* >* m_debug_LivingObjects;
-public:
-    static std::set< OcRxObject* >* DebugLivingObjects() {
-        if(!m_debug_LivingObjects) {
-            m_debug_LivingObjects = new std::set< OcRxObject* >;
-        }
-        return m_debug_LivingObjects;
-    }
-#endif
-
 private:
     long    m_nReferences;
-    bool    m_bAutomaticDelete;
+
     friend void ::boost::intrusive_ptr_add_ref(OcRxObject * p);
     friend void ::boost::intrusive_ptr_release(OcRxObject * p);
 };
