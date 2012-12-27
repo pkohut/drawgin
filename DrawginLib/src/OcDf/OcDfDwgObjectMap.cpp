@@ -194,11 +194,11 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
             break;
         }
 
-        //// 6/2/2011 - seems to work, commented out the check.
-        //// Until I've seen some files which have more than one
-        //// section, not really sure how the data is coded.
-        //// Does lastOffset need to be reset to 0 for each section?
-        // CHECK(sectionNumber == 0) << "Check file offsets for object addresses";
+        // 12/26/2012 - Examined a sample drawing with multiple sections, and determined
+        // that indeed, lastOffset and lastHandle must be set to 0 at the beginning
+        // of each section to be read.
+        lastOffset = 0;
+        lastHandle = 0;
 
         // endSection includes the 2 byte crc for this section, so
         // exclude 2 bytes when doing the loop.
@@ -206,10 +206,13 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
         while(ar.FilePosition() < endSection - 2) {
             int32_t offsetLastH;
             int32_t offsetLoc;
-            BS_ARCHIVE(bitcode::MC,  ar, offsetLastH, "offset last handle");
-            BS_ARCHIVE(bitcode::MC , ar, offsetLoc,   "offset loc");
+            VLOG(4) << "---------------";
+            BS_ARCHIVE(bitcode::MC,  ar, offsetLastH, "File offset last handle");
+            BS_ARCHIVE(bitcode::MC , ar, offsetLoc,   "File offset loc");
             lastHandle += offsetLastH;
             lastOffset += offsetLoc;
+            VLOG(4) << "Object handle = " << lastHandle;
+            VLOG(4) << "File position = " << lastOffset;
             m_objMapItems.push_back(MapItem(lastHandle, lastOffset));
         }
         // calc section crc
@@ -240,7 +243,10 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
     std::vector<SUB_CLASS_ID> subClasses(&_subClasses[0],
                                          &_subClasses[ELEMENTS(_subClasses)]);
     BOOST_FOREACH(const MapItem &  item, m_objMapItems) {
+        VLOG(4) << "--------------------";
         ar.Seek(item.second);
+        VLOG(4) << "Object Handle = " << item.first;
+        VLOG(4) << "Seeking file position = " << item.second; 
         if(ar.Error() != OcApp::eOk)
             return ar.Error();
 

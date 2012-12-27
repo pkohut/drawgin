@@ -179,7 +179,7 @@ int main(int argc, char * argv[])
     // Command line options:
     // --v=4 --log_dir=$(OutDir)\logs --drawing=C:\Users\Paul\Documents\TestDwgs\EmptyR14.dwg
 
-#if defined(_WIN32)
+#if defined(_WIN32) && !defined(NDEBUG)
     // Enable memory dump from within VS.
     _CrtMemState memState;
     _CrtMemCheckpoint(&memState);
@@ -239,7 +239,7 @@ int main(int argc, char * argv[])
     // they have been released property.
     OcApApplication::Shutdown();
 
-#if defined(_WIN32)
+#if defined(_WIN32) && !defined(NDEBUG)
     // Check for memory leaks in debug builds.
     _CrtMemDumpAllObjectsSince(&memState);
 #endif
