@@ -39,24 +39,24 @@
 #include "OcDbObjectId.h"
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
-#include "OcDfClass.h"
+#include "OcDfDwgClass.h"
 #include "../OcBs/OcBsDwgSentinels.h"
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
 
-OcDfClass::OcDfClass()
+OcDfDwgClass::OcDfDwgClass()
 {
     VLOG(4) << "Constructor entered";
 }
 
-OcDfClass::~OcDfClass()
+OcDfDwgClass::~OcDfDwgClass()
 {
     VLOG(4) << "Destructor entered";
 }
 
-OcApp::ErrorStatus OcDfClass::DecodeData(DwgInArchive& in)
+OcApp::ErrorStatus OcDfDwgClass::DecodeData(DwgInArchive& in)
 {
     VLOG(4) << "DecodeData entered";
 
@@ -104,7 +104,7 @@ OcApp::ErrorStatus OcDfClass::DecodeData(DwgInArchive& in)
     return OcApp::eOk;
 }
 
-DwgInArchive& operator>>(DwgInArchive& in, OcDfClass & dwgClass)
+DwgInArchive& operator>>(DwgInArchive& in, OcDfDwgClass & dwgClass)
 {
     ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(dwgClass.DecodeData(in));

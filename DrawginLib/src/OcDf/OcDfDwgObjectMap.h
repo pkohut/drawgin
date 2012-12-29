@@ -36,7 +36,7 @@
 BEGIN_OCTAVARIUM_NS
 class OcDbDatabase;
 class DwgInArchive;
-class OcDfClasses;
+class OcDfDwgClasses;
 class OcDbObject;
 
 class OcDfDwgObjectMap
@@ -46,7 +46,7 @@ public:
     virtual ~OcDfDwgObjectMap(void);
 
     OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabase *& pDb,
-                                     const OcDfClasses & classes);
+                                     const OcDfDwgClasses & classes);
 
 private:
     typedef std::pair<int32_t, int32_t> MapItem;

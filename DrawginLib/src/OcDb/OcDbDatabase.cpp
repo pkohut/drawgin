@@ -48,8 +48,8 @@
 #include "../OcBs/OcBsDwgPreviewImage.h"
 
 #include "../OcDf/OcDfHeaderVars.h"
-#include "../OcDf/OcDfClass.h"
-#include "../OcDf/OcDfClasses.h"
+#include "../OcDf/OcDfDwgClass.h"
+#include "../OcDf/OcDfDwgClasses.h"
 #include "../OcDf/OcDfDwgObjectMap.h"
 #include "../OcDf/OcDfDwgSecondFileHeader.h"
 #include "../OcDf/OcDfDwgDataSection.h"
@@ -128,7 +128,7 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
                 << "Section locater record 1 offset does not "
                 "match current file position";
 
-        OcDfClasses dwgClasses;
+        OcDfDwgClasses dwgClasses;
         ar >> dwgClasses;
 
         if(ar.Error() != OcApp::eOk) {

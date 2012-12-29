@@ -276,19 +276,19 @@
 				Name="OcDf"
 				>
 				<File
-					RelativePath=".\src\OcDf\OcDfClass.cpp"
+					RelativePath=".\src\OcDf\OcDfDwgClass.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\OcDf\OcDfClass.h"
+					RelativePath=".\src\OcDf\OcDfDwgClass.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\OcDf\OcDfClasses.cpp"
+					RelativePath=".\src\OcDf\OcDfDwgClasses.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\OcDf\OcDfClasses.h"
+					RelativePath=".\src\OcDf\OcDfDwgClasses.h"
 					>
 				</File>
 				<File

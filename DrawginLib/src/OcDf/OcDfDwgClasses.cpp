@@ -36,24 +36,24 @@
 
 #include "../OcBs/OcBsStreamIn.h"
 #include "../OcBs/DwgInArchive.h"
-#include "OcDfClass.h"
-#include "OcDfClasses.h"
+#include "OcDfDwgClass.h"
+#include "OcDfDwgClasses.h"
 #include "../OcBs/OcBsDwgSentinels.h"
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-OcDfClasses::OcDfClasses()
+OcDfDwgClasses::OcDfDwgClasses()
 {
     VLOG(4) << "Constructor entered";
 }
 
-OcDfClasses::~OcDfClasses()
+OcDfDwgClasses::~OcDfDwgClasses()
 {
     VLOG(4) << "Destructor entered";
 }
 
-OcApp::ErrorStatus OcDfClasses::DecodeData(DwgInArchive& in)
+OcApp::ErrorStatus OcDfDwgClasses::DecodeData(DwgInArchive& in)
 {
     VLOG(4) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING(in);
@@ -85,7 +85,7 @@ OcApp::ErrorStatus OcDfClasses::DecodeData(DwgInArchive& in)
     }
 
     while(in.FilePosition() < endSection) {
-        OcDfClass cls;
+        OcDfDwgClass cls;
         in >> cls;
         m_classes.push_back(cls);
     }
@@ -119,21 +119,21 @@ OcApp::ErrorStatus OcDfClasses::DecodeData(DwgInArchive& in)
     return OcApp::eOk;
 }
 
-DwgInArchive& operator>>(DwgInArchive& in, OcDfClasses & dwgClasses)
+DwgInArchive& operator>>(DwgInArchive& in, OcDfDwgClasses & dwgClasses)
 {
     ASSERT_ARCHIVE_NOT_LOADING(in);
     in.SetError(dwgClasses.DecodeData(in));
     return in;
 }
 
-const OcDfClass & OcDfClasses::ClassAt(size_t index) const
+const OcDfDwgClass & OcDfDwgClasses::ClassAt(size_t index) const
 {
     return m_classes.at(index);
 }
 
-bool OcDfClasses::Has( const std::wstring & className ) const
+bool OcDfDwgClasses::Has( const std::wstring & className ) const
 {
-    BOOST_FOREACH(const OcDfClass & obj, m_classes) {
+    BOOST_FOREACH(const OcDfDwgClass & obj, m_classes) {
         if(obj.CppClassName() == className)
             return true;
     }

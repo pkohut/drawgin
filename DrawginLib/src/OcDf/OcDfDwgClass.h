@@ -35,8 +35,8 @@
 **
 ****************************************************************************/
 
-#ifndef OCDFCLASS_H
-#define OCDFCLASS_H
+#ifndef OCDFDWGCLASS_H
+#define OCDFDWGCLASS_H
 
 #include "templates/accessors.h"
 #include "templates/bounded.h"
@@ -47,20 +47,20 @@ BEGIN_OCTAVARIUM_NS
  *	\brief Class information within the .dwg file
  *
  *  Dynamic class information defined in the drawing file. Instances of
- *  the OcDfClass are kept in OcDbClasses for future lookup.
+ *  the OcDfDwgClass are kept in OcDbClasses for future lookup.
  */
-class OcDfClass
+class OcDfDwgClass
 {
 public:
     /**
      *	Ctor
      */
-    OcDfClass();
+    OcDfDwgClass();
 
     /**
      *	Dtor
      */
-    virtual ~OcDfClass();
+    virtual ~OcDfDwgClass();
 
     /*-------------------- Common --------------------*/
 
@@ -180,9 +180,9 @@ public:
 private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& in);
     friend DwgInArchive& operator>>(DwgInArchive& in,
-                                    OcDfClass & dwgClass);
+                                    OcDfDwgClass & dwgClass);
 };
 
 END_OCTAVARIUM_NS
 
-#endif // OCDFCLASS_H
+#endif // OCDFDWGCLASS_H

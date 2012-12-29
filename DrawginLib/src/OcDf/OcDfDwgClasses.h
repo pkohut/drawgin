@@ -28,28 +28,28 @@
 **
 ****************************************************************************/
 
-#ifndef OCDFCLASSES_H
-#define OCDFCLASSES_H
+#ifndef OCDFDWGCLASSES_H
+#define OCDFDWGCLASSES_H
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDfClasses
+class OcDfDwgClasses
 {
 public:
-	OcDfClasses();
-	virtual ~OcDfClasses();
+	OcDfDwgClasses();
+	virtual ~OcDfDwgClasses();
 
-    const OcDfClass & ClassAt(size_t index) const;
+    const OcDfDwgClass & ClassAt(size_t index) const;
     bool Has(const std::wstring & className) const;
 
 private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& in);
     friend DwgInArchive& operator>>(DwgInArchive& in,
-                                    OcDfClasses & dwgClasses);    
+                                    OcDfDwgClasses & dwgClasses);    
 
-    std::vector<OcDfClass> m_classes;
+    std::vector<OcDfDwgClass> m_classes;
 };
 
 END_OCTAVARIUM_NS
 
-#endif // OCDFCLASSES_H
+#endif // OCDFDWGCLASSES_H

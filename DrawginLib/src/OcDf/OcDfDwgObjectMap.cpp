@@ -38,8 +38,8 @@
 #include "OcDbObject.h"
 #include "OcDfDwgObjectMap.h"
 
-#include "OcDfClass.h"
-#include "OcDfClasses.h"
+#include "OcDfDwgClass.h"
+#include "OcDfDwgClasses.h"
 
 #include "OcDfDwgVersion.h"
 #include "../OcBs/OcBsStreamIn.h"
@@ -238,7 +238,7 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 
 OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
         OcDbDatabase *& pDb,
-        const OcDfClasses & classes)
+        const OcDfDwgClasses & classes)
 {
     std::vector<SUB_CLASS_ID> subClasses(&_subClasses[0],
                                          &_subClasses[ELEMENTS(_subClasses)]);
@@ -262,7 +262,7 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
             return OcApp::eOutsideOfClassMapRange;
         } else {
             if(objType >= 500) {
-                const OcDfClass & className = classes.ClassAt(objType - 500);
+                const OcDfDwgClass & className = classes.ClassAt(objType - 500);
                 VLOG(4) << "Classname = " <<
                         WStringToString(className.CppClassName());
             } else {
