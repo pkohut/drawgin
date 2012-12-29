@@ -52,17 +52,17 @@ OcDfHeaderVars::OcDfHeaderVars(void)
 unknown1(412148564080.0), unknown2(1.0), unknown3(1.0), unknown4(1.0),
 unknown9(24)
 {
-    VLOG(3) << "Constructor entered";
+    VLOG(4) << "Constructor entered";
 }
 
 OcDfHeaderVars::~OcDfHeaderVars(void)
 {
-    VLOG(3) << "Destructor entered";
+    VLOG(4) << "Destructor entered";
 }
 
 OcApp::ErrorStatus OcDfHeaderVars::DecodeData(DwgInArchive& in)
 {
-    VLOG(3) << "DecodeData entered";
+    VLOG(4) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING(in);
 
     // match dwg header variables start sentinel
@@ -672,7 +672,7 @@ OcApp::ErrorStatus OcDfHeaderVars::DecodeData(DwgInArchive& in)
         return OcApp::eInvalidImageDataSentinel;
     }
 
-    VLOG(3) << "Successfully decoded drawing header variables";
+    VLOG(4) << "Successfully decoded drawing header variables";
     return OcApp::eOk;
 }
 

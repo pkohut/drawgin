@@ -203,6 +203,8 @@ DwgInArchive& Archive(DwgInArchive & ar, const OcDbObjectId & t, const char * pS
     return ar;
 }
 
+std::string RC2Hex(const std::vector<bitcode::RC> &bytes);
+
 // Help with dead string stripping for the Archive template, without this
 // DSS only occurred with gcc compiler setting of -O3
 #if GOOGLE_STRIP_LOG > 0

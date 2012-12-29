@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="inc;$(BOOST);$(GLOG)\src\windows;$(GLOG)\src"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;GOOGLE_GLOG_DLL_DECL="
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -107,7 +107,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="inc;$(BOOST);$(GLOG)\src\windows;$(GLOG)\src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;GOOGLE_GLOG_DLL_DECL="
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -288,6 +288,14 @@
 				</File>
 				<File
 					RelativePath=".\src\OcDf\OcDfDwgObjectMap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDwgSecondFileHeader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDwgSecondFileHeader.h"
 					>
 				</File>
 				<File

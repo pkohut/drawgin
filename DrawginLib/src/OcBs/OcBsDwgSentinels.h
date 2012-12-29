@@ -44,6 +44,8 @@ extern const byte_t sentinelHeaderVarsEnd[];
 extern const byte_t sentinelClassesSectionStart[];
 extern const byte_t sentinelClassesSectionEnd[];
 
+extern const byte_t sentinelSecondFileHeaderBegin[];
+extern const byte_t sentinelSecondFileHeaderEnd[];
 
 bool CompareSentinels(const byte_t * pSentinel1, const byte_t * pSentinel2);
 bool CompareSentinels(const byte_t * pSentinel1, const bitcode::RC * pSentinel2);

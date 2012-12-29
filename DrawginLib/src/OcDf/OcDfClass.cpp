@@ -48,17 +48,17 @@ using namespace std;
 
 OcDfClass::OcDfClass()
 {
-    VLOG(3) << "Constructor entered";
+    VLOG(4) << "Constructor entered";
 }
 
 OcDfClass::~OcDfClass()
 {
-    VLOG(3) << "Destructor entered";
+    VLOG(4) << "Destructor entered";
 }
 
 OcApp::ErrorStatus OcDfClass::DecodeData(DwgInArchive& in)
 {
-    VLOG(3) << "DecodeData entered";
+    VLOG(4) << "DecodeData entered";
 
     BS_ARCHIVE(bitcode::BS, in, ClassNumber(), "class number");
     if(ClassNumber() < 500) {
@@ -100,7 +100,7 @@ OcApp::ErrorStatus OcDfClass::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(bitcode::BL, in, Unknown2(), "unknown2");
     }
 
-    VLOG(3) << "Successfully decoded Class";
+    VLOG(4) << "Successfully decoded Class";
     return OcApp::eOk;
 }
 

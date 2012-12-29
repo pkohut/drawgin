@@ -74,11 +74,13 @@ struct OcApp {
         eInvalidHeaderSentinal,
         eInvalidImageDataSentinel,
         eInvalidImageDataCode,
+        eInvalidSecondHeaderSentinel,
         eUnknownHeaderDataValues,
         eMismatchedFilePosition,
         eInvalidObjectMapRecord,
         eInvalidObjectMapOffset,
         eInvalidCRCInObjectMap,
+        eInvalidCRCInSecondFileHeader,
         eOutsideOfClassMapRange,
         eInputValueOutOfRange,
 

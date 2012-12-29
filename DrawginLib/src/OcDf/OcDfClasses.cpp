@@ -45,17 +45,17 @@ using namespace std;
 
 OcDfClasses::OcDfClasses()
 {
-    VLOG(3) << "Constructor entered";
+    VLOG(4) << "Constructor entered";
 }
 
 OcDfClasses::~OcDfClasses()
 {
-    VLOG(3) << "Destructor entered";
+    VLOG(4) << "Destructor entered";
 }
 
 OcApp::ErrorStatus OcDfClasses::DecodeData(DwgInArchive& in)
 {
-    VLOG(3) << "DecodeData entered";
+    VLOG(4) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING(in);
 
     // match classes section start sentinel
@@ -114,7 +114,7 @@ OcApp::ErrorStatus OcDfClasses::DecodeData(DwgInArchive& in)
         return OcApp::eInvalidImageDataSentinel;
     }
 
-    VLOG(3) << "Successfully decoded Classes Section";
+    VLOG(4) << "Successfully decoded Classes Section";
 
     return OcApp::eOk;
 }

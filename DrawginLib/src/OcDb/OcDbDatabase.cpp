@@ -51,6 +51,7 @@
 #include "../OcDf/OcDfClass.h"
 #include "../OcDf/OcDfClasses.h"
 #include "../OcDf/OcDfDwgObjectMap.h"
+#include "../OcDf/OcDfDwgSecondFileHeader.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -164,6 +165,17 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             return ar.Error();
         }
 
+        // Read the second file header section. Note, this sections is
+        // located immediately after the OcDfDgObjectMap 
+        OcDfDwgSecondFileHeader dwgSecondHeader;
+        ar >> dwgSecondHeader;
+
+        // Add code to read the Spec section 20, AcDb::Template.
+        // 
+
+        // Add code to read the Spec section 21, Data section AcDb::Handles(object map)
+        //
+
         // Decode all of the objects that are in the object map
         // collection.
         OcDbDatabase * pDb = this;
@@ -172,6 +184,9 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             LOG(ERROR) << "Error processing objects";
             return ar.Error();
         }
+
+
+
     }
     return OcApp::eOk;
 }

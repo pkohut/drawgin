@@ -154,7 +154,7 @@ OcDfDwgObjectMap::~OcDfDwgObjectMap(void)
 OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);
-    VLOG(3) << "DecodeObjectMap entered";
+    VLOG(4) << "DecodeObjectMap entered";
     // do some sanity checks before trying to read the object map
     if(m_objMapFilePos == 0) {
         LOG(ERROR) << "Invalid file offset position for Object Map";
@@ -232,7 +232,7 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
         return OcApp::eInvalidCRCInObjectMap;
     }
 
-    VLOG(3) << "Successfully decoded Object map";
+    VLOG(4) << "Successfully decoded Object map";
     return OcApp::eOk;
 }
 

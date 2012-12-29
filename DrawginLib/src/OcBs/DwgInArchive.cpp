@@ -356,6 +356,18 @@ void DwgInArchive::AdvanceToByteBoundary( void )
     m_stream.AdvanceToByteBoundary();
 }
 
+std::string RC2Hex(const std::vector<bitcode::RC> &bytes)
+{
+    std::stringstream ss;
+    //ss << std::hex << std::setfill('0') << std::setw(4);
+    for(std::vector<bitcode::RC>::const_iterator it = bytes.begin(); it != bytes.end(); it++)
+    {
+        //ss << " 0x" << std::hex << std::setfill('0') << std::setw(2) << (int)*it;
+        ss << " " << std::hex << std::showbase << (int)*it;
+    }
+    return ss.str();
+}
+
 
 
 //} // namespace archive
