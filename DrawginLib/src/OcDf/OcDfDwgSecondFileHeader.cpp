@@ -16,10 +16,12 @@
 
 BEGIN_OCTAVARIUM_NS
 
-const static char *pcszSections[] = {
-    "HEADER", "CLASS", "OBJECT_MAP", "UNKNOWN_SECTION3",
-    "UNKNOWN_HEADER",
-};
+//const static char *pcszSections[] = {
+//    "HEADER", "CLASS", "OBJECT_MAP", "UNKNOWN_SECTION3",
+//    "DATA_SECTION",
+//};
+
+extern const char * HeaderSectionName(int);
 
 const static char *pcszHandles[] = {
     "HANDSEED", "BLOCK_CONTROL_OBJ", "LAYER_CONTROL_OBJ",
@@ -43,7 +45,7 @@ OcApp::ErrorStatus OcDfDwgSecondFileHeader::DecodeData( DwgInArchive& in )
 {
     VLOG(4) << "OcDfDwgSecondFileHeader::DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING(in);
-
+    int32_t fp = in.FilePosition();
     // match second file header section start sentinel
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
@@ -93,7 +95,7 @@ OcApp::ErrorStatus OcDfDwgSecondFileHeader::DecodeData( DwgInArchive& in )
     OcDfSecondFileHeaders header;
     for(int i = 0; i < 5; i++)
     {
-        VLOG(4) << "-------- " << pcszSections[i];
+        VLOG(4) << "-------- " << HeaderSectionName(i);
         BS_ARCHIVE(bitcode::RC, in, header.sectionNumber, "section number");
         BS_ARCHIVE(bitcode::BL, in, header.address, "section address");
         BS_ARCHIVE(bitcode::BL, in, header.size, "section size");
@@ -137,6 +139,9 @@ OcApp::ErrorStatus OcDfDwgSecondFileHeader::DecodeData( DwgInArchive& in )
     {
         return OcApp::eInvalidSecondHeaderSentinel;
     }
+
+    fp = in.FilePosition();
+
 
     return OcApp::eOk;
 }

@@ -78,9 +78,10 @@ struct OcApp {
         eUnknownHeaderDataValues,
         eMismatchedFilePosition,
         eInvalidObjectMapRecord,
-        eInvalidObjectMapOffset,
+        eInvalidObjectMapOffset,        
         eInvalidCRCInObjectMap,
         eInvalidCRCInSecondFileHeader,
+        eInvalidDataSectionOffset,
         eOutsideOfClassMapRange,
         eInputValueOutOfRange,
 

@@ -42,6 +42,27 @@
 
 BEGIN_OCTAVARIUM_NS
 
+
+const static char *pcszSections[] = {
+    "HEADER", "CLASS", "OBJECT_MAP", "UNKNOWN_SECTION3",
+    "DATA_SECTION", "UNKNOWN",
+};
+
+const static int NumSections()
+{
+    return sizeof(pcszSections) / sizeof(pcszSections[0]);
+}
+
+const char * HeaderSectionName(int i)
+{
+    if(i < NumSections())
+        return pcszSections[i];
+    const static char * msg = "Section number outside of known range";
+    LOG(ERROR) << msg;
+    return msg;
+
+}
+
 #define CRC8_CALC(crcIn, x) crc8(crcIn, (const char*)&x, sizeof(x))
 
 OcBsDwgFileHeader::OcBsDwgFileHeader(void)
@@ -112,8 +133,10 @@ OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
     BS_ARCHIVE(RL, in, m_nSections, "Selection Locator Records");
 
     for(int i = 0; i < m_nSections; ++i) {
+        VLOG(4) << "--------";
         OcBsDwgFileHeaderSection section;
         BS_ARCHIVE(RC, in, section.recordNumber, "section record");
+        VLOG(4) << "section name: " << HeaderSectionName(i);
 
         BS_ARCHIVE(RL, in, section.seeker,       "    section seeker");
 

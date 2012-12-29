@@ -52,6 +52,7 @@
 #include "../OcDf/OcDfClasses.h"
 #include "../OcDf/OcDfDwgObjectMap.h"
 #include "../OcDf/OcDfDwgSecondFileHeader.h"
+#include "../OcDf/OcDfDwgDataSection.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -165,10 +166,21 @@ OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
             return ar.Error();
         }
 
-        // Read the second file header section. Note, this sections is
-        // located immediately after the OcDfDgObjectMap 
-        OcDfDwgSecondFileHeader dwgSecondHeader;
-        ar >> dwgSecondHeader;
+        if(ar.Version() == R13 || ar.Version() == R14)
+        {
+            // Read the second file header section. Note, this sections is
+            // located immediately after the OcDfDgObjectMap 
+            OcDfDwgSecondFileHeader dwgSecondHeader;
+            ar >> dwgSecondHeader;
+        }
+
+        OcDfDwgDataSection dwgDataSection(dwgHdr.Record(4).seeker, dwgHdr.Record(4).size);
+        ar >> dwgDataSection;
+        if(ar.Error() != OcApp::eOk) {
+            LOG(ERROR) << "Error processing data section";
+            return ar.Error();
+        }
+    
 
         // Add code to read the Spec section 20, AcDb::Template.
         // 

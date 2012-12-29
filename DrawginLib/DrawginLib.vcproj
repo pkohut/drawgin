@@ -283,6 +283,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\OcDf\OcDfDwgDataSection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDwgDataSection.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\OcDf\OcDfDwgObjectMap.cpp"
 					>
 				</File>

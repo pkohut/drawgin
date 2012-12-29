@@ -9,7 +9,7 @@ struct OcApp;
 class OcDfSecondFileHeaders
 {
 public:
-    enum SECTIONS {HEADER = 0, CLASS, OBJECT_MAP, UNKNOWN_SECTION3, UNKNOWN_HEADER, };
+    enum SECTIONS {HEADER = 0, CLASS, OBJECT_MAP, UNKNOWN_SECTION3, DATA_SECTION, };
     byte_t sectionNumber;
     int32_t address;
     int32_t size;
@@ -49,8 +49,3 @@ private:
 END_OCTAVARIUM_NS
 
 #endif // OcBsDwgSecondFileHeader_h__
-//800-674-3798
-//90.97
-//602-453-8901 1003
-//Michell
-

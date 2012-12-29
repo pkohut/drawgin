@@ -144,6 +144,7 @@ byte_t OcBsStream::PeekAhead()
 
 bitcode::T & OcBsStream::ConvertToCodepage(bitcode::T & t)
 {
+    LOG(ERROR) << "OcBsString::ConvertToCodepage not implemented, returning original string";
     return t;
 }
 
