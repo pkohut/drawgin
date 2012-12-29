@@ -42,6 +42,8 @@ Note: The Google Wiki page interprets R### as a revision number and makes a html
 || file header           || r-    || R-    || r-      || --      || --      || --      ||
 || Preview Image         || r-    || R-    || r-      || --      ||         ||         ||
 || dwg Header Variables  || r-    || R-    || r-      || --      ||         ||         ||
+|| Second file header    || r-    || R--   || NA      || NA      || NA      || NA      || NA
+|| AcDb::Template        ||       ||       ||         ||         ||         ||         ||
 
 || *Object Types*        || *R_13* || *R_14* || *R_2000* || *R_2004* || *R_2007* || *R_2010* ||
 || Handle                || r-    || R-    || r-      || --      || --      || --      ||
