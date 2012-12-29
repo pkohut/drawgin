@@ -110,7 +110,8 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;GOOGLE_GLOG_DLL_DECL="
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="OcCommon.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -156,6 +157,14 @@
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
