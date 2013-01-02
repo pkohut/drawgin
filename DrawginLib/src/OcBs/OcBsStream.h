@@ -90,6 +90,7 @@ protected:
     std::fstream    m_fs;
     DWG_VERSION     m_version;
     bool            m_convertCodepage;
+    bool            m_bSeekedOnBufferBoundary;
 
 };
 

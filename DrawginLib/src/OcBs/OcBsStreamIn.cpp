@@ -78,6 +78,13 @@ OcBsStreamIn & OcBsStreamIn::Seek(std::streamoff nPos, int nBit)
     m_indexSize = std::min(m_fs.gcount(), m_fileLength
                            - (std::streamsize)m_filePosition);
     m_bitPosition = nBit % CHAR_BIT;
+	
+	// As this seek method performs a buffer update (read) with the
+	// requested seek position, we need special handling in OcBsStream::Get
+	// when the seek position is a multiple of the buffer size.
+	// Otherwise a double read will occur leaving the wrong data in the
+	// buffer.
+    m_bSeekedOnBufferBoundary = !(m_filePosition % BufferSize());
     return *this;
 }
 

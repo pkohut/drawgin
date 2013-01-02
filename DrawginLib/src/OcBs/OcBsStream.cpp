@@ -52,7 +52,8 @@ const int BUFSIZE = 4096;
 
 OcBsStream::OcBsStream(void)
     : m_pBuffer(NULL), m_filePosition(0), m_fileLength(0), m_bitPosition(0),
-      m_indexSize(0), m_crc(0), m_version(NONE), m_convertCodepage(false)
+      m_indexSize(0), m_crc(0), m_version(NONE), m_convertCodepage(false),
+      m_bSeekedOnBufferBoundary(false)
 {
 }
 
@@ -112,7 +113,7 @@ void OcBsStream::Close()
 byte_t OcBsStream::Get(int nBits)
 {
     std::streamsize pos = m_filePosition % BUFSIZE;
-    if(pos == 0) {
+    if(pos == 0 && !m_bSeekedOnBufferBoundary) {
         m_fs.read((char *) m_pBuffer, BUFSIZE);
         m_indexSize = std::min(m_fs.gcount(), m_fileLength
                                - (std::streamsize)m_filePosition);
@@ -125,7 +126,7 @@ byte_t OcBsStream::Get(int nBits)
 byte_t OcBsStream::Get()
 {
     std::streamsize pos = m_filePosition % BUFSIZE;
-    if(pos == 0) {
+    if(pos == 0 && !m_bSeekedOnBufferBoundary) {
         m_fs.read((char *) m_pBuffer, BUFSIZE);
         m_indexSize = std::min(m_fs.gcount(), m_fileLength
                                - (std::streamsize) m_filePosition);
