@@ -42,8 +42,6 @@
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-OC_DEFINE_RX_CLASS(OcDbObject, AcDbObject);
-
 OcDbObject::OcDbObject(void)
 {    
 }

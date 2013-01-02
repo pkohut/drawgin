@@ -31,33 +31,6 @@
 #ifndef ClassMacros_h__
 #define ClassMacros_h__
 
-#if OC_DEBUG_LIVING_OBJECTS && !defined(NDEBUG)
-#include <set>
-#endif
-
-#define OC_DECLARE_BASE_CLASS(c) \
-    // empty
-
-#define OC_DECLARE_CLASS(c) \
-    // empty
-
-
-#define OC_DECLARE_RX_CLASS(c) \
-    OC_DECLARE_CLASS(c) \
-    static OcApClassFactory<c> m_factory;
-
-
-#define OC_DEFINE_BASE_CLASS(c) \
-    // empty
-
-#define OC_DEFINE_CLASS(c) \
-    // empty
-
-#define OC_DEFINE_RX_CLASS(c, a) \
-    OC_DEFINE_CLASS(c) \
-    OcApClassFactory<c> c::m_factory(# c, # a);
-
-
 //#define OcPtr boost::intrusive_ptr
 template<typename T>
 struct OcPtr {

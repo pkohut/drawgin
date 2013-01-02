@@ -37,7 +37,6 @@ class OcRxObject;
 
 class OcRxClass : public OcRxObject
 {
-    OC_DECLARE_RX_CLASS(OcRxClass);
 public:
     OcRxClass(void);
     virtual ~OcRxClass(void);

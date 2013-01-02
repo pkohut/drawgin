@@ -34,8 +34,6 @@
 #include "ClassMacros.h"
 #include "OcConfig.h"
 
-#include "OcApClassFactory.h"
-
 BEGIN_OCTAVARIUM_NS
 class OcRxObject;
 END_OCTAVARIUM_NS
@@ -50,7 +48,6 @@ BEGIN_OCTAVARIUM_NS
 
 class OcRxObject
 {
-    OC_DECLARE_BASE_CLASS(OcRxObject);
 protected:
     OcRxObject();
     OcRxObject(const OcRxObject & other);
@@ -58,11 +55,6 @@ public:
     virtual ~OcRxObject();
 
     OcRxObject & operator=(const OcRxObject & other);
-
-    typedef OcApClassFactoryBase BaseClassFactory;
-    static int RegisterRx(const std::string & className,
-                          const std::string & acClassName,
-                          BaseClassFactory * pCreator);
 
 private:
     long    m_nReferences;

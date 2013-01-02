@@ -56,8 +56,6 @@
 
 BEGIN_OCTAVARIUM_NS
 
-OC_DEFINE_RX_CLASS(OcDbDatabase, AcDbDatabase);
-
 OcDbDatabase::OcDbDatabase(void)
 {
 }

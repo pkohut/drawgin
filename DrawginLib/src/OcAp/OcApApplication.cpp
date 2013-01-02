@@ -42,8 +42,6 @@ BEGIN_OCTAVARIUM_NS
 using namespace std;
 using namespace boost;
 
-OC_DEFINE_CLASS(OcApApplication);
-
 OcApApplication * OcApApplication::m_pApplication = NULL;
 
 OcApApplicationPtr Application(void)
@@ -59,12 +57,6 @@ OcApApplication::~OcApApplication(void)
 {
     // Do not delete m_pApplication, just set it to NULL.
     m_pApplication = NULL;
-
-    // The registered classes are stored in a static container
-    // and need to be cleared to keep MSVC's dbg leak checker
-    // from falsly reporting them.
-    OcApApplication::RegisteredClasses().clear();
-    OcApApplication::RegisteredAcToOcPairs().clear();
 }
 
 OcDbDatabasePtr OcApApplication::WorkingDatabase(void)
@@ -96,51 +88,6 @@ octavarium::OcApApplicationPtr OcApApplication::Application(void)
 void OcApApplication::Shutdown(void)
 {
 
-}
-
-OcApApplication::RegClasses& OcApApplication::RegisteredClasses(void)
-{
-    // Sadly, VS falsely reports the instance of the static
-    // container as a memory leak.  If the containm_classes is a pointer
-    // and deleted then VS does not report a memory leak, but that defeats
-    // the purpose of having a static instance.
-    static RegClasses classes;
-    return classes;
-}
-
-OcApp::ErrorStatus
-OcApApplication::RegisterRxClass(const string & className,
-                                 BaseClassFactory * pCreator)
-{
-    OcApApplication::RegisteredClasses().insert(make_pair(className, pCreator));
-    return OcApp::eOk;
-}
-
-octavarium::OcRxObjectPtr OcApApplication::NewRxClass(const string & className)
-{
-    RegClasses& classes = OcApApplication::RegisteredClasses();
-    if(classes.find(className) != classes.end()) {
-        return classes[className]->createInstance();
-    }
-    return NULL;
-}
-
-OcApApplication::RegAc2OcPairs& OcApApplication::RegisteredAcToOcPairs(void)
-{
-    // Sadly, VS falsely reports the instance of the static
-    // container as a memory leak.  If the containm_classes is a pointer
-    // and deleted then VS does not report a memory leak, but that defeats
-    // the purpose of having a static instance.
-    static RegAc2OcPairs ac2ocPairs;
-    return ac2ocPairs;
-}
-
-OcApp::ErrorStatus
-OcApApplication::RegisterAcToOcClass(const std::string & acClass,
-                                     const std::string & ocClass)
-{
-    OcApApplication::RegisteredAcToOcPairs().insert(make_pair(acClass, ocClass));
-    return OcApp::eOk;
 }
 
 END_OCTAVARIUM_NS

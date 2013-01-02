@@ -203,10 +203,6 @@
 					RelativePath=".\src\OcAp\OcApApplication.cpp"
 					>
 				</File>
-				<File
-					RelativePath=".\src\OcAp\OcApClassFactory.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="OcBs"
@@ -378,10 +374,6 @@
 			</File>
 			<File
 				RelativePath=".\inc\OcApApplication.h"
-				>
-			</File>
-			<File
-				RelativePath=".\inc\OcApClassFactory.h"
 				>
 			</File>
 			<File

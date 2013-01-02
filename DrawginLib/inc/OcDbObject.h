@@ -38,7 +38,6 @@ class DwgInArchive;
 
 class OcDbObject : public OcRxObject
 {
-    OC_DECLARE_RX_CLASS(OcDbObject);
 public:
     OcDbObject(void);
     virtual ~OcDbObject(void);

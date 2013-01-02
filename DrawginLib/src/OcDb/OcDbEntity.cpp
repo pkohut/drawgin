@@ -42,8 +42,6 @@
 
 BEGIN_OCTAVARIUM_NS
 
-OC_DEFINE_RX_CLASS(OcDbEntity, AcDbEntity);
-
 OcDbEntity::OcDbEntity(void)
 {
 }

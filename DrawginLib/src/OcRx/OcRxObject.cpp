@@ -63,19 +63,6 @@ OcRxObject::~OcRxObject(void)
             << "- explicit call to Object::incReference().\n\n";
 }
 
-int OcRxObject::RegisterRx(const std::string & className,
-                           const std::string & acClassName,
-                           BaseClassFactory * pCreator)
-{
-    OcApp::ErrorStatus es = (OcApp::ErrorStatus)
-                            __Register_Rx_Class__(className, pCreator);
-    if(es == OcApp::eOk) {
-        es = (OcApp::ErrorStatus)
-             __Register_AcToOc_Pair__(acClassName, className);
-    }
-    return es;
-}
-
 OcRxObject & OcRxObject::operator=( const OcRxObject & other )
 {
     return *this;
