@@ -28,25 +28,27 @@
 **
 ****************************************************************************/
 
-#include "OcCommon.h"
-#include "OcCmColor.h"
+#ifndef OcDbObjectImpl_h__
+#define OcDbObjectImpl_h__
 
 BEGIN_OCTAVARIUM_NS
 
-OcCmColor::OcCmColor(void)
-{
-}
+class OcRxObject;
+class DwgInArchive;
 
-OcCmColor::~OcCmColor(void)
+class OcDbObjectImpl
 {
-}
+public:
+    OcDbObjectImpl(void);
+    virtual ~OcDbObjectImpl(void);
 
-std::ostream& operator <<(std::ostream& out, const OcCmColor& color)
-{
-    //    return LogWString(out, objId.ToString());
-    out << std::hex << std::showbase << "OcCmColor:: Not implemented";
-    return out;
-}
+private:
+    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbObjectImpl & data);
+    virtual OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
 
+
+};
 
 END_OCTAVARIUM_NS
+
+#endif // OcDbObjectImpl_h__

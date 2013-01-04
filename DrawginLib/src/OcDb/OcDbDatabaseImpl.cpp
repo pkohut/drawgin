@@ -30,6 +30,11 @@
 
 #include "OcCommon.h"
 #include "OcError.h"
+#include "OcCmColor.h"
+#include "OcGePoint2D.h"
+#include "OcGePoint3D.h"
+#include "OcDbHardOwnershipId.h"
+
 #include "OcDbDatabaseImpl.h"
 #include "OcDbDatabaseHeaderImpl.h"
 

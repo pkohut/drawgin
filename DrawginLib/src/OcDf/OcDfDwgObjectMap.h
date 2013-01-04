@@ -31,8 +31,6 @@
 #ifndef OcDfDwgObjectMap_h__
 #define OcDfDwgObjectMap_h__
 
-//#include "../OcBs/DwgInArchive.h"
-
 BEGIN_OCTAVARIUM_NS
 class OcDbDatabaseImpl;
 class DwgInArchive;

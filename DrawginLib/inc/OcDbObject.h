@@ -35,6 +35,7 @@ BEGIN_OCTAVARIUM_NS
 
 class OcRxObject;
 class DwgInArchive;
+class OcDbObjectImpl;
 
 class OcDbObject : public OcRxObject
 {
@@ -42,9 +43,10 @@ public:
     OcDbObject(void);
     virtual ~OcDbObject(void);
 
+    OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+
 private:
-    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbObject & data);
-    virtual OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+    OcDbObjectImpl * m_pObjectImpl;
 
 };
 END_OCTAVARIUM_NS

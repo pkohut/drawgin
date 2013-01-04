@@ -163,8 +163,6 @@ int SetProgramOptionsDesc(po::options_description & desc)
 void ProcessDrawing(const string_t & filename)
 {
     OcDbDatabasePtr pDb = new OcDbDatabase;
-    pDb->unknown1(1.0);
-    VLOG(4) << "unknown1 = " << pDb->unknown1();
     OcApp::ErrorStatus es = pDb->Open(filename);
     LOG_IF(ERROR, es != OcApp::eOk) << "Error processing drawing.";
     Application()->SetWorkingDatabase(pDb);
@@ -223,7 +221,6 @@ int main(int argc, char * argv[])
             return 1;
         }
 
-        // OcLogger logger(argv[0]);
         LOG(INFO) << "Begin decoding file: " << filename;
         ProcessDrawing(filename);
     }

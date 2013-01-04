@@ -31,24 +31,9 @@
 #ifndef OcDbDatabaseImpl_h__
 #define OcDbDatabaseImpl_h__
 
-#include "OcCmColor.h"
-#include "OcGePoint2D.h"
-#include "OcGePoint3D.h"
-#include "OcDbHardOwnershipId.h"
-
-
 BEGIN_OCTAVARIUM_NS
 
 class OcDbDatabaseHeaderImpl;
-
-//#define DECLARE_GETTER_SETTER_BY_VAL(TYPE, FUNCTION) \
-//    TYPE FUNCTION(void) const; \
-//    void FUNCTION(TYPE);
-//
-//#define DECLARE_GETTER_SETTER_BY_REF(TYPE, FUNCTION) \
-//    const TYPE & FUNCTION(void) const; \
-//    void FUNCTION(const TYPE &);
-
 
 class OcDbDatabaseImpl
 {
