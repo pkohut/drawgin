@@ -3,7 +3,7 @@
 ** This file is part of DrawGin library. A C++ framework to read and
 ** write .dwg files formats.
 **
-** Copyright (C) 2011 Paul Kohut.
+** Copyright (C) 2011, 2012, 2013 Paul Kohut.
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
@@ -86,10 +86,12 @@ inline void intrusive_ptr_release(octavarium::OcRxObject * p)
 #if OC_THREAD_SAFE_INTRUSIVE_PTR == 1
     if(_InterlockedDecrement(&(p->m_nReferences)) == 0) {
         delete p;
+        p = NULL;
     }
 #else
     if(--(p->m_nReferences) == 0) {
         delete p;
+        p = NULL;
     }
 #endif
 }

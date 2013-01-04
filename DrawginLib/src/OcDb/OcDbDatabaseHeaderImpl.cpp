@@ -28,32 +28,30 @@
 **
 ****************************************************************************/
 
-#ifndef OcDfDataSection_h__
-#define OcDfDataSection_h__
+#include "OcCommon.h"
+#include "OcTypes.h"
+#include "OcError.h"
+#include "OcDbObjectId.h"
+#include "OcDbHardOwnershipId.h"
+#include "OcGePoint2D.h"
+#include "OcGePoint3D.h"
+#include "OcCmColor.h"
+
+#include "OcDbDatabaseHeaderImpl.h"
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDfDwgDataSection
+OcDbDatabaseHeaderImpl::OcDbDatabaseHeaderImpl(void)
+:
+unknown1(412148564080.0), unknown2(1.0), unknown3(1.0), unknown4(1.0),
+unknown9(24)
 {
-public:
-    OcDfDwgDataSection(int32_t dataSectionFilePosition, int32_t dataSectionSize);
-    virtual ~OcDfDwgDataSection(void);
+    VLOG(4) << "Constructor entered";
+}
 
-    std::string TemplateDescription(void);
-
-    uint16_t Measurement(void);
-
-
-
-private:
-    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDfDwgDataSection & dataSection);
-    OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
-
-    int32_t m_dataSectionFilePosition, m_dataSectionSize;
-    std::string m_encodedString;
-    uint16_t m_measurment;
-};
+OcDbDatabaseHeaderImpl::~OcDbDatabaseHeaderImpl(void)
+{
+    VLOG(4) << "Destructor entered";
+}
 
 END_OCTAVARIUM_NS
-
-#endif // OcDfDataSection_h__

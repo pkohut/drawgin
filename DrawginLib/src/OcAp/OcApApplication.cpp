@@ -3,7 +3,7 @@
 ** This file is part of DrawGin library. A C++ framework to read and
 ** write .dwg files formats.
 **
-** Copyright (C) 2011 Paul Kohut.
+** Copyright (C) 2011, 2012, 2013 Paul Kohut.
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
@@ -34,6 +34,12 @@
 #include "OcError.h"
 #include "OcDbSmartPtrs.h"
 #include "OcRxObject.h"
+#include "OcDbObjectId.h"
+#include "OcCmColor.h"
+#include "OcDbHardOwnershipId.h"
+#include "OcGePoint2D.h"
+#include "OcGePoint3D.h"
+
 #include "OcDbDatabase.h"
 
 #include "OcApApplication.h"
@@ -72,7 +78,7 @@ void OcApApplication::SetWorkingDatabase(OcDbDatabasePtr database)
 octavarium::OcApApplicationPtr OcApApplication::Create(void)
 {
     if(!m_pApplication) {
-        m_pApplication = new OcApApplication;
+        m_pApplication = new OcApApplication();
     }
     return m_pApplication;
 }
@@ -83,11 +89,6 @@ octavarium::OcApApplicationPtr OcApApplication::Application(void)
     // and will go out of scope when this function ends.
     DLOG_IF(ERROR, !m_pApplication) << "OcApApplication instance is NULL.";
     return m_pApplication;
-}
-
-void OcApApplication::Shutdown(void)
-{
-
 }
 
 END_OCTAVARIUM_NS

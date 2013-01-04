@@ -28,32 +28,19 @@
 **
 ****************************************************************************/
 
-#ifndef OcDfDataSection_h__
-#define OcDfDataSection_h__
+#ifndef OcCmColor_h__
+#define OcCmColor_h__
 
 BEGIN_OCTAVARIUM_NS
-
-class OcDfDwgDataSection
+class OcCmColor
 {
 public:
-    OcDfDwgDataSection(int32_t dataSectionFilePosition, int32_t dataSectionSize);
-    virtual ~OcDfDwgDataSection(void);
+    OcCmColor(void);
+    virtual ~OcCmColor(void);
 
-    std::string TemplateDescription(void);
-
-    uint16_t Measurement(void);
-
-
-
-private:
-    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDfDwgDataSection & dataSection);
-    OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
-
-    int32_t m_dataSectionFilePosition, m_dataSectionSize;
-    std::string m_encodedString;
-    uint16_t m_measurment;
+    friend std::ostream& operator<<(std::ostream& out, const OcCmColor& color);
 };
 
 END_OCTAVARIUM_NS
 
-#endif // OcDfDataSection_h__
+#endif // OcCmColor_h__

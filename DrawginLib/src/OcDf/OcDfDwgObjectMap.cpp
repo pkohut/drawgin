@@ -3,7 +3,7 @@
 ** This file is part of DrawGin library. A C++ framework to read and
 ** write .dwg files formats.
 **
-** Copyright (C) 2011 Paul Kohut.
+** Copyright (C) 2011, 2012, 2013 Paul Kohut.
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
@@ -237,7 +237,7 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 }
 
 OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
-        OcDbDatabase *& pDb,
+        OcDbDatabaseImpl *& pDb,
         const OcDfDwgClasses & classes)
 {
     std::vector<SUB_CLASS_ID> subClasses(&_subClasses[0],

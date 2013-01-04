@@ -28,27 +28,33 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbDatabase_h__
-#define OcDbDatabase_h__
-#include "templates/accessors.h"
+#ifndef OcDbDatabaseImpl_h__
+#define OcDbDatabaseImpl_h__
 
 #include "OcCmColor.h"
-#include "OcDbHardOwnershipId.h"
 #include "OcGePoint2D.h"
 #include "OcGePoint3D.h"
-
+#include "OcDbHardOwnershipId.h"
 
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbDatabaseImpl;
+class OcDbDatabaseHeaderImpl;
 
-class OcDbDatabase : public OcRxObject
+//#define DECLARE_GETTER_SETTER_BY_VAL(TYPE, FUNCTION) \
+//    TYPE FUNCTION(void) const; \
+//    void FUNCTION(TYPE);
+//
+//#define DECLARE_GETTER_SETTER_BY_REF(TYPE, FUNCTION) \
+//    const TYPE & FUNCTION(void) const; \
+//    void FUNCTION(const TYPE &);
+
+
+class OcDbDatabaseImpl
 {
 public:
-
-    OcDbDatabase(void);
-    virtual ~OcDbDatabase(void);
+    OcDbDatabaseImpl(void);
+    virtual ~OcDbDatabaseImpl(void);
 
     OcApp::ErrorStatus Open(const string_t & filename);
 
@@ -388,13 +394,15 @@ public:
     DECLARE_GETTER_SETTER_BY_VAL(byte_t,            xclipframe);
 
 
-
 private:
-    OcDbDatabaseImpl * m_pDatabaseImpl;
+    OcDbDatabaseHeaderImpl * m_pHeaderImpl;
+
+
+
+
 
 };
 
-
 END_OCTAVARIUM_NS
 
-#endif // OcDbDatabase_h__
+#endif // OcDbDatabaseImpl_h__

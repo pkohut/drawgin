@@ -6,7 +6,7 @@
 ** This file is part of DrawGin library. A C++ framework to read and
 ** write .dwg files formats.
 **
-** Copyright (C) 2011 Paul Kohut.
+** Copyright (C) 2011, 2012, 2013 Paul Kohut.
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
@@ -36,14 +36,8 @@
 #include "OcCommon.h"
 #include "OcError.h"
 #include "OcDbSmartPtrs.h"
-#include "OcRxObject.h"
-
 #include "OcDbDatabase.h"
 #include "OcApApplication.h"
-#include "OcDbObject.h"
-#include "OcRxClass.h"
-#include "OcDbEntity.h"
-
 #include "OcLogger.h"
 
 using namespace std;
@@ -169,11 +163,13 @@ int SetProgramOptionsDesc(po::options_description & desc)
 void ProcessDrawing(const string_t & filename)
 {
     OcDbDatabasePtr pDb = new OcDbDatabase;
+    pDb->unknown1(1.0);
+    VLOG(4) << "unknown1 = " << pDb->unknown1();
     OcApp::ErrorStatus es = pDb->Open(filename);
     LOG_IF(ERROR, es != OcApp::eOk) << "Error processing drawing.";
-    //    app.SetWorkingDatabase(pDb);
     Application()->SetWorkingDatabase(pDb);
 }
+
 int main(int argc, char * argv[])
 {
     // Command line options:
@@ -187,6 +183,11 @@ int main(int argc, char * argv[])
 
     try
     {
+        // Create instance of logger before OcApApplication, otherwise
+        // the logger is throwing memory leaks in the destructor of
+        // OcDb* classes that log in their destructor.
+        OcLogger logger(argv[0]);
+
         // Must create the singleton object of OcApApplicationPtr
         OcApApplicationPtr app(OcApApplication::Create());
 
@@ -222,7 +223,7 @@ int main(int argc, char * argv[])
             return 1;
         }
 
-        OcLogger logger(argv[0]);
+        // OcLogger logger(argv[0]);
         LOG(INFO) << "Begin decoding file: " << filename;
         ProcessDrawing(filename);
     }
@@ -233,11 +234,6 @@ int main(int argc, char * argv[])
         cerr << "unknown exception occurred" << endl;
         return 1;
     }
-
-    // In debug mode and with OC_DEBUG_LIVING_OBJECTS defined, let
-    // OcRxObject do final object check of managed objects to ensure
-    // they have been released property.
-    OcApApplication::Shutdown();
 
 #if defined(_WIN32) && !defined(NDEBUG)
     // Check for memory leaks in debug builds.

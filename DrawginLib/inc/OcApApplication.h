@@ -3,7 +3,7 @@
 ** This file is part of DrawGin library. A C++ framework to read and
 ** write .dwg files formats.
 **
-** Copyright (C) 2011 Paul Kohut.
+** Copyright (C) 2011, 2012, 2013 Paul Kohut.
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
@@ -59,16 +59,6 @@ public:
     // The proper way to create the singleton is by calling the
     // OcApApplication::Create function with the application.
     static OcApApplicationPtr Application(void);
-
-    // Function only has purpose in debug mode and with
-    // OC_DEBUG_LIVING_OBJECTS defined.
-    // Let OcRxObject do final object check of managed objects to ensure
-    // they have been released property.
-    // This function should be called right before the application exits.
-    // Not calling it will produce memory leaks.
-    // If OC_DEBUG_LIVING_OBJECTS is not defined, then no need to call
-    // the function.
-    static void Shutdown(void);
 
 private:
     OcDbDatabasePtr m_database;

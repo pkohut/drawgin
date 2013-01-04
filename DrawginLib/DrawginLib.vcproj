@@ -112,6 +112,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="OcCommon.h"
+				AssemblerOutput="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -177,6 +178,22 @@
 				>
 				<File
 					RelativePath=".\src\OcDb\OcDbDatabase.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbDatabaseHeaderImpl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbDatabaseHeaderImpl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbDatabaseImpl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbDatabaseImpl.h"
 					>
 				</File>
 				<File
@@ -272,6 +289,14 @@
 				Name="OcDf"
 				>
 				<File
+					RelativePath=".\src\OcDf\OcDfDatabaseHeaderVars.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDf\OcDfDatabaseHeaderVars.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\OcDf\OcDfDwgClass.cpp"
 					>
 				</File>
@@ -319,14 +344,6 @@
 					RelativePath=".\src\OcDf\OcDfDwgVersion.h"
 					>
 				</File>
-				<File
-					RelativePath=".\src\OcDf\OcDfHeaderVars.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\OcDf\OcDfHeaderVars.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="OcGe"
@@ -352,6 +369,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="OcCm"
+				>
+				<File
+					RelativePath=".\src\OcCm\OcCmColor.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -374,6 +399,10 @@
 			</File>
 			<File
 				RelativePath=".\inc\OcApApplication.h"
+				>
+			</File>
+			<File
+				RelativePath=".\inc\OcCmColor.h"
 				>
 			</File>
 			<File

@@ -3,7 +3,7 @@
 ** This file is part of DrawGin library. A C++ framework to read and
 ** write .dwg files formats.
 **
-** Copyright (C) 2011 Paul Kohut.
+** Copyright (C) 2011, 2012, 2013 Paul Kohut.
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
@@ -30,6 +30,15 @@
 
 #ifndef ClassMacros_h__
 #define ClassMacros_h__
+
+#define DECLARE_GETTER_SETTER_BY_VAL(TYPE, FUNCTION) \
+    TYPE FUNCTION(void) const; \
+    void FUNCTION(TYPE);
+
+#define DECLARE_GETTER_SETTER_BY_REF(TYPE, FUNCTION) \
+    const TYPE & FUNCTION(void) const; \
+    void FUNCTION(const TYPE &);
+
 
 //#define OcPtr boost::intrusive_ptr
 template<typename T>
