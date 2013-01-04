@@ -52,7 +52,7 @@ BEGIN_OCTAVARIUM_NS
 using namespace std;
 
 OcDfDatabaseHeaderVars::OcDfDatabaseHeaderVars(OcDbDatabaseHeaderImpl * hdr)
-: pHdr(hdr)
+: m_pHdr(hdr)
 //:
 //unknown1(412148564080.0), unknown2(1.0), unknown3(1.0), unknown4(1.0),
 //unknown9(24)
@@ -95,378 +95,378 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     size_t startPos = in.FilePosition();
 
     // common
-    BS_ARCHIVE(bitcode::BD, in, pHdr->unknown1(),  "unknown1");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->unknown2(),  "unknown2");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->unknown3(),  "unknown3");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->unknown4(),  "unknown4");
-    BS_ARCHIVE(bitcode::TV, in, pHdr->unknown5(),  "unknown5");
-    BS_ARCHIVE(bitcode::TV, in, pHdr->unknown6(),  "unknown6");
-    BS_ARCHIVE(bitcode::TV, in, pHdr->unknown7(),  "unknown7");
-    BS_ARCHIVE(bitcode::TV, in, pHdr->unknown8(),  "unknown8");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->unknown9(),  "unknown9");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->unknown10(), "unknown10");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->unknown1(),  "unknown1");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->unknown2(),  "unknown2");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->unknown3(),  "unknown3");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->unknown4(),  "unknown4");
+    BS_ARCHIVE(bitcode::TV, in, m_pHdr->unknown5(),  "unknown5");
+    BS_ARCHIVE(bitcode::TV, in, m_pHdr->unknown6(),  "unknown6");
+    BS_ARCHIVE(bitcode::TV, in, m_pHdr->unknown7(),  "unknown7");
+    BS_ARCHIVE(bitcode::TV, in, m_pHdr->unknown8(),  "unknown8");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown9(),  "unknown9");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown10(), "unknown10");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->unknown11(), "unknown11");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->unknown11(), "unknown11");
     }
 
     // common
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->currentVpId(), "currentvpId");
-    BS_ARCHIVE(bitcode::B, in, pHdr->dimaso(),        "dimaso");
-    BS_ARCHIVE(bitcode::B, in, pHdr->dimsho(),        "dimsho");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->currentVpId(), "currentvpId");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->dimaso(),        "dimaso");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->dimsho(),        "dimsho");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimsav(), "dimsav");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimsav(), "dimsav");
     }
 
     // common
-    BS_ARCHIVE(bitcode::B, in, pHdr->plinegen(),  "plinegen");
-    BS_ARCHIVE(bitcode::B, in, pHdr->orthomode(), "orthomode");
-    BS_ARCHIVE(bitcode::B, in, pHdr->regenmode(), "regenmode");
-    BS_ARCHIVE(bitcode::B, in, pHdr->fillmode(),  "fillmode");
-    BS_ARCHIVE(bitcode::B, in, pHdr->qtextmode(), "qtextmode");
-    BS_ARCHIVE(bitcode::B, in, pHdr->psltscale(), "psltscale");
-    BS_ARCHIVE(bitcode::B, in, pHdr->limcheck(),  "limcheck");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->plinegen(),  "plinegen");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->orthomode(), "orthomode");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->regenmode(), "regenmode");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->fillmode(),  "fillmode");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->qtextmode(), "qtextmode");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->psltscale(), "psltscale");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->limcheck(),  "limcheck");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->blipmode(), "blipmode");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->blipmode(), "blipmode");
     }
 
     if(dwgVersion >= R2004) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->undocumented(), "undocumented");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->undocumented(), "undocumented");
     }
 
     // common
-    BS_ARCHIVE(bitcode::B, in, pHdr->usertimer(), "usertimer");
-    BS_ARCHIVE(bitcode::B, in, pHdr->skpoly(),    "skpoly");
-    BS_ARCHIVE(bitcode::B, in, pHdr->angdir(),    "angdir");
-    BS_ARCHIVE(bitcode::B, in, pHdr->splframe(),  "splframe");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->usertimer(), "usertimer");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->skpoly(),    "skpoly");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->angdir(),    "angdir");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->splframe(),  "splframe");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->attreq(), "attreq");
-        BS_ARCHIVE(bitcode::B, in, pHdr->attdia(), "attdia");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->attreq(), "attreq");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->attdia(), "attdia");
     }
 
     // common
-    BS_ARCHIVE(bitcode::B, in, pHdr->mirrtext(),  "mirrtext");
-    BS_ARCHIVE(bitcode::B, in, pHdr->worldview(), "worldview");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->mirrtext(),  "mirrtext");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->worldview(), "worldview");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->wireframe(), "wireframe");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->wireframe(), "wireframe");
     }
 
     // common
-    BS_ARCHIVE(bitcode::B, in, pHdr->tilemode(),  "tilemode");
-    BS_ARCHIVE(bitcode::B, in, pHdr->plimcheck(), "plimcheck");
-    BS_ARCHIVE(bitcode::B, in, pHdr->visretain(), "visretain");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->tilemode(),  "tilemode");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->plimcheck(), "plimcheck");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->visretain(), "visretain");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->delobj(), "delobj");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->delobj(), "delobj");
     }
 
     // common
-    BS_ARCHIVE(bitcode::B, in, pHdr->dispsilh(),    "dispsilh");
-    BS_ARCHIVE(bitcode::B, in, pHdr->pellipse(),    "pellispe");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->saveimages(), "saveimages");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->dispsilh(),    "dispsilh");
+    BS_ARCHIVE(bitcode::B, in, m_pHdr->pellipse(),    "pellispe");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->saveimages(), "saveimages");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimsav(), "dimsav");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimsav(), "dimsav");
     }
 
     // common
-    BS_ARCHIVE(bitcode::BS, in, pHdr->treedepth(), "treedepth");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->lunits(),    "lunits");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->luprec(),    "luprec");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->aunits(),    "aunits");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->auprec(),    "auprec");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->treedepth(), "treedepth");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->lunits(),    "lunits");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->luprec(),    "luprec");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->aunits(),    "aunits");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->auprec(),    "auprec");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->osmode(), "osmode");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->osmode(), "osmode");
     }
 
     // common
-    BS_ARCHIVE(bitcode::BS, in, pHdr->attmode(), "attmode");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->attmode(), "attmode");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->coords(), "coords");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->coords(), "coords");
     }
 
     // common
-    BS_ARCHIVE(bitcode::BS, in, pHdr->pdmode(), "pdmode");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->pdmode(), "pdmode");
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->pickstyle(), "pickstyle");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->pickstyle(), "pickstyle");
     }
 
     if(dwgVersion >= R2004) {
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown12(), "unknown12");
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown13(), "unknown13");
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown14(), "unknown14");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown12(), "unknown12");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown13(), "unknown13");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown14(), "unknown14");
     }
 
     // common
-    BS_ARCHIVE(bitcode::BS, in, pHdr->useri1(),       "useri1");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->useri2(),       "useri2");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->useri3(),       "useri3");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->useri4(),       "useri4");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->useri5(),       "useri5");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->splinesegs(),   "splinesegs");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->surfu(),        "surfu");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->surfv(),        "surfv");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->surftype(),     "surftype");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->surftab1(),     "surftab1");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->surftab2(),     "surftab2");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->splinetype(),   "splinetype");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->shadedge(),     "shadedge");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->shadedif(),     "shadedif");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->unitmode(),     "unitmode");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->maxactvp(),     "macactvp");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->isolines(),     "isolines");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->cmljust(),      "cmljust");
-    BS_ARCHIVE(bitcode::BS, in, pHdr->textqlty(),     "textqlty");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->ltscale(),      "ltscale");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->textsize(),     "textsize");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->tracewid(),     "tracewid");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->sketchinc(),    "sketchinc");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->filletrad(),    "filletrad");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->thickness(),    "thickness");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->angbase(),      "angbase");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->pdsize(),       "pdsize");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->plinewid(),     "plinewid");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->userr1(),       "userr1");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->userr2(),       "userr2");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->userr3(),       "userr3");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->userr4(),       "userr4");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->userr5(),       "userr5");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->chamfera(),     "chamfera");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->chamferb(),     "chamferb");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->chamferc(),     "chamferc");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->chamferd(),     "chamferd");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->facetres(),     "facetres");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->cmlscale(),     "cmlscale");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->celtscale(),    "celtscale");
-    BS_ARCHIVE(bitcode::TV, in, pHdr->menuname(),     "menuname");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdcreate_day(), "tdcreate_day");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdcreate_ms(),  "tdcreate_ms");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdupdate_day(), "tdupdate_day");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdupdate_ms(),  "tdupdate_ms");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->useri1(),       "useri1");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->useri2(),       "useri2");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->useri3(),       "useri3");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->useri4(),       "useri4");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->useri5(),       "useri5");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->splinesegs(),   "splinesegs");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->surfu(),        "surfu");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->surfv(),        "surfv");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->surftype(),     "surftype");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->surftab1(),     "surftab1");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->surftab2(),     "surftab2");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->splinetype(),   "splinetype");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->shadedge(),     "shadedge");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->shadedif(),     "shadedif");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->unitmode(),     "unitmode");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->maxactvp(),     "macactvp");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->isolines(),     "isolines");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->cmljust(),      "cmljust");
+    BS_ARCHIVE(bitcode::BS, in, m_pHdr->textqlty(),     "textqlty");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->ltscale(),      "ltscale");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->textsize(),     "textsize");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->tracewid(),     "tracewid");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->sketchinc(),    "sketchinc");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->filletrad(),    "filletrad");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->thickness(),    "thickness");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->angbase(),      "angbase");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->pdsize(),       "pdsize");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->plinewid(),     "plinewid");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->userr1(),       "userr1");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->userr2(),       "userr2");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->userr3(),       "userr3");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->userr4(),       "userr4");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->userr5(),       "userr5");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->chamfera(),     "chamfera");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->chamferb(),     "chamferb");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->chamferc(),     "chamferc");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->chamferd(),     "chamferd");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->facetres(),     "facetres");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->cmlscale(),     "cmlscale");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->celtscale(),    "celtscale");
+    BS_ARCHIVE(bitcode::TV, in, m_pHdr->menuname(),     "menuname");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdcreate_day(), "tdcreate_day");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdcreate_ms(),  "tdcreate_ms");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdupdate_day(), "tdupdate_day");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdupdate_ms(),  "tdupdate_ms");
 
     if(dwgVersion >= R2004) {
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown15(), "unknown15");
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown16(), "unknown16");
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown17(), "unknown17");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown15(), "unknown15");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown16(), "unknown16");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown17(), "unknown17");
     }
 
     // common
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdindwg_days(),    "tdindwg_days");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdindwg_ms(),      "tdindwg_ms");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdusrtimer_days(), "tdusrtimer_days");
-    BS_ARCHIVE(bitcode::BL, in, pHdr->tdusrtimer_ms(),   "tdusrtimer_ms");
-    BS_ARCHIVE(bitcode::CMC, in, pHdr->cecolor(),        "cecolor");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->handseed(),       "handseed");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->clayer(),         "clayer");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->textstyle(),      "textstyle");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->celtype(),        "celtype");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdindwg_days(),    "tdindwg_days");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdindwg_ms(),      "tdindwg_ms");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdusrtimer_days(), "tdusrtimer_days");
+    BS_ARCHIVE(bitcode::BL, in, m_pHdr->tdusrtimer_ms(),   "tdusrtimer_ms");
+    BS_ARCHIVE(bitcode::CMC, in, m_pHdr->cecolor(),        "cecolor");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->handseed(),       "handseed");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->clayer(),         "clayer");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->textstyle(),      "textstyle");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->celtype(),        "celtype");
 
     // R2007+
     if(dwgVersion >= R2007) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->cmaterial(), "cmaterial");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->cmaterial(), "cmaterial");
     }
 
     // commmon
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->dimstyle(), "dimstyle");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->cmlstyle(), "cmlstyle");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimstyle(), "dimstyle");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->cmlstyle(), "cmlstyle");
 
     // R2000+ only
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(bitcode::BD, in, pHdr->psvpscale(), "psvpscale");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->psvpscale(), "psvpscale");
     }
 
     // common
     VLOG(4) << "****** Begin PS read *****";
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->pinsbase(),  "pinsbase");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->pextmin(),   "pextmin");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->pextmax(),   "pextmax");
-    BS_ARCHIVE(bitcode::RD2, in, pHdr->plimmin(),   "plimmin");
-    BS_ARCHIVE(bitcode::RD2, in, pHdr->plimmax(),   "plimmax");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->pelevation(), "pelevation");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsorg(),   "pucsorg");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsxdir(),  "pucsxdir");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsydir(),  "pucsydir");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->pucsname(),  "pucsname");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pinsbase(),  "pinsbase");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pextmin(),   "pextmin");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pextmax(),   "pextmax");
+    BS_ARCHIVE(bitcode::RD2, in, m_pHdr->plimmin(),   "plimmin");
+    BS_ARCHIVE(bitcode::RD2, in, m_pHdr->plimmax(),   "plimmax");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->pelevation(), "pelevation");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsorg(),   "pucsorg");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsxdir(),  "pucsxdir");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsydir(),  "pucsydir");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->pucsname(),  "pucsname");
 
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->pucsbase(),      "pucsbase");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->pucsorthoview(),  "pucsorthoview");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->pucsorthoref(),  "pucsorthoref");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsorgtop(),    "pucsorgtop");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsorgbottom(), "pucsorgbottom");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsorgleft(),   "pucsorgleft");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsorgright(),  "pucsorgright");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsorgfront(),  "pucsorgfront");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->pucsorgback(),   "pucsorgback");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->pucsbase(),      "pucsbase");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->pucsorthoview(),  "pucsorthoview");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->pucsorthoref(),  "pucsorthoref");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsorgtop(),    "pucsorgtop");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsorgbottom(), "pucsorgbottom");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsorgleft(),   "pucsorgleft");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsorgright(),  "pucsorgright");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsorgfront(),  "pucsorgfront");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->pucsorgback(),   "pucsorgback");
     }
 
 
     // common
     VLOG(4) << "****** Begin MS read *****";
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->insbase(),  "insbase");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->extmin(),   "extmin");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->extmax(),   "extmax");
-    BS_ARCHIVE(bitcode::RD2, in, pHdr->limmin(),   "limmin");
-    BS_ARCHIVE(bitcode::RD2, in, pHdr->limmax(),   "limmax");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->elevation(), "elevation");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsorg(),   "ucsorg");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsxdir(),  "ucsxdir");
-    BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsydir(),  "ucsydir");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->ucsname(),  "ucsname");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->insbase(),  "insbase");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->extmin(),   "extmin");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->extmax(),   "extmax");
+    BS_ARCHIVE(bitcode::RD2, in, m_pHdr->limmin(),   "limmin");
+    BS_ARCHIVE(bitcode::RD2, in, m_pHdr->limmax(),   "limmax");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->elevation(), "elevation");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsorg(),   "ucsorg");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsxdir(),  "ucsxdir");
+    BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsydir(),  "ucsydir");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->ucsname(),  "ucsname");
 
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->ucsbase(),      "ucsbase");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->ucsorthoview(),  "ucsorthoview");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->ucsorthoref(),  "ucsorthoref");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsorgtop(),    "ucsorgtop");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsorgbottom(), "ucsorgbottom");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsorgleft(),   "ucsorgleft");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsorgright(),  "ucsorgright");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsorgfront(),  "ucsorgfront");
-        BS_ARCHIVE(bitcode::BD3, in, pHdr->ucsorgback(),   "ucsorgback");
-        BS_ARCHIVE(bitcode::TV, in, pHdr->dimpost(),       "dimpost");
-        BS_ARCHIVE(bitcode::TV, in, pHdr->dimapost(),      "dimapost");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->ucsbase(),      "ucsbase");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->ucsorthoview(),  "ucsorthoview");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->ucsorthoref(),  "ucsorthoref");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsorgtop(),    "ucsorgtop");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsorgbottom(), "ucsorgbottom");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsorgleft(),   "ucsorgleft");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsorgright(),  "ucsorgright");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsorgfront(),  "ucsorgfront");
+        BS_ARCHIVE(bitcode::BD3, in, m_pHdr->ucsorgback(),   "ucsorgback");
+        BS_ARCHIVE(bitcode::TV, in, m_pHdr->dimpost(),       "dimpost");
+        BS_ARCHIVE(bitcode::TV, in, m_pHdr->dimapost(),      "dimapost");
     }
 
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimtol(),     "dimtol");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimlim(),     "dimlim");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimtih(),     "dimtih");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimtoh(),     "dimtoh");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimse1(),     "dimse1");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimse2(),     "dimse2");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimalt(),     "dimalt");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimtofl(),    "dimtofl");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimsah(),     "dimsah");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimtix(),     "dimtix");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimsoxd(),    "dimsoxd");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimaltd(),   "dimaltd");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimzin(),    "dimzin");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimsd1(),     "dimsd1");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimsd2(),     "dimsd2");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimtolj(),   "dimtolj");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimjust(),   "dimjust");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimfit(),    "dimfit");
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimupt(),     "dimupt");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimtzin(),   "dimtzin");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimaltz(),   "dimaltz");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimalttz(),  "dimalttz");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimtad(),    "dimtad");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimunit(),   "dimunit");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimaunit(),  "dimaunit");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimdec(),    "dimdec");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimtdec(),   "dimtdec");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimaltu(),   "dimaltu");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimalttd(),  "dimalttd");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimtxsty(), "dimtxsty");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimtol(),     "dimtol");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimlim(),     "dimlim");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimtih(),     "dimtih");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimtoh(),     "dimtoh");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimse1(),     "dimse1");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimse2(),     "dimse2");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimalt(),     "dimalt");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimtofl(),    "dimtofl");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimsah(),     "dimsah");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimtix(),     "dimtix");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimsoxd(),    "dimsoxd");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimaltd(),   "dimaltd");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimzin(),    "dimzin");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimsd1(),     "dimsd1");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimsd2(),     "dimsd2");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimtolj(),   "dimtolj");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimjust(),   "dimjust");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimfit(),    "dimfit");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimupt(),     "dimupt");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimtzin(),   "dimtzin");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimaltz(),   "dimaltz");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimalttz(),  "dimalttz");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimtad(),    "dimtad");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimunit(),   "dimunit");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimaunit(),  "dimaunit");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimdec(),    "dimdec");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimtdec(),   "dimtdec");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimaltu(),   "dimaltu");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimalttd(),  "dimalttd");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimtxsty(), "dimtxsty");
     }
 
 ////////////////////////////////////////////////////////////////////////////
 // common
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimscale(), "dimscale")
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimasz(),   "dimasz");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimexo(),   "dimexo");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimdli(),   "dimdli");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimexe(),   "dimexe");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimrnd(),   "dimrnd");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimdle(),   "dimdle");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimtp(),    "dimtp");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimtm(),    "dimtm");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimscale(), "dimscale")
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimasz(),   "dimasz");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimexo(),   "dimexo");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimdli(),   "dimdli");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimexe(),   "dimexe");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimrnd(),   "dimrnd");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimdle(),   "dimdle");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimtp(),    "dimtp");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimtm(),    "dimtm");
 
 // R2007+
     if(dwgVersion >= R2007) {
-        BS_ARCHIVE(bitcode::BD, in, pHdr-> dimfxl(),      "dimfxl");
-        BS_ARCHIVE(bitcode::BD, in, pHdr-> dimjogang(),   "dimjogang");
-        BS_ARCHIVE(bitcode::BS, in, pHdr-> dimtfill(),    "dimtfill");
-        BS_ARCHIVE(bitcode::CMC, in, pHdr->dimtfillclr(), "dimtfillclr");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr-> dimfxl(),      "dimfxl");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr-> dimjogang(),   "dimjogang");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr-> dimtfill(),    "dimtfill");
+        BS_ARCHIVE(bitcode::CMC, in, m_pHdr->dimtfillclr(), "dimtfillclr");
     }
 
 // R2000+
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(bitcode::B, in, pHdr-> dimtol(),  "dimtol");
-        BS_ARCHIVE(bitcode::B, in, pHdr-> dimlim(),  "dimlim");
-        BS_ARCHIVE(bitcode::B, in, pHdr-> dimtih(),  "dimtih");
-        BS_ARCHIVE(bitcode::B, in, pHdr-> dimtoh(),  "dimtoh");
-        BS_ARCHIVE(bitcode::B, in, pHdr-> dimse1(),  "dimse1");
-        BS_ARCHIVE(bitcode::B, in, pHdr-> dimse2(),  "dimse2");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimtad(),  "dimtad");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimzin(),  "dimzin");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimazin(), "dimazin");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr-> dimtol(),  "dimtol");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr-> dimlim(),  "dimlim");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr-> dimtih(),  "dimtih");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr-> dimtoh(),  "dimtoh");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr-> dimse1(),  "dimse1");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr-> dimse2(),  "dimse2");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimtad(),  "dimtad");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimzin(),  "dimzin");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimazin(), "dimazin");
     }
 
 // R2007+
     if(dwgVersion >= R2007) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimarcsym(), "dimarcsym");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimarcsym(), "dimarcsym");
     }
 
 // common
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimtxt(),  "dimtxt");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimcen(),  "dimcen");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimtsz(),  "dimtsz");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimaltf(), "dimaltf");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimlfac(), "dimlfac");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimtvp(),  "dimtvp");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimtfac(), "dimtfac");
-    BS_ARCHIVE(bitcode::BD, in, pHdr->dimgap(),  "dimgap");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimtxt(),  "dimtxt");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimcen(),  "dimcen");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimtsz(),  "dimtsz");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimaltf(), "dimaltf");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimlfac(), "dimlfac");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimtvp(),  "dimtvp");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimtfac(), "dimtfac");
+    BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimgap(),  "dimgap");
 
 // R13-R14
     if(dwgVersion == R13 || dwgVersion == R14) {
-        BS_ARCHIVE(bitcode::T, in, pHdr->dimpost(),  "dimpost");
-        BS_ARCHIVE(bitcode::T, in, pHdr->dimapost(), "dimapost");
-        BS_ARCHIVE(bitcode::T, in, pHdr->dimblk(),   "dimblk");
-        BS_ARCHIVE(bitcode::T, in, pHdr->dimblk1(),  "dimblk1");
-        BS_ARCHIVE(bitcode::T, in, pHdr->dimblk2(),  "dimblk2");
+        BS_ARCHIVE(bitcode::T, in, m_pHdr->dimpost(),  "dimpost");
+        BS_ARCHIVE(bitcode::T, in, m_pHdr->dimapost(), "dimapost");
+        BS_ARCHIVE(bitcode::T, in, m_pHdr->dimblk(),   "dimblk");
+        BS_ARCHIVE(bitcode::T, in, m_pHdr->dimblk1(),  "dimblk1");
+        BS_ARCHIVE(bitcode::T, in, m_pHdr->dimblk2(),  "dimblk2");
     }
 
 // R2000+
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(bitcode::BD, in, pHdr->dimaltrnd(), "dimaltrnd");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimalt(),    "dimalt");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimaltd(),   "dimaltd");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimtofl(),   "dimtofl");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimsah(),    "dimsah");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimtix(),    "dimtix");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimsoxd(),   "dimsoxd");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->dimaltrnd(), "dimaltrnd");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimalt(),    "dimalt");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimaltd(),   "dimaltd");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimtofl(),   "dimtofl");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimsah(),    "dimsah");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimtix(),    "dimtix");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimsoxd(),   "dimsoxd");
     }
 
 // common
-    BS_ARCHIVE(bitcode::CMC, in, pHdr->dimclrd(), "dimclrd");
-    BS_ARCHIVE(bitcode::CMC, in, pHdr->dimclre(), "dimclre");
-    BS_ARCHIVE(bitcode::CMC, in, pHdr->dimclrt(), "dimclrt");
+    BS_ARCHIVE(bitcode::CMC, in, m_pHdr->dimclrd(), "dimclrd");
+    BS_ARCHIVE(bitcode::CMC, in, m_pHdr->dimclre(), "dimclre");
+    BS_ARCHIVE(bitcode::CMC, in, m_pHdr->dimclrt(), "dimclrt");
 
 // R2000+
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimadec(),  "dimadec");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimdec(),   "dimdec");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimtdec(),  "dimtdec");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimaltu(),  "dimaltu");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimalttd(), "dimalttd");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimaunit(), "dimaunit");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimfrac(),  "dimfrac");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimlunit(), "dimlunit");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimdsep(),  "dimdsep");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimtmove(), "dimtmove");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimjust(),  "dimjust");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimsd1(),   "dimsd1");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimsd2(),   "dimsd2");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimtolj(),  "dimtolj");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimtzin(),  "dimtzin");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimaltz(),  "dimaltz");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimalttz(), "dimalttz");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->dimupt(),   "dimupt");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimatfit(), "dimatfit");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimadec(),  "dimadec");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimdec(),   "dimdec");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimtdec(),  "dimtdec");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimaltu(),  "dimaltu");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimalttd(), "dimalttd");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimaunit(), "dimaunit");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimfrac(),  "dimfrac");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimlunit(), "dimlunit");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimdsep(),  "dimdsep");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimtmove(), "dimtmove");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimjust(),  "dimjust");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimsd1(),   "dimsd1");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimsd2(),   "dimsd2");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimtolj(),  "dimtolj");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimtzin(),  "dimtzin");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimaltz(),  "dimaltz");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimalttz(), "dimalttz");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->dimupt(),   "dimupt");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimatfit(), "dimatfit");
     }
 
 // R2007+
     if(dwgVersion >= R2007) {
-        BS_ARCHIVE(bitcode::B, in, pHdr->dimfxlon(), "dimfxlog");
+        BS_ARCHIVE(bitcode::B, in, m_pHdr->dimfxlon(), "dimfxlog");
     }
 
     if(dwgVersion >= R2010) {
@@ -479,72 +479,72 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
 
 // R2000+
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimtxsty(),  "dimtxsty");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimldrblk(), "dimldrblk");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimblkId(),  "dimblkId");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimblk1Id(), "dimblk1Id");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimblk2Id(), "dimblk2Id");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimtxsty(),  "dimtxsty");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimldrblk(), "dimldrblk");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimblkId(),  "dimblkId");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimblk1Id(), "dimblk1Id");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimblk2Id(), "dimblk2Id");
     }
 
 // R2007+
     if(dwgVersion >= R2007) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimltype(),  "dimltype");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimltex1(),  "dimltex1");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dimltex2(),  "dimltex2");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimltype(),  "dimltype");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimltex1(),  "dimltex1");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimltex2(),  "dimltex2");
     }
 
 // R2000+
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimlwd(), "dimlwd");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->dimlwe(), "dimlwe");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimlwd(), "dimlwd");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->dimlwe(), "dimlwe");
     }
 
 // common
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->blockCtrlId(),    "blockCtrlId");  // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->layerCtrlId(),    "layerCtrlId");    // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->styleCtrlId(),    "styleCtrlId");    // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->linetypeCtrlId(), "linetypeCtrlId"); // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->viewCtrlId(),     "viewCtrlId");     // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->ucsCtrlId(),      "ucsCtrlId");      // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->vportCtrlId(),    "vportCtrlId");    // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->appidCtrlId(),    "appidCtrlId");    // CONTROL OBJECT
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->dimstyleCtrlId(), "dimstyleCtrlId"); // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->blockCtrlId(),    "blockCtrlId");  // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->layerCtrlId(),    "layerCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->styleCtrlId(),    "styleCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->linetypeCtrlId(), "linetypeCtrlId"); // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->viewCtrlId(),     "viewCtrlId");     // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->ucsCtrlId(),      "ucsCtrlId");      // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->vportCtrlId(),    "vportCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->appidCtrlId(),    "appidCtrlId");    // CONTROL OBJECT
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dimstyleCtrlId(), "dimstyleCtrlId"); // CONTROL OBJECT
 
 // R13-R15
     if(dwgVersion == R13 || dwgVersion == R14 || dwgVersion == R2000) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->viewport(), "viewport"); // ENTITY HEADER CONTROL OBJECT
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->viewport(), "viewport"); // ENTITY HEADER CONTROL OBJECT
     }
 
 // common
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryGroupId(),      "group dictionary Id");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryMLineStyleId(), "mline style dict Id");
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryNamedObjsId(),  "named objects dict Id");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryGroupId(),      "group dictionary Id");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryMLineStyleId(), "mline style dict Id");
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryNamedObjsId(),  "named objects dict Id");
 
 // R2000+
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->tstackalign(),   "tstackalign");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->tstacksize(),    "tstacksize");
-        BS_ARCHIVE(bitcode::TV, in, pHdr->hyperlinkbase(), "hyperlinkbase");
-        BS_ARCHIVE(bitcode::TV, in, pHdr->stylesheet(),    "stylesheet")
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryLayoutsId(),      "layouts dict Id");       // (LAYOUTS)
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryPlotSettingsId(), "plot settings dict Id"); // (PLOTSETTINGS)
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryPlotStylesId(),   "plot styles dict Id");        // (PLOTSTYLES)
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->tstackalign(),   "tstackalign");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->tstacksize(),    "tstacksize");
+        BS_ARCHIVE(bitcode::TV, in, m_pHdr->hyperlinkbase(), "hyperlinkbase");
+        BS_ARCHIVE(bitcode::TV, in, m_pHdr->stylesheet(),    "stylesheet")
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryLayoutsId(),      "layouts dict Id");       // (LAYOUTS)
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryPlotSettingsId(), "plot settings dict Id"); // (PLOTSETTINGS)
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryPlotStylesId(),   "plot styles dict Id");        // (PLOTSTYLES)
     }
 
 // R2004+
     if(dwgVersion >= R2004) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryMaterialsId(), "materials dict Id");     // (MATERIALS)
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryColorsId(), "colors dict Id");        // (COLORS)
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryMaterialsId(), "materials dict Id");     // (MATERIALS)
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryColorsId(), "colors dict Id");        // (COLORS)
     }
 
 // R2007+
     if(dwgVersion >= R2007) {
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dictionaryVisualStyleId(), "visual style dict Id");  // (VISUALSTYLE)
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dictionaryVisualStyleId(), "visual style dict Id");  // (VISUALSTYLE)
     }
 
 // R2000+
     if(dwgVersion >= R2000) {
-        BS_ARCHIVE(bitcode::BL, in, pHdr->flags(), "flags");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->flags(), "flags");
         //                      CELWEIGHT       Flags & 0x001F
         //                      ENDCAPS         Flags & 0x0060
         //                      JOINSTYLE       Flags & 0x0180
@@ -553,82 +553,82 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
         //                      EXTNAMES        Flags & 0x0800
         //                      PSTYLEMODE      Flags & 0x2000
         //                      OLESTARTUP      Flags & 0x4000
-        BS_ARCHIVE(bitcode::BS, in, pHdr->insunits(),  "insunits");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->cepsntype(), "cepsntype");
-        if(pHdr->cepsntype() == 3) {
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->insunits(),  "insunits");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->cepsntype(), "cepsntype");
+        if(m_pHdr->cepsntype() == 3) {
             // cpsnid only present if m_cepsntype == 3
-            BS_ARCHIVE(OcDbObjectId, in, pHdr->cpsnid(), "cpsnid");
+            BS_ARCHIVE(OcDbObjectId, in, m_pHdr->cpsnid(), "cpsnid");
         }
-        BS_ARCHIVE(bitcode::TV, in, pHdr->fingerprintguid(), "fingerprintguid");
-        BS_ARCHIVE(bitcode::TV, in, pHdr->versionguid(), "versionguid");
+        BS_ARCHIVE(bitcode::TV, in, m_pHdr->fingerprintguid(), "fingerprintguid");
+        BS_ARCHIVE(bitcode::TV, in, m_pHdr->versionguid(), "versionguid");
     }
 
 // R2004+
     if(dwgVersion >= R2004) {
-        BS_ARCHIVE(bitcode::RC, in, pHdr->sortents(),          "sortents");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->indexctl(),          "indexctl");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->hidetext(),          "hidetext");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->xclipframe(),        "xclipframe");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dimassoc(),          "dimassoc");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->halogap(),           "halogap");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->obscuredcolor(),     "obscuredcolor");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->intersectioncolor(), "intersectioncolor");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->obscuredltype(),     "obscuredltype");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->intersectiondisplay(), "intersectiondisplay")
-        BS_ARCHIVE(bitcode::TV, in, pHdr->projectname(),       "projectname");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->sortents(),          "sortents");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->indexctl(),          "indexctl");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->hidetext(),          "hidetext");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->xclipframe(),        "xclipframe");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dimassoc(),          "dimassoc");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->halogap(),           "halogap");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->obscuredcolor(),     "obscuredcolor");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->intersectioncolor(), "intersectioncolor");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->obscuredltype(),     "obscuredltype");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->intersectiondisplay(), "intersectiondisplay")
+        BS_ARCHIVE(bitcode::TV, in, m_pHdr->projectname(),       "projectname");
     }
 
 // common
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->block_recordPsId(), "ps block record Id");  // (*PAPER_SPACE)
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->block_recordMsId(), "ms block record Id");  // (*MODEL_SPACE)
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->ltypeByLayerId(),   "ltype bylayer id");         // (BYLAYER)
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->ltypeByBlockId(),   "ltype byblock id");         // (BYBLOCK)
-    BS_ARCHIVE(OcDbObjectId, in, pHdr->ltypeContinuousId(), "ltype continuous LT id");         // (CONTINUOUS)
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->block_recordPsId(), "ps block record Id");  // (*PAPER_SPACE)
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->block_recordMsId(), "ms block record Id");  // (*MODEL_SPACE)
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->ltypeByLayerId(),   "ltype bylayer id");         // (BYLAYER)
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->ltypeByBlockId(),   "ltype byblock id");         // (BYBLOCK)
+    BS_ARCHIVE(OcDbObjectId, in, m_pHdr->ltypeContinuousId(), "ltype continuous LT id");         // (CONTINUOUS)
 
 // R2007+
     if(dwgVersion >= R2007) {
-        BS_ARCHIVE(bitcode::B,  in, pHdr->cameradisplay(),     "cameradisplay");
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown21(),         "unknown21");
-        BS_ARCHIVE(bitcode::BL, in, pHdr->unknown22(),         "unknown22");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->unknown23(),         "unknown23");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->stepspersec(),       "stepspersec");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->stepsize(),          "stepsize");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->dwfprec3d(),         "dwfprec3d");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->lenslength(),        "lenslength");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->cameraheight(),      "cameraheight");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->solidhist(),         "solidhist");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->showhist(),          "showhist");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->psolwidth(),         "psolwidth");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->psolheight(),        "psolheight");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->loftang1(),          "loftang1");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->loftang2(),          "loftang2");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->loftmag1(),          "loftmag1");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->logtmag2(),          "loftmag2");
-        BS_ARCHIVE(bitcode::BS, in, pHdr->loftparam(),         "loftparam");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->loftnormals(),       "loftnormals");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->latitude(),          "latitude");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->longitude(),         "longitude");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->northdirection(),    "northdirection");
-        BS_ARCHIVE(bitcode::BL, in, pHdr->timezone(),          "timezone");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->lightglyphdisplay(), "lightglyphdisplay");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->tilemodelightsynch(), "tilemodelightsynch");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dwfframe(),          "dwfframe");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->dgnframe(),          "dgnframe");
-        BS_ARCHIVE(bitcode::B,  in, pHdr->unknown47(),         "unknown47");
-        BS_ARCHIVE(bitcode::CMC, in, pHdr->interferecolor(),   "interferecolor");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->interfereobjvsId(), "interfereobjvsId");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->interferevpvsId(),  "interferevpvsId");
-        BS_ARCHIVE(OcDbObjectId, in, pHdr->dragvsId(),         "dragvsId");
-        BS_ARCHIVE(bitcode::RC, in, pHdr->cshadow(),           "cshadow");
-        BS_ARCHIVE(bitcode::BD, in, pHdr->unknown53(),         "unknown53");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->cameradisplay(),     "cameradisplay");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown21(),         "unknown21");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->unknown22(),         "unknown22");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->unknown23(),         "unknown23");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->stepspersec(),       "stepspersec");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->stepsize(),          "stepsize");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->dwfprec3d(),         "dwfprec3d");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->lenslength(),        "lenslength");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->cameraheight(),      "cameraheight");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->solidhist(),         "solidhist");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->showhist(),          "showhist");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->psolwidth(),         "psolwidth");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->psolheight(),        "psolheight");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->loftang1(),          "loftang1");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->loftang2(),          "loftang2");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->loftmag1(),          "loftmag1");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->logtmag2(),          "loftmag2");
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->loftparam(),         "loftparam");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->loftnormals(),       "loftnormals");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->latitude(),          "latitude");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->longitude(),         "longitude");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->northdirection(),    "northdirection");
+        BS_ARCHIVE(bitcode::BL, in, m_pHdr->timezone(),          "timezone");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->lightglyphdisplay(), "lightglyphdisplay");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->tilemodelightsynch(), "tilemodelightsynch");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dwfframe(),          "dwfframe");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->dgnframe(),          "dgnframe");
+        BS_ARCHIVE(bitcode::B,  in, m_pHdr->unknown47(),         "unknown47");
+        BS_ARCHIVE(bitcode::CMC, in, m_pHdr->interferecolor(),   "interferecolor");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->interfereobjvsId(), "interfereobjvsId");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->interferevpvsId(),  "interferevpvsId");
+        BS_ARCHIVE(OcDbObjectId, in, m_pHdr->dragvsId(),         "dragvsId");
+        BS_ARCHIVE(bitcode::RC, in, m_pHdr->cshadow(),           "cshadow");
+        BS_ARCHIVE(bitcode::BD, in, m_pHdr->unknown53(),         "unknown53");
     }
 
 // R14+
     if(dwgVersion >= R14) {
-        BS_ARCHIVE(bitcode::BS, in, pHdr->unknown54(), "unknown54");  // short(type 5 / 6 only)  these do not seem to be required,
-        BS_ARCHIVE(bitcode::BS, in, pHdr->unknown55(), "unknown55");  // short(type 5 / 6 only)  even for type 5.
-        BS_ARCHIVE(bitcode::BS, in, pHdr->unknown56(), "unknown56");  // short(type 5 / 6 only)
-        BS_ARCHIVE(bitcode::BS, in, pHdr->unknown57(), "unknown57");  // short(type 5 / 6 only)
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->unknown54(), "unknown54");  // short(type 5 / 6 only)  these do not seem to be required,
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->unknown55(), "unknown55");  // short(type 5 / 6 only)  even for type 5.
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->unknown56(), "unknown56");  // short(type 5 / 6 only)
+        BS_ARCHIVE(bitcode::BS, in, m_pHdr->unknown57(), "unknown57");  // short(type 5 / 6 only)
     }
 
     in.AdvanceToByteBoundary();

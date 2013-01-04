@@ -49,7 +49,7 @@ private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& in);
     friend DwgInArchive& operator>>(DwgInArchive& in,
                                     OcDfDatabaseHeaderVars & dwgVars);
-    OcDbDatabaseHeaderImpl * pHdr;
+    OcDbDatabaseHeaderImpl * m_pHdr;
 };
     //
 //public: // header variables
