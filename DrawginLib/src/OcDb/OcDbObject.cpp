@@ -31,6 +31,7 @@
 #include "OcCommon.h"
 
 #include "OcError.h"
+#include "OcDbObjectId.h"
 #include "OcDbObjectImpl.h"
 #include "OcDbObject.h"
 
@@ -49,8 +50,13 @@ OcDbObject::~OcDbObject(void)
 
 OcApp::ErrorStatus OcDbObject::DecodeData(DwgInArchive& ar)
 {
-    return OcApp::eNotImplemented;
-    
+    return m_pObjectImpl->DecodeData(ar);
 }
+
+octavarium::OcDbObjectId OcDbObject::ObjectId() const
+{
+    return m_pObjectImpl->ObjectId();
+}
+
 
 END_OCTAVARIUM_NS

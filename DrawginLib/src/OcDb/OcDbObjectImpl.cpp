@@ -110,6 +110,11 @@ OcApp::ErrorStatus OcDbObjectImpl::DecodeData(DwgInArchive& ar)
     return OcApp::eNotImplemented;
 }
 
+octavarium::OcDbObjectId OcDbObjectImpl::ObjectId( void ) const
+{
+    return m_objectId;
+}
+
 DwgInArchive& operator>>(DwgInArchive& ar, OcDbObjectImpl & data)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);

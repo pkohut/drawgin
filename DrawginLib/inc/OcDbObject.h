@@ -43,7 +43,9 @@ public:
     OcDbObject(void);
     virtual ~OcDbObject(void);
 
-    OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+    virtual OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+
+    OcDbObjectId ObjectId() const;
 
 private:
     OcDbObjectImpl * m_pObjectImpl;

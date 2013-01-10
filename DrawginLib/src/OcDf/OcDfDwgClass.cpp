@@ -58,7 +58,7 @@ OcDfDwgClass::~OcDfDwgClass()
 
 OcApp::ErrorStatus OcDfDwgClass::DecodeData(DwgInArchive& in)
 {
-    VLOG(4) << "DecodeData entered";
+    VLOG(4) << "---- DecodeData entered ----";
 
     BS_ARCHIVE(bitcode::BS, in, ClassNumber(), "class number");
     if(ClassNumber() < 500) {
