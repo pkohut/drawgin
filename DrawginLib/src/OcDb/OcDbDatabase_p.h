@@ -28,20 +28,21 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbDatabaseHeaderImpl_h__
-#define OcDbDatabaseHeaderImpl_h__
-
-#include "templates/accessors.h"
+#ifndef OcDbDatabase_p_h__
+#define OcDbDatabase_p_h__
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbDatabaseHeaderImpl
+class OcDbDatabaseHeaderImpl;
+//class OcDbDatabase;
+class OcDbDatabasePimpl
 {
 public:
-    OcDbDatabaseHeaderImpl(void);
-    virtual ~OcDbDatabaseHeaderImpl(void);
+    OcDbDatabasePimpl(void);
+    virtual ~OcDbDatabasePimpl(void);
 
-public: // header variables
+    OcApp::ErrorStatus Open(const string_t & filename);
+
     /*********************************************************************
      * As this class is to be reusable for all drawing versions, the
      * listed order of the variables below is not necessarily in the
@@ -611,8 +612,16 @@ public: // header variables
      /*-------------------- Common --------------------*/
     accessors<uint16_t>        crc;      // for the data section, starting after the
     // sentinel. Use 0xC0C1 for the initial value.
+
+private:
+    //OcDbDatabaseHeaderImpl * m_pHeaderImpl;
+
+
+
+
+
 };
 
 END_OCTAVARIUM_NS
 
-#endif // OcDbDatabaseHeaderImpl_h__
+#endif // OcDbDatabase_p_h__

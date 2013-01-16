@@ -32,7 +32,8 @@
 #define OcDfDwgObjectMap_h__
 
 BEGIN_OCTAVARIUM_NS
-class OcDbDatabaseImpl;
+
+class OcDbDatabasePimpl;
 class DwgInArchive;
 class OcDfDwgClasses;
 class OcDbObject;
@@ -43,7 +44,7 @@ public:
     OcDfDwgObjectMap(int32_t objMapFilePos, int32_t objMapSize);
     virtual ~OcDfDwgObjectMap(void);
 
-    OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabaseImpl *& pDb,
+    OcApp::ErrorStatus DecodeObjects(DwgInArchive& ar, OcDbDatabasePimpl *& pDb,
                                      const OcDfDwgClasses & classes);
 
 private:
@@ -56,6 +57,8 @@ private:
 
     int32_t m_objMapFilePos;
     int32_t m_objMapSize;
+
+    
 };
 
 END_OCTAVARIUM_NS

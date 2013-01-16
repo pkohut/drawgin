@@ -28,30 +28,33 @@
 **
 ****************************************************************************/
 
-#include "OcCommon.h"
-#include "OcTypes.h"
-#include "OcError.h"
-#include "OcDbObjectId.h"
-#include "OcDbHardOwnershipId.h"
-#include "OcGePoint2D.h"
-#include "OcGePoint3D.h"
-#include "OcCmColor.h"
-
-#include "OcDbDatabaseHeaderImpl.h"
+#ifndef OcDbObject_p_h__
+#define OcDbObject_p_h__
 
 BEGIN_OCTAVARIUM_NS
 
-OcDbDatabaseHeaderImpl::OcDbDatabaseHeaderImpl(void)
-:
-unknown1(412148564080.0), unknown2(1.0), unknown3(1.0), unknown4(1.0),
-unknown9(24)
-{
-    VLOG(4) << "Constructor entered";
-}
+class OcRxObject;
+class DwgInArchive;
+class OcDbObjectId;
 
-OcDbDatabaseHeaderImpl::~OcDbDatabaseHeaderImpl(void)
+class OcDbObjectImpl
 {
-    VLOG(4) << "Destructor entered";
-}
+public:
+    OcDbObjectImpl(void);
+    virtual ~OcDbObjectImpl(void);
+
+    OcDbObjectId ObjectId(void) const;
+    virtual OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+
+private:
+    friend DwgInArchive& operator>>(DwgInArchive& ar, OcDbObjectImpl & data);
+    
+
+    OcDbObjectId m_objectId;
+
+
+};
 
 END_OCTAVARIUM_NS
+
+#endif // OcDbObject_p_h__

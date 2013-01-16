@@ -34,7 +34,7 @@
 #include "OcError.h"
 
 #include "OcDbDatabase.h"
-#include "OcDbDatabaseImpl.h"
+#include "OcDbDatabase_p.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -48,7 +48,7 @@ BEGIN_OCTAVARIUM_NS
 
 
 OcDbDatabase::OcDbDatabase(void)
-: m_pDatabaseImpl(new OcDbDatabaseImpl())
+: m_pDatabaseImpl(new OcDbDatabasePimpl())
 {
 }
 

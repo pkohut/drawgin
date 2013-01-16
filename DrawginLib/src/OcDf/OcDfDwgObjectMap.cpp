@@ -36,6 +36,7 @@
 #include "OcTypes.h"
 #include "OcDbObjectId.h"
 #include "OcDbObject.h"
+#include "OcDbDatabase.h"
 #include "OcDfDwgObjectMap.h"
 
 #include "OcDfDwgClass.h"
@@ -237,8 +238,8 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 }
 
 OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
-        OcDbDatabaseImpl *& pDb,
-        const OcDfDwgClasses & classes)
+                                                   OcDbDatabasePimpl *& pDb,
+                                                   const OcDfDwgClasses & classes)
 {
     std::vector<SUB_CLASS_ID> subClasses(&_subClasses[0],
                                          &_subClasses[ELEMENTS(_subClasses)]);

@@ -32,7 +32,7 @@
 
 #include "OcError.h"
 #include "OcDbObjectId.h"
-#include "OcDbObjectImpl.h"
+#include "OcDbObject_p.h"
 #include "OcDbObject.h"
 
 BEGIN_OCTAVARIUM_NS

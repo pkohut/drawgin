@@ -33,7 +33,7 @@
 #include "OcError.h"
 #include "OcTypes.h"
 #include "OcDbObjectId.h"
-#include "OcDbObjectImpl.h"
+#include "OcDbObject_p.h"
 #include "OcDbObject.h"
 
 

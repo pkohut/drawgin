@@ -40,8 +40,8 @@
 
 
 BEGIN_OCTAVARIUM_NS
-
-class OcDbDatabaseImpl;
+//class OcDbDatabase;
+class OcDbDatabasePimpl;
 
 class OcDbDatabase : public OcRxObject
 {
@@ -390,8 +390,7 @@ public:
 
 
 private:
-    OcDbDatabaseImpl * m_pDatabaseImpl;
-
+    OcDbDatabasePimpl * m_pDatabaseImpl;
 };
 
 

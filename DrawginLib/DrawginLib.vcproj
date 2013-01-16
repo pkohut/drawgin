@@ -181,6 +181,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\OcDb\OcDbDatabase_p.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbDatabase_p.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\OcDb\OcDbEntity.cpp"
 					>
 				</File>
@@ -193,37 +201,17 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\OcDb\OcDbObject_p.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OcDb\OcDbObject_p.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\OcDb\OcDbObjectId.cpp"
 					>
 				</File>
-				<Filter
-					Name="Pimpl"
-					>
-					<File
-						RelativePath=".\src\OcDb\OcDbDatabaseHeaderImpl.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\OcDb\OcDbDatabaseHeaderImpl.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\OcDb\OcDbDatabaseImpl.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\OcDb\OcDbDatabaseImpl.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\OcDb\OcDbObjectImpl.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\OcDb\OcDbObjectImpl.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="OcAp"
