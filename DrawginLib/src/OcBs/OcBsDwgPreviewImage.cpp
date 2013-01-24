@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -69,7 +77,9 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
     ASSERT_ARCHIVE_NOT_LOADING(in);
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
-    if(!CompareSentinels(sentinelImageDataStart, sentinelData)) {
+
+    if(!CompareSentinels(sentinelImageDataStart, sentinelData))
+    {
         return OcApp::eInvalidImageDataSentinel;
     }
 
@@ -80,56 +90,80 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
     in >> ((bitcode::RC&) imagesPresent);
     int32_t headerDataBegin = 0, bmpDataBegin = 0, wmfDataBegin = 0;
 
-    for(int i = 0; i < imagesPresent; ++i) {
+    for(int i = 0; i < imagesPresent; ++i)
+    {
         char code;
         int32_t dataSize;
         in >> ((bitcode::RC&) code);
-        if(code == 1) {
+
+        if(code == 1)
+        {
             in >> ((bitcode::RL&) headerDataBegin);
             in >> ((bitcode::RL&) dataSize);
             m_hdrData.resize(dataSize);
-        } else if(code == 2) {
+        }
+        else if(code == 2)
+        {
             in >> ((bitcode::RL&) bmpDataBegin);
             in >> ((bitcode::RL&) dataSize);
             m_bmpData.resize(dataSize);
-        } else if(code == 3) {
+        }
+        else if(code == 3)
+        {
             in >> ((bitcode::RL&) wmfDataBegin);
             in >> ((bitcode::RL&) dataSize);
             m_wmfData.resize(dataSize);
-        } else {
+        }
+        else
+        {
             return OcApp::eInvalidImageDataCode;
         }
     }
 
-    if(m_hdrData.size()) {
-        if(in.FilePosition() != headerDataBegin) {
+    if(m_hdrData.size())
+    {
+        if(in.FilePosition() != headerDataBegin)
+        {
             return OcApp::eMismatchedFilePosition;
         }
+
         in.ReadRC((bitcode::RC*)&m_hdrData[0], m_hdrData.size());
-        if(!IsHeadDataAllNULL(m_hdrData)) {
+
+        if(!IsHeadDataAllNULL(m_hdrData))
+        {
             return OcApp::eUnknownHeaderDataValues;
         }
     }
 
-    if(m_bmpData.size()) {
-        if(in.FilePosition() != bmpDataBegin) {
+    if(m_bmpData.size())
+    {
+        if(in.FilePosition() != bmpDataBegin)
+        {
             return OcApp::eMismatchedFilePosition;
         }
+
         in.ReadRC((bitcode::RC*)&m_bmpData[0], m_bmpData.size());
     }
 
-    if(m_wmfData.size()) {
-        if(in.FilePosition() != wmfDataBegin) {
+    if(m_wmfData.size())
+    {
+        if(in.FilePosition() != wmfDataBegin)
+        {
             return OcApp::eMismatchedFilePosition;
         }
+
         in.ReadRC((bitcode::RC*)&m_wmfData[0], m_wmfData.size());
     }
 
-    if(nextSentinel != in.FilePosition()) {
+    if(nextSentinel != in.FilePosition())
+    {
         return OcApp::eMismatchedFilePosition;
     }
+
     in.ReadRC(sentinelData, 16);
-    if(!CompareSentinels(sentinelImageDataEnd, sentinelData)) {
+
+    if(!CompareSentinels(sentinelImageDataEnd, sentinelData))
+    {
         return OcApp::eInvalidImageDataSentinel;
     }
 
@@ -139,10 +173,13 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
 bool OcBsDwgPreviewImage::IsHeadDataAllNULL(const std::vector<byte_t>& data) const
 {
     std::not_equal_to<int> comparator;
+
     if(data.end() != std::find_if(data.begin(), data.end(),
-                                  boost::bind(comparator, _1, 0))) {
+                                  boost::bind(comparator, _1, 0)))
+    {
         return false;
     }
+
     return true;
 }
 

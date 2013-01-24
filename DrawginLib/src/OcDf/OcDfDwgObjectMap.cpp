@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -49,12 +57,14 @@
 BEGIN_OCTAVARIUM_NS
 using namespace std;
 
-struct SUB_CLASS_ID {
+struct SUB_CLASS_ID
+{
     int id;
     const char * subClassName;
 };
 
-SUB_CLASS_ID _subClasses[] = {
+SUB_CLASS_ID _subClasses[] =
+{
     {0x00, ""},                         // unused
     {0x01, "AcDbText"},                 // text
     {0x02, "AcDbAttribute"},            // attrib
@@ -156,21 +166,24 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 {
     ASSERT_ARCHIVE_NOT_LOADING(ar);
     VLOG(4) << "DecodeObjectMap entered";
+
     // do some sanity checks before trying to read the object map
-    if(m_objMapFilePos == 0) {
+    if(m_objMapFilePos == 0)
+    {
         LOG(ERROR) << "Invalid file offset position for Object Map";
         return OcApp::eInvalidObjectMapOffset;
     }
 
     // set file position to the Object Map offset
     ar.Seek(m_objMapFilePos);
-    if(ar.Error() != OcApp::eOk) {
+
+    if(ar.Error() != OcApp::eOk)
+    {
         LOG(ERROR) << "Error setting file position";
         return ar.Error();
     }
 
     int32_t lastHandle = 0, lastOffset = 0;
-
     // 6/2/2011 - seems to work.
     // Until I've seen some files which have more than one
     // section, not really sure how the data is coded.
@@ -179,7 +192,8 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 
     // section size and crc are values stored in big endian format
     // on disk.
-    while(1) {
+    while(1)
+    {
         // reset calced crc to 0xc0c1 for each section
         ar.SetCalcedCRC(0xc0c1);
         // read section size and convert to little endian format.
@@ -191,7 +205,8 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
 
         // only 2 bytes for this section, they are the final crc
         // which is calced below outside of this loop.
-        if(sectionSize <= 2) {
+        if(sectionSize <= 2)
+        {
             break;
         }
 
@@ -200,11 +215,12 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
         // of each section to be read.
         lastOffset = 0;
         lastHandle = 0;
-
         // endSection includes the 2 byte crc for this section, so
         // exclude 2 bytes when doing the loop.
         int32_t endSection = ar.FilePosition() + sectionSize;
-        while(ar.FilePosition() < endSection - 2) {
+
+        while(ar.FilePosition() < endSection - 2)
+        {
             int32_t offsetLastH;
             int32_t offsetLoc;
             VLOG(4) << "---------------";
@@ -216,19 +232,26 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeData(DwgInArchive& ar)
             VLOG(4) << "File position = " << lastOffset;
             m_objMapItems.push_back(MapItem(lastHandle, lastOffset));
         }
+
         // calc section crc
         uint16_t crc, calcedCrc = ar.CalcedCRC(true);
         ar.ReadCRC(crc);
-        if(crc != calcedCrc) {
+
+        if(crc != calcedCrc)
+        {
             LOG(ERROR) << "Data section CRC for Object Map is incorrect";
             return OcApp::eInvalidCRCInObjectMap;
         }
+
         sectionNumber++;
     }
+
     // calc final crc
     uint16_t crc, calcedCrc = ar.CalcedCRC(true);
     ar.ReadCRC(crc);
-    if(crc != calcedCrc) {
+
+    if(crc != calcedCrc)
+    {
         LOG(ERROR) << "CRC for Object Map is incorrect";
         return OcApp::eInvalidCRCInObjectMap;
     }
@@ -243,30 +266,37 @@ OcApp::ErrorStatus OcDfDwgObjectMap::DecodeObjects(DwgInArchive& ar,
 {
     std::vector<SUB_CLASS_ID> subClasses(&_subClasses[0],
                                          &_subClasses[ELEMENTS(_subClasses)]);
-    BOOST_FOREACH(const MapItem &  item, m_objMapItems) {
+    BOOST_FOREACH(const MapItem &  item, m_objMapItems)
+    {
         VLOG(4) << "--------------------";
         ar.Seek(item.second);
         VLOG(4) << "Object Handle = " << item.first;
-        VLOG(4) << "Seeking file position = " << item.second; 
+        VLOG(4) << "Seeking file position = " << item.second;
+
         if(ar.Error() != OcApp::eOk)
             return ar.Error();
 
         uint32_t objSize = 0;
         uint16_t objType = 0;
-
         BS_ARCHIVE(bitcode::MS, ar, objSize, "Object size = ");
         BS_ARCHIVE(bitcode::BS, ar, objType, "Object type = ");
 
-        if(objType > subClasses.size() - 1 && objType < 500) {
+        if(objType > subClasses.size() - 1 && objType < 500)
+        {
             LOG(ERROR) << "Object type outside of known range";
             LOG(ERROR) << "Sub type = " << hex << showbase << objType;
             return OcApp::eOutsideOfClassMapRange;
-        } else {
-            if(objType >= 500) {
+        }
+        else
+        {
+            if(objType >= 500)
+            {
                 const OcDfDwgClass & className = classes.ClassAt(objType - 500);
                 VLOG(4) << "Classname = " <<
                         WStringToString(className.CppClassName());
-            } else {
+            }
+            else
+            {
                 SUB_CLASS_ID subClass = subClasses.at(objType);
                 VLOG(4) << "Sub class name = " << subClass.subClassName;
             }

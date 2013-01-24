@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -48,8 +56,9 @@ BEGIN_OCTAVARIUM_NS
 
 
 OcDbDatabase::OcDbDatabase(void)
-: m_pDatabaseImpl(new OcDbDatabasePimpl())
+    : m_pDatabaseImpl(new OcDbDatabasePimpl())
 {
+    m_pDatabaseImpl->m_qPtr = this;
 }
 
 OcDbDatabase::~OcDbDatabase(void)
@@ -59,7 +68,7 @@ OcDbDatabase::~OcDbDatabase(void)
 
 OcApp::ErrorStatus OcDbDatabase::Open(const string_t & filename)
 {
-    return m_pDatabaseImpl->Open(filename);    
+    return m_pDatabaseImpl->Open(filename);
 }
 
 

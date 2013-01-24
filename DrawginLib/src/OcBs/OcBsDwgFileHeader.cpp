@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -43,7 +51,8 @@
 BEGIN_OCTAVARIUM_NS
 
 
-const static char *pcszSections[] = {
+const static char *pcszSections[] =
+{
     "HEADER", "CLASS", "OBJECT_MAP", "UNKNOWN_SECTION3",
     "DATA_SECTION", "UNKNOWN",
 };
@@ -57,10 +66,10 @@ const char * HeaderSectionName(int i)
 {
     if(i < NumSections())
         return pcszSections[i];
+
     const static char * msg = "Section number outside of known range";
     LOG(ERROR) << msg;
     return msg;
-
 }
 
 #define CRC8_CALC(crcIn, x) crc8(crcIn, (const char*)&x, sizeof(x))
@@ -107,39 +116,29 @@ OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
     VLOG(4) << "*** Begin reading file header ***";
     const char * pcszVersion =
         OcDfDwgVersion::GetVersionId(m_dwgVersion).c_str();
-
     in.SetCalcedCRC(crc8(0, pcszVersion, 6));
     VLOG(4) << "File ID = " << pcszVersion;
-
     // more version ID, 3.2.1
     BS_ARCHIVE(RL, in, m_unknown_offset_0x06, "unknown_offset_0x06");
-
     BS_ARCHIVE(RC, in, m_unknown_offset_0x0a, "unknown_offset_0x0a");
-
     BS_ARCHIVE(RC, in, m_acadMaintVer, "acadMainVer");
-
     BS_ARCHIVE(RC, in, m_unknown_offset_0x0c, "unknown_offset_0x0c");
-
     // image seeker, 3.2.2
     BS_ARCHIVE(RL, in, m_imageSeeker, "imageSeeker");
-
     // unknown section, 3.2.3
     BS_ARCHIVE(RS, in, m_unknown_offset_0x11, "unknown_offset_0x11");
-
     // dwg codepage, 3.2.4
     BS_ARCHIVE(RS, in, m_codePage, "codepage");
-
     // section loader records, 3.2.5
     BS_ARCHIVE(RL, in, m_nSections, "Selection Locator Records");
 
-    for(int i = 0; i < m_nSections; ++i) {
+    for(int i = 0; i < m_nSections; ++i)
+    {
         VLOG(4) << "--------";
         OcBsDwgFileHeaderSection section;
         BS_ARCHIVE(RC, in, section.recordNumber, "section record");
         VLOG(4) << "section name: " << HeaderSectionName(i);
-
         BS_ARCHIVE(RL, in, section.seeker,       "    section seeker");
-
         BS_ARCHIVE(RL, in, section.size,         "    section size");
         m_headerSections.push_back(section);
     }
@@ -151,17 +150,20 @@ OcApp::ErrorStatus OcBsDwgFileHeader::DecodeR13_R2000Header(DwgInArchive& in)
     VLOG(4) << "Header CRC = " << std::hex << std::showbase << crcCheck;
 
     if(crcCheck != 0xa598 && crcCheck != 0x8101
-            && crcCheck != 0x3cc4 && crcCheck != 0x8461) {
+            && crcCheck != 0x3cc4 && crcCheck != 0x8461)
+    {
         return OcApp::eInvalidCRCInFileHeader;
     }
 
     RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
-    if(!CompareSentinels(sentinelR13_R2000, sentinelData)) {
+
+    if(!CompareSentinels(sentinelR13_R2000, sentinelData))
+    {
         return OcApp::eInvalidHeaderSentinal;
     }
-    VLOG(4) << "*** Finished reading file header ***";
 
+    VLOG(4) << "*** Finished reading file header ***";
     return OcApp::eOk;
 }
 
@@ -177,20 +179,27 @@ const OcBsDwgFileHeaderSection& OcBsDwgFileHeader::Record(int nRecord) const
 }
 
 DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgFileHeader & hdr)
-{    
+{
     ASSERT_ARCHIVE_NOT_LOADING(in);
     // version ID, 3.2.1
     hdr.m_dwgVersion = hdr.DecodeVersionData(in);
     in.SetVersion(hdr.DwgVersion());
-    if(hdr.DwgVersion() == NONE) {
+
+    if(hdr.DwgVersion() == NONE)
+    {
         in.SetError(OcApp::eInvalidVersion);
-    } else if(hdr.DwgVersion() == R13
-              || hdr.DwgVersion() == R14
-              || hdr.DwgVersion() == R2000) {
+    }
+    else if(hdr.DwgVersion() == R13
+            || hdr.DwgVersion() == R14
+            || hdr.DwgVersion() == R2000)
+    {
         in.SetError(hdr.DecodeR13_R2000Header(in));
-    } else {
+    }
+    else
+    {
         in.SetError(OcApp::eUnsupportedVersion);
     }
+
     return in;
 }
 

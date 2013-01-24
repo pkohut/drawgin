@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -55,8 +63,7 @@ BEGIN_OCTAVARIUM_NS
 
 
 OcDbDatabasePimpl::OcDbDatabasePimpl( void )
-//    :m_pHeaderImpl(new OcDbDatabaseHeaderImpl())
-: unknown1(412148564080.0), unknown2(1.0), unknown3(1.0), unknown4(1.0),
+: m_qPtr(NULL), unknown1(412148564080.0), unknown2(1.0), unknown3(1.0), unknown4(1.0),
 unknown9(24)
 
 {
@@ -65,7 +72,7 @@ unknown9(24)
 OcDbDatabasePimpl::~OcDbDatabasePimpl(void)
 {
     VLOG(4) << "Destructor entered";
-    //delete m_pHeaderImpl;
+    m_qPtr = NULL;
 }
 
 OcApp::ErrorStatus OcDbDatabasePimpl::Open(const string_t & filename)
@@ -102,7 +109,7 @@ OcApp::ErrorStatus OcDbDatabasePimpl::Open(const string_t & filename)
         // current file position should match the offset stored in the
         // section locater record 0, which is the "drawing variables"
         CHECK(dwgHdr.Record(0).seeker == ar.FilePosition())
-            << "Section locator record 0 offset does not "
+            << "Section locater record 0 offset does not "
             "match current file position";
 
         OcDbDatabasePimpl * pThis = this;

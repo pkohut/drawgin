@@ -11,12 +11,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -59,9 +67,10 @@ OcDfDwgClass::~OcDfDwgClass()
 OcApp::ErrorStatus OcDfDwgClass::DecodeData(DwgInArchive& in)
 {
     VLOG(4) << "---- DecodeData entered ----";
-
     BS_ARCHIVE(bitcode::BS, in, ClassNumber(), "class number");
-    if(ClassNumber() < 500) {
+
+    if(ClassNumber() < 500)
+    {
         int y =0;
         y++;
     }
@@ -72,11 +81,14 @@ OcApp::ErrorStatus OcDfDwgClass::DecodeData(DwgInArchive& in)
     if(in.Version() >= R2007)
         BS_ARCHIVE(bitcode::BS, in, ProxyFlags(), "proxy flags");
 
-    if(in.Version() <= R2004) {
+    if(in.Version() <= R2004)
+    {
         BS_ARCHIVE(bitcode::TV, in, AppName(), "app name");
         BS_ARCHIVE(bitcode::TV, in, CppClassName(), "cpp ClassName");
         BS_ARCHIVE(bitcode::TV, in, DxfClassName(), "class DXF name");
-    } else {
+    }
+    else
+    {
         BS_ARCHIVE(bitcode::TU, in, AppName(), "app name");
         BS_ARCHIVE(bitcode::TU, in, CppClassName(), "cpp ClassName");
         BS_ARCHIVE(bitcode::TU, in, DxfClassName(), "class DXF name");
@@ -85,17 +97,23 @@ OcApp::ErrorStatus OcDfDwgClass::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::B,  in, WasAZombie(), "was a zombie");
     BS_ARCHIVE(bitcode::BS, in, ItemClassId(), "item class id");
 
-    if(in.Version() >= R2004) {
+    if(in.Version() >= R2004)
+    {
         BS_ARCHIVE(bitcode::BL, in, NumberOfObjects(), "number of objects");
-        if(in.Version() == R2004) {
+
+        if(in.Version() == R2004)
+        {
             BS_ARCHIVE(bitcode::BS, in, DwgVersion(), "dwg version");
             BS_ARCHIVE(bitcode::BS, in, MaintenanceVersion(),
                        "maintenance version");
-        } else {
+        }
+        else
+        {
             BS_ARCHIVE(bitcode::BL, in, DwgVersion(), "dwg version");
             BS_ARCHIVE(bitcode::BL, in, MaintenanceVersion(),
                        "maintenance version");
         }
+
         BS_ARCHIVE(bitcode::BL, in, Unknown1(), "unknown1");
         BS_ARCHIVE(bitcode::BL, in, Unknown2(), "unknown2");
     }

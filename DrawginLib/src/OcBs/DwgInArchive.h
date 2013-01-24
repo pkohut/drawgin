@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -51,7 +59,8 @@ public:
     void ClearError(void);
     void SetError(OcApp::ErrorStatus es);
     operator void*(void) const;
-    byte_t * Buffer(void) {
+    byte_t * Buffer(void)
+    {
         return m_stream.Buffer();
     }
     DwgInArchive & Seek(std::streamoff nPos);
@@ -162,20 +171,22 @@ DwgInArchive& Archive(DwgInArchive & ar, const std::wstring & t, const char * pS
     // the string.
     // Prior to adding the OcGePoint2d class this worked fined, and did not
     // require this template specialization.
-
     if(typeid(BC).name() == typeid(bitcode::T).name()
-        || (typeid(BC).name() == typeid(bitcode::TV).name()
-            && ar.Version() <= R2004) ) {
+            || (typeid(BC).name() == typeid(bitcode::TV).name()
+                && ar.Version() <= R2004))
+    {
 //        if(ar.Version() <= R2004) {
-            Archive<bitcode::T>(ar, t);
-            VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
-    } else {
-            Archive<bitcode::TU>(ar, t);
-            VLOG(4) << pStr << ": U\"" << WStringToString(t.c_str()).c_str() << "\"";
+        Archive<bitcode::T>(ar, t);
+        VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
     }
+    else
+    {
+        Archive<bitcode::TU>(ar, t);
+        VLOG(4) << pStr << ": U\"" << WStringToString(t.c_str()).c_str() << "\"";
+    }
+
 //    Archive<BC>(ar, t);
 //    VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
-
     return ar;
 }
 

@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -264,11 +272,15 @@ DwgInArchive & DwgInArchive::ReadRC(bitcode::RC * pRc, size_t size, bool bSkipCr
 {
     ASSERT_NOT_LOADING;
     uint16_t currentCrc = m_stream.CalcedCRC();
-    for(size_t i = 0; i < size; ++i) {
+
+    for(size_t i = 0; i < size; ++i)
+    {
         m_stream >> pRc[i];
     }
+
     if(bSkipCrcTracking == true)
         m_stream.SetCalcedCRC(currentCrc);
+
     return *this;
 }
 
@@ -277,11 +289,15 @@ DwgInArchive & DwgInArchive::ReadRC(std::vector<bitcode::RC> & rc, size_t size, 
     ASSERT_NOT_LOADING;
     uint16_t currentCrc = m_stream.CalcedCRC();
     rc.resize(size);
-    for(size_t i = 0; i < size; ++i) {
+
+    for(size_t i = 0; i < size; ++i)
+    {
         m_stream >> rc[i];
     }
+
     if(bSkipCrcTracking == true)
         m_stream.SetCalcedCRC(currentCrc);
+
     return *this;
 }
 
@@ -290,11 +306,15 @@ DwgInArchive & DwgInArchive::ReadRC(std::string & rc, size_t size, bool bSkipCrc
     ASSERT_NOT_LOADING;
     uint16_t currentCrc = m_stream.CalcedCRC();
     rc.resize(size);
-    for(size_t i = 0; i < size; ++i) {
+
+    for(size_t i = 0; i < size; ++i)
+    {
         m_stream >> (bitcode::RC*)&rc[i];
     }
+
     if(bSkipCrcTracking == true)
         m_stream.SetCalcedCRC(currentCrc);
+
     return *this;
 }
 
@@ -334,7 +354,7 @@ DwgInArchive & DwgInArchive::operator>>(OcDbObjectId & objId)
 }
 
 
-DwgInArchive & DwgInArchive::ReadCRC( uint16_t & crc, bool bSkipCrcTracking)
+DwgInArchive & DwgInArchive::ReadCRC(uint16_t & crc, bool bSkipCrcTracking)
 {
     ASSERT_NOT_LOADING;
     m_stream.ReadCRC(crc, bSkipCrcTracking);
@@ -346,12 +366,12 @@ octavarium::uint16_t DwgInArchive::CalcedCRC(bool bRetResultInMSB) const
     return m_stream.CalcedCRC(bRetResultInMSB);
 }
 
-void DwgInArchive::SetCalcedCRC( uint16_t crc )
+void DwgInArchive::SetCalcedCRC(uint16_t crc)
 {
     m_stream.SetCalcedCRC(crc);
 }
 
-void DwgInArchive::AdvanceToByteBoundary( void )
+void DwgInArchive::AdvanceToByteBoundary(void)
 {
     m_stream.AdvanceToByteBoundary();
 }
@@ -359,12 +379,14 @@ void DwgInArchive::AdvanceToByteBoundary( void )
 std::string RC2Hex(const std::vector<bitcode::RC> &bytes)
 {
     std::stringstream ss;
+
     //ss << std::hex << std::setfill('0') << std::setw(4);
     for(std::vector<bitcode::RC>::const_iterator it = bytes.begin(); it != bytes.end(); it++)
     {
         //ss << " 0x" << std::hex << std::setfill('0') << std::setw(2) << (int)*it;
         ss << " " << std::hex << std::showbase << (int)*it;
     }
+
     return ss.str();
 }
 

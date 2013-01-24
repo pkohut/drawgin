@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -36,42 +44,43 @@
 class OcNullLogger : public google::base::Logger
 {
 public:
-	virtual void Write(bool should_flush, time_t timestamp, const char * message, int length)
-	{
-	}
-	virtual void Flush() {}
-	virtual google::uint32 LogSize() { return 0; }
+    virtual void Write(bool should_flush, time_t timestamp, const char * message, int length)
+    {
+    }
+    virtual void Flush() {}
+    virtual google::uint32 LogSize()
+    {
+        return 0;
+    }
 };
 
 class OcLogger
 {
-	OcLogger() {}
-	OcLogger(const OcLogger &) {}
-	OcLogger & operator=(const OcLogger&) {}
-	google::base::Logger * SetLoggerToNullLogger(int severity)
-	{
-		google::base::Logger * pOldLogger = google::base::GetLogger(severity);
-		google::base::SetLogger(severity, &m_nullLogger);
-		google::FlushLogFiles(severity);
-		return pOldLogger;
-	}
+    OcLogger() {}
+    OcLogger(const OcLogger &) {}
+    OcLogger & operator=(const OcLogger&) {}
+    google::base::Logger * SetLoggerToNullLogger(int severity)
+    {
+        google::base::Logger * pOldLogger = google::base::GetLogger(severity);
+        google::base::SetLogger(severity, &m_nullLogger);
+        google::FlushLogFiles(severity);
+        return pOldLogger;
+    }
 
-	OcNullLogger m_nullLogger;
+    OcNullLogger m_nullLogger;
 public:
-	OcLogger(const char * pArg)
-	{
+    OcLogger(const char * pArg)
+    {
         google::InitGoogleLogging(pArg);
-		SetLoggerToNullLogger(google::WARNING);
-		SetLoggerToNullLogger(google::ERROR);
-		SetLoggerToNullLogger(google::FATAL);
-
+        SetLoggerToNullLogger(google::WARNING);
+        SetLoggerToNullLogger(google::ERROR);
+        SetLoggerToNullLogger(google::FATAL);
         google::SetLogFilenameExtension(".log.");
-
-	}
-	virtual ~OcLogger()
-	{
-		google::ShutdownGoogleLogging();
-	}
+    }
+    virtual ~OcLogger()
+    {
+        google::ShutdownGoogleLogging();
+    }
 };
 
 #endif // OcLogger_h__

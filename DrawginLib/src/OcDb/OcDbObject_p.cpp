@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -46,11 +54,13 @@ BEGIN_OCTAVARIUM_NS
 using namespace std;
 
 OcDbObjectImpl::OcDbObjectImpl(void)
+    :m_qPtr(NULL)
 {
 }
 
 OcDbObjectImpl::~OcDbObjectImpl(void)
 {
+    m_qPtr = NULL;
 }
 
 OcApp::ErrorStatus OcDbObjectImpl::DecodeData(DwgInArchive& ar)
@@ -73,44 +83,45 @@ OcApp::ErrorStatus OcDbObjectImpl::DecodeData(DwgInArchive& ar)
     // common
     //     X handles associated with this object
     //     RS crc
-
     int32_t objSize;
     BS_ARCHIVE(bitcode::MS, ar, objSize, "Object size = ");
-
     int16_t objType;
     BS_ARCHIVE(bitcode::BS, ar, objType, "Object type = ");
-
     int32_t objSizeInBits;
-    if(ar.Version() >= R2000) {
+
+    if(ar.Version() >= R2000)
+    {
         BS_ARCHIVE(bitcode::RL, ar, objSizeInBits, "Object size in bits = ");
     }
 
     OcDbObjectId objId;
     BS_ARCHIVE(OcDbObjectId, ar, objId, "Object handle = ");
-
     int16_t extendedObjSize;
     BS_ARCHIVE(bitcode::BS, ar, extendedObjSize, "extended object data size = ");
-    if(extendedObjSize) {
 
+    if(extendedObjSize)
+    {
     }
 
-    if(ar.Version() == R13 || ar.Version() == R14) {
+    if(ar.Version() == R13 || ar.Version() == R14)
+    {
         BS_ARCHIVE(bitcode::RL, ar, objSizeInBits, "Object size in bits = ");
     }
 
     // read object data
 
-    if(ar.Version() >= R2007) {
+    if(ar.Version() >= R2007)
+    {
         // read string data
         // get string stream data
     }
+
     vector<OcDbObjectId> objHandles;
     uint16_t crc = 0;
-
     return OcApp::eNotImplemented;
 }
 
-octavarium::OcDbObjectId OcDbObjectImpl::ObjectId( void ) const
+octavarium::OcDbObjectId OcDbObjectImpl::ObjectId(void) const
 {
     return m_objectId;
 }

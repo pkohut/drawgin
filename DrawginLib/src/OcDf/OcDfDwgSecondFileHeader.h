@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -48,7 +56,8 @@ public:
 class OcDfHandleRecord
 {
 public:
-    enum RECORD_HANDLE {
+    enum RECORD_HANDLE
+    {
         HANDSEED = 0, BLOCK_CONTROL_OBJ, LAYER_CONTROL_OBJ, SHAPEFILE_CONTROL_OBJ,
         LINETYPE_CONTROL_OBJ, VIEW_CONTROL_OBJ, UCS_CONTROL_OBJ, VPORT_CONTROL_OBJ,
         REGAPP_CONTROL_OBJ, DIMSTYLE_CONTROL_OBJ, VIEWPORT_ENTITY_HEADER_OBJ,
@@ -73,7 +82,7 @@ private:
     std::vector<OcDfSecondFileHeaders> m_sectionHeaders;
     std::vector<OcDfHandleRecord> m_handleRecords;
 
-    
+
 };
 
 END_OCTAVARIUM_NS

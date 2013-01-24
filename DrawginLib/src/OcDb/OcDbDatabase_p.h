@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -43,6 +51,8 @@ public:
 
     OcApp::ErrorStatus Open(const string_t & filename);
 
+    OcDbDatabase * m_qPtr;
+
     /*********************************************************************
      * As this class is to be reusable for all drawing versions, the
      * listed order of the variables below is not necessarily in the
@@ -58,7 +68,7 @@ public:
     //
     // common
     /*-------------------- Common --------------------*/
-    
+
     accessors<double> unknown1;
     accessors<double> unknown2;
     accessors<double> unknown3;
@@ -71,7 +81,7 @@ public:
     accessors<int32_t> unknown10;
     // R13 - R14
     /*------------------- R13 - R14 ------------------*/
-    
+
     accessors<int16_t> unknown11;
     // Pre-2004
     /*-------------------- Pre-2004 ------------------*/
@@ -86,7 +96,7 @@ public:
     /*------------------- R13 - R14 ------------------*/
     accessors<bool> dimsav;
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<bool> plinegen;
     accessors<bool> orthomode;
     accessors<bool> regenmode;
@@ -103,7 +113,7 @@ public:
     accessors<bool> undocumented;
 
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<bool> usertimer;
     accessors<bool> skpoly;
     accessors<bool> angdir;
@@ -114,7 +124,7 @@ public:
     accessors<bool> attdia;
 
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<bool> mirrtext;
     accessors<bool> worldview;
 
@@ -123,7 +133,7 @@ public:
     accessors<bool> wireframe;
 
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<bool> tilemode;
     accessors<bool> plimcheck;
     accessors<bool> visretain;
@@ -133,7 +143,7 @@ public:
     accessors<bool> delobj;
 
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<bool> dispsilh;
     accessors<bool> pellipse;
     accessors<int16_t> saveimages; // proxygraphics R14 - R2000)
@@ -143,7 +153,7 @@ public:
     accessors<int16_t> dragmode;
 
     //common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<int16_t> treedepth;
     accessors<int16_t> lunits;
     accessors<int16_t> luprec;
@@ -155,7 +165,7 @@ public:
     accessors<int16_t> osmode;
 
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<int16_t> attmode;
 
     // R13 - R14
@@ -163,7 +173,7 @@ public:
     accessors<int16_t> coords;
 
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<int16_t> pdmode;
 
     // R13 - R14
@@ -177,7 +187,7 @@ public:
     accessors<int32_t> unknown14;
 
     // common
-    /*-------------------- Common --------------------*/    
+    /*-------------------- Common --------------------*/
     accessors<int16_t> useri1;
     accessors<int16_t> useri2;
     accessors<int16_t> useri3;
@@ -232,7 +242,7 @@ public:
     accessors<int32_t> unknown17;
 
     // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<int32_t> tdindwg_days;
     accessors<int32_t> tdindwg_ms;
     accessors<int32_t> tdusrtimer_days;
@@ -248,7 +258,7 @@ public:
     accessors<OcDbObjectId> cmaterial;
 
     // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<OcDbObjectId> dimstyle;
     accessors<OcDbObjectId> cmlstyle;
 
@@ -257,7 +267,7 @@ public:
     accessors<double> psvpscale;
 
     // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
 //    accessors<double> insbase[3];
     accessors<OcGePoint3D> pinsbase;
 //    accessors<double> extmin[3];
@@ -292,7 +302,7 @@ public:
     accessors<OcGePoint3D> pucsorgback;
 
     // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     //    accessors<double> insbase[3];
     accessors<OcGePoint3D> insbase;
     //    accessors<double> extmin[3];
@@ -370,7 +380,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
 
 // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<double>          dimscale;
     accessors<double>          dimasz;
     accessors<double>          dimexo;
@@ -405,7 +415,7 @@ public:
     accessors<int16_t>         dimarcsym;
 
 // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<double>          dimtxt;
     accessors<double>          dimcen;
     accessors<double>          dimtsz;
@@ -434,7 +444,7 @@ public:
     // accessors<bool>            dimsoxd;
 
 // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<OcCmColor>    dimclrd;
     accessors<OcCmColor>    dimclre;
     accessors<OcCmColor>    dimclrt;
@@ -485,7 +495,7 @@ public:
     accessors<int16_t>         dimlwe;
 
 // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<OcDbObjectId>    blockCtrlId;    // CONTROL OBJECT
     accessors<OcDbObjectId>    layerCtrlId;    // CONTROL OBJECT
     accessors<OcDbObjectId>    styleCtrlId;    // CONTROL OBJECT
@@ -501,7 +511,7 @@ public:
     accessors<OcDbObjectId>    viewport; // ENTITY HEADER CONTROL OBJECT
 
 // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<OcDbObjectId>    dictionaryGroupId;      // (ACAD_GROUP)
     accessors<OcDbObjectId>    dictionaryMLineStyleId; // (ACAD_MLINESTYLE)
     accessors<OcDbObjectId>    dictionaryNamedObjsId;   // (NAMED OBJECTS)
@@ -557,7 +567,7 @@ public:
     accessors<std::wstring>    projectname;
 
 // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<OcDbObjectId>    block_recordPsId;  // (*PAPER_SPACE)
     accessors<OcDbObjectId>    block_recordMsId;  // (*MODEL_SPACE)
     accessors<OcDbObjectId>    ltypeByLayerId;         // (BYLAYER)
@@ -609,12 +619,12 @@ public:
     accessors<int16_t>         unknown57;  // short(type 5 / 6 only)
 
 // common
-     /*-------------------- Common --------------------*/
+    /*-------------------- Common --------------------*/
     accessors<uint16_t>        crc;      // for the data section, starting after the
     // sentinel. Use 0xC0C1 for the initial value.
 
-private:
-    //OcDbDatabaseHeaderImpl * m_pHeaderImpl;
+
+
 
 
 

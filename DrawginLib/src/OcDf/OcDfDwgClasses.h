@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -36,8 +44,8 @@ BEGIN_OCTAVARIUM_NS
 class OcDfDwgClasses
 {
 public:
-	OcDfDwgClasses();
-	virtual ~OcDfDwgClasses();
+    OcDfDwgClasses();
+    virtual ~OcDfDwgClasses();
 
     const OcDfDwgClass & ClassAt(size_t index) const;
     bool Has(const std::wstring & className) const;
@@ -45,7 +53,7 @@ public:
 private:
     OcApp::ErrorStatus DecodeData(DwgInArchive& in);
     friend DwgInArchive& operator>>(DwgInArchive& in,
-                                    OcDfDwgClasses & dwgClasses);    
+                                    OcDfDwgClasses & dwgClasses);
 
     std::vector<OcDfDwgClass> m_classes;
 };

@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -70,20 +78,20 @@ OcBsStreamIn & OcBsStreamIn::Seek(std::streamoff nPos, int nBit)
 {
     m_filePosition = nPos + (nBit / CHAR_BIT);
     std::streamoff pos = m_filePosition / BufferSize() * BufferSize();
+
     if(m_fs.eof())
         m_fs.clear();
+
     m_fs.seekg(pos, ios::beg);
     m_fs.read((char *) m_pBuffer, BufferSize());
-
     m_indexSize = std::min(m_fs.gcount(), m_fileLength
                            - (std::streamsize)m_filePosition);
     m_bitPosition = nBit % CHAR_BIT;
-	
-	// As this seek method performs a buffer update (read) with the
-	// requested seek position, we need special handling in OcBsStream::Get
-	// when the seek position is a multiple of the buffer size.
-	// Otherwise a double read will occur leaving the wrong data in the
-	// buffer.
+    // As this seek method performs a buffer update (read) with the
+    // requested seek position, we need special handling in OcBsStream::Get
+    // when the seek position is a multiple of the buffer size.
+    // Otherwise a double read will occur leaving the wrong data in the
+    // buffer.
     m_bSeekedOnBufferBoundary = !(m_filePosition % BufferSize());
     return *this;
 }
@@ -91,17 +99,21 @@ OcBsStreamIn & OcBsStreamIn::Seek(std::streamoff nPos, int nBit)
 
 bool OcBsStreamIn::Good(void) const
 {
-    if(m_fs.good()) {
+    if(m_fs.good())
+    {
         return true;
     }
+
     return Eof();
 }
 
 bool OcBsStreamIn::Eof(void) const
 {
-    if(m_fs.eof() && m_filePosition < m_fileLength) {
+    if(m_fs.eof() && m_filePosition < m_fileLength)
+    {
         return true;
     }
+
     return false;
 }
 
@@ -123,10 +135,13 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
     *this >> counter;
     bitcode::RC rc;
     int64_t val = 0;
-    for(int i = (int) counter - 1; i >= 0; --i) {
+
+    for(int i = (int) counter - 1; i >= 0; --i)
+    {
         *this >> rc;
         val |= (uint8_t)rc << (i * CHAR_BIT);
     }
+
     objId.Handle(val);
     return *this;
 }
@@ -145,17 +160,19 @@ OcBsStreamIn & OcBsStreamIn::ReadCRC(uint16_t & crc, bool bSkipCrcTracking)
     //    m_bitPosition = 0;
     //    m_filePosition++;
     //}
-
     *this >> (bitcode::RS&) crc;
+
     if(bSkipCrcTracking == true)
         SetCalcedCRC(currentCrc);
+
     return *this;
 }
 
 
-void OcBsStreamIn::AdvanceToByteBoundary( void )
+void OcBsStreamIn::AdvanceToByteBoundary(void)
 {
-    if(m_bitPosition) {
+    if(m_bitPosition)
+    {
         m_bitPosition = 0;
         m_filePosition++;
     }
@@ -172,13 +189,16 @@ OcBsStreamIn & OcBsStreamIn::operator>>(OcDbObjectId & objId)
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::B & b)
 {
     b = 0;
-    if(m_bitPosition == 0) {
+
+    if(m_bitPosition == 0)
+    {
         m_cache = Get();
         m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
     }
-    b = (m_cache & (0x80 >> m_bitPosition)) >> (7 - m_bitPosition);    
+
+    b = (m_cache & (0x80 >> m_bitPosition)) >> (7 - m_bitPosition);
     m_filePosition += (m_bitPosition + 1) / 8;
-    m_bitPosition = (m_bitPosition + 1) % CHAR_BIT;    
+    m_bitPosition = (m_bitPosition + 1) % CHAR_BIT;
     return *this;
 }
 
@@ -206,21 +226,27 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD & bd)
 {
     bitcode::BB bb;
     *this >> bb;
-    switch(bb.t) {
+
+    switch(bb.t)
+    {
     case 0:
         *this >> (bitcode::RD&)bd;
         break;
+
     case 1:
         bd = 1.0;
         break;
+
     case 2:
         bd = 0.0;
         break;
+
     default:
         //bd = _Nan._Double;
         bd = std::numeric_limits<double>::quiet_NaN();
         break;
     }
+
     return *this;
 }
 
@@ -243,12 +269,16 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD3 & bd)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BE & be)
 {
-    if(m_version >= R2000) {
+    if(m_version >= R2000)
+    {
         be.t.set(0.0, 0.0, 1.0);
-    } else {
+    }
+    else
+    {
         bitcode::BD * pbd = (bitcode::BD*)&be;
         *this >> pbd[0] >> pbd[1] >> pbd[2];
     }
+
     return *this;
 }
 
@@ -256,21 +286,27 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BL & bl)
 {
     bitcode::BB bb;
     *this >> bb;
-    switch(bb.t) {
+
+    switch(bb.t)
+    {
     case 0:
         *this >> (bitcode::RL&)bl;
         break;
+
     case 1:
         bl = 0;
         *this >> (bitcode::RC&)bl;
         break;
+
     case 2:
         bl = 0;
         break;
+
     default:
         bl = INT_MIN;
         break;
     }
+
     return *this;
 }
 
@@ -278,79 +314,110 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BS & bs)
 {
     bitcode::BB bb;
     *this >> bb;
-    switch(bb.t) {
+
+    switch(bb.t)
+    {
     case 0:
         *this >> (bitcode::RS&)bs;
         break;
+
     case 1:
         bs = 0; // 0 out since type RC is smaller than RS
         *this >> (bitcode::RC&)bs;
         break;
+
     case 2:
         bs = 0;
         break;
+
     default:
         bs = 256;
         break;
     }
+
     return *this;
 }
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BT & bt)
 {
     int flag = false;
-    if(m_version >= R2000) {
+
+    if(m_version >= R2000)
+    {
         *this >> (bitcode::B&)flag;
     }
 
-    if(flag) {
+    if(flag)
+    {
         bt = 0.0;
-    } else {
+    }
+    else
+    {
         bitcode::BD bd;
         *this >> bd;
         bt = bd;
     }
+
     return *this;
 }
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::CMC & cmc)
 {
     *this >> (bitcode::BS&)cmc.t.index;
-    if(m_version >= R2004) {
+
+    if(m_version >= R2004)
+    {
         *this >> (bitcode::BL&)cmc.t.rgb >> (bitcode::RC&)cmc.t.colorByte;
-        if(cmc.t.colorByte & 1) {
+
+        if(cmc.t.colorByte & 1)
+        {
             *this >> (bitcode::TV&)cmc.t.name;
         }
-        if(cmc.t.colorByte & 2) {
+
+        if(cmc.t.colorByte & 2)
+        {
             *this >> (bitcode::TV&)cmc.t.bookName;
         }
     }
+
     return *this;
 }
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MC & mc)
 {
     mc = 0;
-    bitcode::RC rc[4] = {
+    bitcode::RC rc[4] =
+    {
         (bitcode::RC)0, (bitcode::RC)0,
         (bitcode::RC)0 ,(bitcode::RC)0,
     };
-    for(int i = 3, j = 0; i >= 0; --i, j += 7) {
+
+    for(int i = 3, j = 0; i >= 0; --i, j += 7)
+    {
         *this >> rc[i];
-        if(rc[i] & 0x80) {
+
+        if(rc[i] & 0x80)
+        {
             rc[i] &= 0x7f;
-        } else {
+        }
+        else
+        {
             int bNeg = false;
-            if(rc[i] & 0x40) {
+
+            if(rc[i] & 0x40)
+            {
                 bNeg = true;
                 rc[i] &= 0xbf;
             }
+
             mc |= ((bitcode::MC)rc[i] << j);
             mc = ((bitcode::MC)mc ^ -bNeg) + bNeg;
             return *this;
         }
+
         mc |= ((bitcode::MC)rc[i] << j);
     }
+
     // error parsing if it gets here.
     mc = INT_MIN;
     return *this;
@@ -360,16 +427,24 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MS & ms)
 {
     ms = 0;
     bitcode::RS rs[2] = {(bitcode::RS) 0, (bitcode::RS)0} ;
-    for(int i = 1, j = 0; i >= 0; --i, j += 15) {
+
+    for(int i = 1, j = 0; i >= 0; --i, j += 15)
+    {
         *this >> rs[i];
-        if(rs[i] & 0x8000) {
+
+        if(rs[i] & 0x8000)
+        {
             rs[i] &= 0x7fff;
-        } else {
+        }
+        else
+        {
             ms |= ((uint16_t)rs[i] << j);
             return *this;
         }
+
         ms |= ((uint16_t)rs[i] << j);
     }
+
     // error parsing if it gets here.
     ms = INT_MIN;
     return *this;
@@ -378,17 +453,24 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MS & ms)
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RC & rc)
 {
     rc = 0;
-    if(m_bitPosition == 0) {
+
+    if(m_bitPosition == 0)
+    {
         rc = m_cache = Get();
         m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
-    } else {
+    }
+    else
+    {
         rc = m_cache << m_bitPosition;
-        if(m_filePosition < m_fileLength - 1) {
+
+        if(m_filePosition < m_fileLength - 1)
+        {
             m_cache = PeekAhead();
             m_crc = crc8(m_crc, (const char *) &m_cache, sizeof(byte_t));
             rc |= m_cache >> (8 - m_bitPosition);
         }
     }
+
     m_filePosition += (m_bitPosition + 8) / 8;
     m_bitPosition = (m_bitPosition + 8) % CHAR_BIT;
     return *this;
@@ -403,10 +485,13 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD & rd)
 {
     bitcode::RC rc;
     byte_t * rVal = (byte_t*)&rd;
-    for(int i = 0; i < 8; ++i) {
+
+    for(int i = 0; i < 8; ++i)
+    {
         *this >> rc;
         rVal[i] = rc;
     }
+
     return *this;
 }
 
@@ -449,9 +534,12 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RS & rs)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TV & tv)
 {
-    if(m_version < R2007) {
+    if(m_version < R2007)
+    {
         *this >> (bitcode::T&) tv;
-    } else {
+    }
+    else
+    {
         *this >> (bitcode::TU&) tv;
     }
 
@@ -464,17 +552,23 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
     bitcode::BS length;
     *this >> length;
 
-    for(int i = 0; i < length.t; ++i) {
+    for(int i = 0; i < length.t; ++i)
+    {
         bitcode::RC rc;
         *this >> rc;
-        if(rc == 0 && i == length - 1) {
+
+        if(rc == 0 && i == length - 1)
+        {
             // don't push trailing null ('\0')
-        } else {
+        }
+        else
+        {
             t.t.push_back(rc);
         }
     }
 
-    for(size_t i = 0; i < t.t.size(); ++i) {
+    for(size_t i = 0; i < t.t.size(); ++i)
+    {
         // check if NULL is embedded in the string space.
         // If there is, then the string space may represent
         // a string array. Will need to investigate and
@@ -483,7 +577,8 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
         assert(t.t[i] != L'\0');
     }
 
-    if(m_convertCodepage) {
+    if(m_convertCodepage)
+    {
         ConvertToCodepage(t);
     }
 
@@ -496,16 +591,23 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TU & tu)
     bitcode::BS length;
     *this >> length;
 
-    for(int i = 0; i < length.t; ++i) {
+    for(int i = 0; i < length.t; ++i)
+    {
         bitcode::RS rs;
         *this >> rs;
-        if(rs == 0 && i == length - 1) {
+
+        if(rs == 0 && i == length - 1)
+        {
             // don't push trailing null ('\0')
-        } else {
+        }
+        else
+        {
             tu.t.push_back(rs);
         }
     }
-    for(size_t i = 0; i < tu.t.size(); ++i) {
+
+    for(size_t i = 0; i < tu.t.size(); ++i)
+    {
         // check if NULL is embedded in the string space.
         // If there is, then the string space may represent
         // a string array. Will need to investigate and
@@ -513,6 +615,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TU & tu)
         // For now just debug assert.
         assert(tu.t[i] != L'\0');
     }
+
     return *this;
 }
 

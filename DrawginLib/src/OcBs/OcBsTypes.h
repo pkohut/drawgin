@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -42,18 +50,22 @@ BEGIN_OCTAVARIUM_NS
 namespace bitcode
 {
 
-struct BC2D {
+struct BC2D
+{
     double x, y;
     BC2D() : x(0.0), y(0.0) {}
     BC2D(double _x, double _y) : x(_x), y(_y) {}
-    void set(double _x, double _y) {
+    void set(double _x, double _y)
+    {
         x = _x;
         y = _y;
     }
-    bool operator==(const BC2D & other) const {
+    bool operator==(const BC2D & other) const
+    {
         return x == other.x && y == other.y;
     }
-    bool operator<(const BC2D & other) const {
+    bool operator<(const BC2D & other) const
+    {
         return x < other.x && y < other.y;
     }
 
@@ -64,25 +76,30 @@ struct BC2D {
     }
 };
 
-struct BC3D {
+struct BC3D
+{
     double x, y, z;
     BC3D() : x(0.0), y(0.0), z(0.0) {}
     BC3D(double _x, double _y, double _z) : x(_x), y(_y), z(_z) {}
-    void set(double _x, double _y, double _z) {
+    void set(double _x, double _y, double _z)
+    {
         x = _x;
         y = _y;
         z = _z;
     }
-    bool operator==(const BC3D & other) const {
+    bool operator==(const BC3D & other) const
+    {
         return x == other.x && y == other.y && z == other.z;
     }
-    bool operator<(const BC3D & other) const {
+    bool operator<(const BC3D & other) const
+    {
         return x < other.x && y < other.y && z < other.z;
     }
 
 };
 
-struct BCCMC {
+struct BCCMC
+{
 //    BCCMC() : index(0), rgb(0), colorByte(0) {}
 //    int16_t index;
 //    int32_t rgb;
@@ -95,12 +112,14 @@ struct BCCMC {
     int32_t rgb;
     int16_t index;
     byte_t colorByte;
-    bool operator==(const BCCMC & other) const {
+    bool operator==(const BCCMC & other) const
+    {
         return index == other.index && rgb == other.rgb &&
                colorByte == other.colorByte && name == other.name &&
                bookName == bookName;
     }
-    bool operator<(const BCCMC & other) const {
+    bool operator<(const BCCMC & other) const
+    {
         return index < other.index;
     }
     friend std::ostream& operator <<(std::ostream& out, const bitcode::BCCMC& cmc)

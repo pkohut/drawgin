@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -53,9 +61,8 @@ BEGIN_OCTAVARIUM_NS
 using namespace std;
 
 OcDfDatabaseHeaderVars::OcDfDatabaseHeaderVars(OcDbDatabasePimpl *& pDb)
-: m_pDb(pDb)
+    : m_pDb(pDb)
 {
-    pDb = new OcDbDatabasePimpl();
     VLOG(4) << "Constructor entered";
 }
 
@@ -68,19 +75,18 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
 {
     VLOG(4) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING(in);
-
     // match dwg header variables start sentinel
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
-    if(!CompareSentinels(sentinelHeaderVarsStart, sentinelData)) {
+
+    if(!CompareSentinels(sentinelHeaderVarsStart, sentinelData))
+    {
         return OcApp::eInvalidImageDataSentinel;
     }
 
     const DWG_VERSION dwgVersion = in.Version();
-
     // per spec, set initial CRC value to 0xc0c1
     in.SetCalcedCRC(0xc0c1);
-
     // spec says this is a R2007 variable only and is the size in "bits",
     // but that doesn't totally correct.
     // At least for the R2008 drawing down converted to R14, this value
@@ -90,9 +96,7 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     int size;
     BS_ARCHIVE(bitcode::RL, in, size, "Header variables size");
     //    }
-
     size_t startPos = in.FilePosition();
-
     // common
     BS_ARCHIVE(bitcode::BD, in, m_pDb->unknown1(),  "unknown1");
     BS_ARCHIVE(bitcode::BD, in, m_pDb->unknown2(),  "unknown2");
@@ -105,7 +109,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown9(),  "unknown9");
     BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown10(), "unknown10");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->unknown11(), "unknown11");
     }
 
@@ -114,7 +119,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::B, in, m_pDb->dimaso(),        "dimaso");
     BS_ARCHIVE(bitcode::B, in, m_pDb->dimsho(),        "dimsho");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->dimsav(), "dimsav");
     }
 
@@ -127,11 +133,13 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::B, in, m_pDb->psltscale(), "psltscale");
     BS_ARCHIVE(bitcode::B, in, m_pDb->limcheck(),  "limcheck");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->blipmode(), "blipmode");
     }
 
-    if(dwgVersion >= R2004) {
+    if(dwgVersion >= R2004)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->undocumented(), "undocumented");
     }
 
@@ -141,7 +149,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::B, in, m_pDb->angdir(),    "angdir");
     BS_ARCHIVE(bitcode::B, in, m_pDb->splframe(),  "splframe");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->attreq(), "attreq");
         BS_ARCHIVE(bitcode::B, in, m_pDb->attdia(), "attdia");
     }
@@ -150,7 +159,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::B, in, m_pDb->mirrtext(),  "mirrtext");
     BS_ARCHIVE(bitcode::B, in, m_pDb->worldview(), "worldview");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->wireframe(), "wireframe");
     }
 
@@ -159,7 +169,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::B, in, m_pDb->plimcheck(), "plimcheck");
     BS_ARCHIVE(bitcode::B, in, m_pDb->visretain(), "visretain");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->delobj(), "delobj");
     }
 
@@ -168,7 +179,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::B, in, m_pDb->pellipse(),    "pellispe");
     BS_ARCHIVE(bitcode::BS, in, m_pDb->saveimages(), "saveimages");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimsav(), "dimsav");
     }
 
@@ -179,25 +191,29 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::BS, in, m_pDb->aunits(),    "aunits");
     BS_ARCHIVE(bitcode::BS, in, m_pDb->auprec(),    "auprec");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->osmode(), "osmode");
     }
 
     // common
     BS_ARCHIVE(bitcode::BS, in, m_pDb->attmode(), "attmode");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->coords(), "coords");
     }
 
     // common
     BS_ARCHIVE(bitcode::BS, in, m_pDb->pdmode(), "pdmode");
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->pickstyle(), "pickstyle");
     }
 
-    if(dwgVersion >= R2004) {
+    if(dwgVersion >= R2004)
+    {
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown12(), "unknown12");
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown13(), "unknown13");
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown14(), "unknown14");
@@ -250,7 +266,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::BL, in, m_pDb->tdupdate_day(), "tdupdate_day");
     BS_ARCHIVE(bitcode::BL, in, m_pDb->tdupdate_ms(),  "tdupdate_ms");
 
-    if(dwgVersion >= R2004) {
+    if(dwgVersion >= R2004)
+    {
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown15(), "unknown15");
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown16(), "unknown16");
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown17(), "unknown17");
@@ -268,7 +285,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(OcDbObjectId, in, m_pDb->celtype(),        "celtype");
 
     // R2007+
-    if(dwgVersion >= R2007) {
+    if(dwgVersion >= R2007)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->cmaterial(), "cmaterial");
     }
 
@@ -277,7 +295,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(OcDbObjectId, in, m_pDb->cmlstyle(), "cmlstyle");
 
     // R2000+ only
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(bitcode::BD, in, m_pDb->psvpscale(), "psvpscale");
     }
 
@@ -294,7 +313,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::BD3, in, m_pDb->pucsydir(),  "pucsydir");
     BS_ARCHIVE(OcDbObjectId, in, m_pDb->pucsname(),  "pucsname");
 
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->pucsbase(),      "pucsbase");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->pucsorthoview(),  "pucsorthoview");
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->pucsorthoref(),  "pucsorthoref");
@@ -305,7 +325,6 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(bitcode::BD3, in, m_pDb->pucsorgfront(),  "pucsorgfront");
         BS_ARCHIVE(bitcode::BD3, in, m_pDb->pucsorgback(),   "pucsorgback");
     }
-
 
     // common
     VLOG(4) << "****** Begin MS read *****";
@@ -320,7 +339,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::BD3, in, m_pDb->ucsydir(),  "ucsydir");
     BS_ARCHIVE(OcDbObjectId, in, m_pDb->ucsname(),  "ucsname");
 
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->ucsbase(),      "ucsbase");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->ucsorthoview(),  "ucsorthoview");
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->ucsorthoref(),  "ucsorthoref");
@@ -334,7 +354,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
         BS_ARCHIVE(bitcode::TV, in, m_pDb->dimapost(),      "dimapost");
     }
 
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->dimtol(),     "dimtol");
         BS_ARCHIVE(bitcode::B, in, m_pDb->dimlim(),     "dimlim");
         BS_ARCHIVE(bitcode::B, in, m_pDb->dimtih(),     "dimtih");
@@ -380,7 +401,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::BD, in, m_pDb->dimtm(),    "dimtm");
 
 // R2007+
-    if(dwgVersion >= R2007) {
+    if(dwgVersion >= R2007)
+    {
         BS_ARCHIVE(bitcode::BD, in, m_pDb-> dimfxl(),      "dimfxl");
         BS_ARCHIVE(bitcode::BD, in, m_pDb-> dimjogang(),   "dimjogang");
         BS_ARCHIVE(bitcode::BS, in, m_pDb-> dimtfill(),    "dimtfill");
@@ -388,7 +410,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R2000+
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb-> dimtol(),  "dimtol");
         BS_ARCHIVE(bitcode::B, in, m_pDb-> dimlim(),  "dimlim");
         BS_ARCHIVE(bitcode::B, in, m_pDb-> dimtih(),  "dimtih");
@@ -401,7 +424,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R2007+
-    if(dwgVersion >= R2007) {
+    if(dwgVersion >= R2007)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimarcsym(), "dimarcsym");
     }
 
@@ -416,7 +440,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::BD, in, m_pDb->dimgap(),  "dimgap");
 
 // R13-R14
-    if(dwgVersion == R13 || dwgVersion == R14) {
+    if(dwgVersion == R13 || dwgVersion == R14)
+    {
         BS_ARCHIVE(bitcode::T, in, m_pDb->dimpost(),  "dimpost");
         BS_ARCHIVE(bitcode::T, in, m_pDb->dimapost(), "dimapost");
         BS_ARCHIVE(bitcode::T, in, m_pDb->dimblk(),   "dimblk");
@@ -425,7 +450,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R2000+
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(bitcode::BD, in, m_pDb->dimaltrnd(), "dimaltrnd");
         BS_ARCHIVE(bitcode::B,  in, m_pDb->dimalt(),    "dimalt");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimaltd(),   "dimaltd");
@@ -441,7 +467,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(bitcode::CMC, in, m_pDb->dimclrt(), "dimclrt");
 
 // R2000+
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimadec(),  "dimadec");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimdec(),   "dimdec");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimtdec(),  "dimtdec");
@@ -464,11 +491,13 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R2007+
-    if(dwgVersion >= R2007) {
+    if(dwgVersion >= R2007)
+    {
         BS_ARCHIVE(bitcode::B, in, m_pDb->dimfxlon(), "dimfxlog");
     }
 
-    if(dwgVersion >= R2010) {
+    if(dwgVersion >= R2010)
+    {
 //        BS_ARCHIVE(bitcode::B,  in, pHdr->dimtxtdirection(), "dimtxtdirection");
 //        BS_ARCHIVE(bitcode::BD, in, pHdr->dimaltmzf(),       "dimaltmzf");
 //        BS_ARCHIVE(bitcode::T,  in, pHdr->dimaltmzs(),       "dimaltmzs");
@@ -477,7 +506,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R2000+
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dimtxsty(),  "dimtxsty");
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dimldrblk(), "dimldrblk");
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dimblkId(),  "dimblkId");
@@ -486,14 +516,16 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R2007+
-    if(dwgVersion >= R2007) {
+    if(dwgVersion >= R2007)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dimltype(),  "dimltype");
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dimltex1(),  "dimltex1");
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dimltex2(),  "dimltex2");
     }
 
 // R2000+
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimlwd(), "dimlwd");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->dimlwe(), "dimlwe");
     }
@@ -510,7 +542,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(OcDbObjectId, in, m_pDb->dimstyleCtrlId(), "dimstyleCtrlId"); // CONTROL OBJECT
 
 // R13-R15
-    if(dwgVersion == R13 || dwgVersion == R14 || dwgVersion == R2000) {
+    if(dwgVersion == R13 || dwgVersion == R14 || dwgVersion == R2000)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->viewport(), "viewport"); // ENTITY HEADER CONTROL OBJECT
     }
 
@@ -520,7 +553,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(OcDbObjectId, in, m_pDb->dictionaryNamedObjsId(),  "named objects dict Id");
 
 // R2000+
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->tstackalign(),   "tstackalign");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->tstacksize(),    "tstacksize");
         BS_ARCHIVE(bitcode::TV, in, m_pDb->hyperlinkbase(), "hyperlinkbase");
@@ -531,18 +565,21 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R2004+
-    if(dwgVersion >= R2004) {
+    if(dwgVersion >= R2004)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dictionaryMaterialsId(), "materials dict Id");     // (MATERIALS)
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dictionaryColorsId(), "colors dict Id");        // (COLORS)
     }
 
 // R2007+
-    if(dwgVersion >= R2007) {
+    if(dwgVersion >= R2007)
+    {
         BS_ARCHIVE(OcDbObjectId, in, m_pDb->dictionaryVisualStyleId(), "visual style dict Id");  // (VISUALSTYLE)
     }
 
 // R2000+
-    if(dwgVersion >= R2000) {
+    if(dwgVersion >= R2000)
+    {
         BS_ARCHIVE(bitcode::BL, in, m_pDb->flags(), "flags");
         //                      CELWEIGHT       Flags & 0x001F
         //                      ENDCAPS         Flags & 0x0060
@@ -554,16 +591,20 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
         //                      OLESTARTUP      Flags & 0x4000
         BS_ARCHIVE(bitcode::BS, in, m_pDb->insunits(),  "insunits");
         BS_ARCHIVE(bitcode::BS, in, m_pDb->cepsntype(), "cepsntype");
-        if(m_pDb->cepsntype() == 3) {
+
+        if(m_pDb->cepsntype() == 3)
+        {
             // cpsnid only present if m_cepsntype == 3
             BS_ARCHIVE(OcDbObjectId, in, m_pDb->cpsnid(), "cpsnid");
         }
+
         BS_ARCHIVE(bitcode::TV, in, m_pDb->fingerprintguid(), "fingerprintguid");
         BS_ARCHIVE(bitcode::TV, in, m_pDb->versionguid(), "versionguid");
     }
 
 // R2004+
-    if(dwgVersion >= R2004) {
+    if(dwgVersion >= R2004)
+    {
         BS_ARCHIVE(bitcode::RC, in, m_pDb->sortents(),          "sortents");
         BS_ARCHIVE(bitcode::RC, in, m_pDb->indexctl(),          "indexctl");
         BS_ARCHIVE(bitcode::RC, in, m_pDb->hidetext(),          "hidetext");
@@ -585,7 +626,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     BS_ARCHIVE(OcDbObjectId, in, m_pDb->ltypeContinuousId(), "ltype continuous LT id");         // (CONTINUOUS)
 
 // R2007+
-    if(dwgVersion >= R2007) {
+    if(dwgVersion >= R2007)
+    {
         BS_ARCHIVE(bitcode::B,  in, m_pDb->cameradisplay(),     "cameradisplay");
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown21(),         "unknown21");
         BS_ARCHIVE(bitcode::BL, in, m_pDb->unknown22(),         "unknown22");
@@ -623,7 +665,8 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
 // R14+
-    if(dwgVersion >= R14) {
+    if(dwgVersion >= R14)
+    {
         BS_ARCHIVE(bitcode::BS, in, m_pDb->unknown54(), "unknown54");  // short(type 5 / 6 only)  these do not seem to be required,
         BS_ARCHIVE(bitcode::BS, in, m_pDb->unknown55(), "unknown55");  // short(type 5 / 6 only)  even for type 5.
         BS_ARCHIVE(bitcode::BS, in, m_pDb->unknown56(), "unknown56");  // short(type 5 / 6 only)
@@ -631,34 +674,37 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     }
 
     in.AdvanceToByteBoundary();
-    if(size != in.FilePosition() - startPos) {
+
+    if(size != in.FilePosition() - startPos)
+    {
         LOG(ERROR) << "File position should be "
-            << startPos + size << " instead of "
-            << in.FilePosition();
+                   << startPos + size << " instead of "
+                   << in.FilePosition();
     }
 
     uint16_t fileCRC, calcedCRC = in.CalcedCRC();
     in.ReadCRC(fileCRC); //  >> (bitcode::RS&) crc1;
-    if(calcedCRC != fileCRC) {
+
+    if(calcedCRC != fileCRC)
+    {
         LOG(ERROR) << "file section and calced CRC do not match";
         LOG(ERROR) << "Header varibles CRC = " << hex << showbase << fileCRC;
         LOG(ERROR) << "Calced CRC          = " << hex << showbase << calcedCRC;
-    } else {
+    }
+    else
+    {
         VLOG(4) << "CRC for Header variables section = "
-            << hex << showbase << fileCRC;
+                << hex << showbase << fileCRC;
     }
 
 // common
     //    BS_ARCHIVE(bitcode::RS, in, pHdr->crc(), "crc"); // for the data section, starting after the
 // sentinel. Use 0xC0C1 for the initial value.
-
 ////////////////////////////////////////////////////////////////////////////
-
-
-
     // match dwg header variables end sentinel
     //bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
+
     //for(int j = 0; j < 5; j++) {
     //    in.ReadRC(sentinelData, 16);
     //    std::stringstream ss;
@@ -667,11 +713,15 @@ OcApp::ErrorStatus OcDfDatabaseHeaderVars::DecodeData(DwgInArchive& in)
     //    }
     //    VLOG(4) << ss.str();
     //}
-    if(!CompareSentinels(sentinelHeaderVarsEnd, sentinelData)) {
+    if(!CompareSentinels(sentinelHeaderVarsEnd, sentinelData))
+    {
         std::stringstream ss;
-        for(int i =0; i < 16; ++i) {
+
+        for(int i =0; i < 16; ++i)
+        {
             ss << hex << showbase << (int)sentinelData[i] << " ";
         }
+
         VLOG(4) << ss.str();
         return OcApp::eInvalidImageDataSentinel;
     }

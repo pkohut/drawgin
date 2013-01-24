@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -57,65 +65,74 @@ OcApp::ErrorStatus OcDfDwgClasses::DecodeData(DwgInArchive& in)
 {
     VLOG(4) << "DecodeData entered";
     ASSERT_ARCHIVE_NOT_LOADING(in);
-
     // match classes section start sentinel
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
-    if(!CompareSentinels(sentinelClassesSectionStart, sentinelData)) {
+
+    if(!CompareSentinels(sentinelClassesSectionStart, sentinelData))
+    {
         return OcApp::eInvalidImageDataSentinel;
     }
 
     in.SetCalcedCRC(0xc0c1);
-
     int size;
     BS_ARCHIVE(bitcode::RL, in, size, "classes section size");
     int endSection = in.FilePosition() + size - 1;
 
-    if(in.Version() >= R2004) {
+    if(in.Version() >= R2004)
+    {
         // read the RS value - maximum class number
         // read the RC value -
         // read the RC value -
         // read the  B value -
     }
 
-    if(in.Version() >= R2007) {
+    if(in.Version() >= R2007)
+    {
         //   : Class Data
         // X : String stream data
         // B : bool value (true if string stream is present)
     }
 
-    while(in.FilePosition() < endSection) {
+    while(in.FilePosition() < endSection)
+    {
         OcDfDwgClass cls;
         in >> cls;
         m_classes.push_back(cls);
     }
 
-    if(in.FilePosition() != endSection) {
+    if(in.FilePosition() != endSection)
+    {
         LOG(ERROR) << "File position should be "
-            << endSection << " instead of "
-            << in.FilePosition();
+                   << endSection << " instead of "
+                   << in.FilePosition();
     }
 
     // Check and log CRC
     uint16_t calcedCRC = in.CalcedCRC();
     uint16_t sectionCRC;
     in.ReadCRC(sectionCRC);
-    if(calcedCRC != sectionCRC) {
+
+    if(calcedCRC != sectionCRC)
+    {
         LOG(ERROR) << "file section and calced CRC's do not match";
         LOG(ERROR) << "Classes section CRC = " << hex << showbase << sectionCRC;
         LOG(ERROR) << "Calced CRC          = " << hex << showbase << calcedCRC;
-    } else {
+    }
+    else
+    {
         VLOG(4) << "CRC for Classes Section = " << hex << showbase << sectionCRC;
     }
 
     // match classes section end sentinel
     in.ReadRC(sentinelData, 16);
-    if(!CompareSentinels(sentinelClassesSectionEnd, sentinelData)) {
+
+    if(!CompareSentinels(sentinelClassesSectionEnd, sentinelData))
+    {
         return OcApp::eInvalidImageDataSentinel;
     }
 
     VLOG(4) << "Successfully decoded Classes Section";
-
     return OcApp::eOk;
 }
 
@@ -131,9 +148,10 @@ const OcDfDwgClass & OcDfDwgClasses::ClassAt(size_t index) const
     return m_classes.at(index);
 }
 
-bool OcDfDwgClasses::Has( const std::wstring & className ) const
+bool OcDfDwgClasses::Has(const std::wstring & className) const
 {
-    BOOST_FOREACH(const OcDfDwgClass & obj, m_classes) {
+    BOOST_FOREACH(const OcDfDwgClass & obj, m_classes)
+    {
         if(obj.CppClassName() == className)
             return true;
     }

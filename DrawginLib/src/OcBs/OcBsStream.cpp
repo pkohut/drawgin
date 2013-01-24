@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -68,30 +76,38 @@ void OcBsStream::Open(const std::wstring & filename, int mode)
 void OcBsStream::Open(const std::string & filename, int mode)
 #endif
 {
-    if(m_fs.is_open()) {
+    if(m_fs.is_open())
+    {
         Close();
     }
 
 #if defined(WIN32)
     struct _stat fileStat;
-    if(_tstat(filename.c_str(), &fileStat) == -1) {
+
+    if(_tstat(filename.c_str(), &fileStat) == -1)
+    {
 #else
     struct stat fileStat;
-    if(stat(filename.c_str(), &fileStat) == -1) {
+
+    if(stat(filename.c_str(), &fileStat) == -1)
+    {
 #endif
         LOG(ERROR) << "Invalid file name or invalid permissions.";
         m_fs.setstate(ios_base::badbit);
         return;
     }
 
-    if(S_ISDIR(fileStat.st_mode)) {
+    if(S_ISDIR(fileStat.st_mode))
+    {
         LOG(ERROR) << "Invalid filetype, input file name is a directory.";
         m_fs.setstate(ios_base::badbit);
         return;
     }
 
     m_fs.open(filename.c_str(), (ios_base::openmode) mode);
-    if(Good()) {
+
+    if(Good())
+    {
         m_fs.seekg(0, ios::end);
         m_fileLength = m_fs.tellg();
         m_fs.seekg(0, ios::beg);
@@ -113,11 +129,14 @@ void OcBsStream::Close()
 byte_t OcBsStream::Get(int nBits)
 {
     std::streamsize pos = m_filePosition % BUFSIZE;
-    if(pos == 0 && !m_bSeekedOnBufferBoundary) {
+
+    if(pos == 0 && !m_bSeekedOnBufferBoundary)
+    {
         m_fs.read((char *) m_pBuffer, BUFSIZE);
         m_indexSize = std::min(m_fs.gcount(), m_fileLength
                                - (std::streamsize)m_filePosition);
     }
+
     m_filePosition += nBits / CHAR_BIT;
     m_bitPosition = (m_bitPosition + nBits) % CHAR_BIT;
     return m_pBuffer[pos];
@@ -126,11 +145,14 @@ byte_t OcBsStream::Get(int nBits)
 byte_t OcBsStream::Get()
 {
     std::streamsize pos = m_filePosition % BUFSIZE;
-    if(pos == 0 && !m_bSeekedOnBufferBoundary) {
+
+    if(pos == 0 && !m_bSeekedOnBufferBoundary)
+    {
         m_fs.read((char *) m_pBuffer, BUFSIZE);
         m_indexSize = std::min(m_fs.gcount(), m_fileLength
                                - (std::streamsize) m_filePosition);
     }
+
 //    m_filePosition++;
     return m_pBuffer[pos];
 }
@@ -179,19 +201,21 @@ octavarium::uint16_t OcBsStream::CalcedCRC(bool bRetResultInMSB) const
     // when bRetResultInMSB is true then some bit twiddling is done
     // that expects m_crc to be a 16 bit integer. Assert if is not.
     DCHECK(sizeof(m_crc) == sizeof(uint16_t))
-        << "size of m_crc must be a 16 bit integer";
-    
-    if(bRetResultInMSB) {
+            << "size of m_crc must be a 16 bit integer";
+
+    if(bRetResultInMSB)
+    {
         uint16_t crc = m_crc;
         byte_t * pCrc = (byte_t*) &crc;
         // XOR byte swap
         (pCrc[0] ^= pCrc[1]), (pCrc[1] ^= pCrc[0]), (pCrc[0] ^= pCrc[1]);
         return crc;
     }
+
     return m_crc;
 }
 
-void OcBsStream::SetCalcedCRC( uint16_t crc )
+void OcBsStream::SetCalcedCRC(uint16_t crc)
 {
     m_crc = crc;
 }

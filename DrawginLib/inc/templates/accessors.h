@@ -11,7 +11,7 @@ class accessors;
 
 /**
 *       lvalue template definition for class accessors
-*       
+*
 *   Provides light weight (0 runtime cost) getter/setter operations on
 *   class member variables via overloaded function operators.
 */

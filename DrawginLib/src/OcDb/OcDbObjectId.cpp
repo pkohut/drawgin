@@ -7,12 +7,20 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** This library is free software; you can redistribute it and/or
-** modify it under the terms of the GNU Lesser General Public
-** License as published by the Free Software Foundation; either
-** version 3 of the License, or (at your option) any later version.
+** DrawGin library is free software; you can redistribute it and/or
+** modify it under the terms of either:
 **
-** This library is distributed in the hope that it will be useful,
+**   * the GNU Lesser General Public License as published by the Free
+**     Software Foundation; either version 3 of the License, or (at your
+**     option) any later version.
+**
+**   * the GNU General Public License as published by the free
+**     Software Foundation; either version 2 of the License, or (at your
+**     option) any later version.
+**
+** or both in parallel, as here.
+**
+** DrawGin library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -34,7 +42,7 @@
 BEGIN_OCTAVARIUM_NS
 
 OcDbObjectId::OcDbObjectId(void)
-: m_handle(0)
+    : m_handle(0)
 {
 }
 
@@ -47,12 +55,12 @@ std::wstring OcDbObjectId::ToString() const
     return L"Function not implemented";
 }
 
-void OcDbObjectId::Handle( const int64_t handle )
+void OcDbObjectId::Handle(const int64_t handle)
 {
     m_handle = handle;
 }
 
-const int64_t & OcDbObjectId::Handle( void ) const
+const int64_t & OcDbObjectId::Handle(void) const
 {
     return m_handle;
 }
