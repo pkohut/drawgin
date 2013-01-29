@@ -3,6 +3,10 @@
 # use glob syntax
 syntax: glob
 
+# Ignore Visual Studio 2012 files
+*.sdf
+*.ipch
+
 # Ignore Visual Studio 2008 files
 *.obj
 *.exe
