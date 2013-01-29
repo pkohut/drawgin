@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -38,12 +42,8 @@
 
 #include "OcCommon.h"
 #include "OcError.h"
-#include "OcTypes.h"
-#include "OcDbObjectId.h"
-#include "../OcDf/OcDfDwgVersion.h"
-
 #include "OcBsStreamIn.h"
-#include "DwgInArchive.h"
+//#include "OcBsDwgVersion.h"
 #include "OcBsDwgPreviewImage.h"
 #include "OcBsDwgSentinels.h"
 
@@ -51,30 +51,38 @@ BEGIN_OCTAVARIUM_NS
 
 OcBsDwgPreviewImage::OcBsDwgPreviewImage(void)
 {
+    VLOG_FUNC_NAME;
 }
+
 
 OcBsDwgPreviewImage::~OcBsDwgPreviewImage(void)
 {
+    VLOG_FUNC_NAME;
 }
 
-const std::vector<byte_t> & OcBsDwgPreviewImage::HeaderData(void) const
+const std::vector<byte_t> & OcBsDwgPreviewImage::HeaderData() const
 {
+    VLOG_FUNC_NAME;
     return m_hdrData;
 }
 
-const std::vector<byte_t> & OcBsDwgPreviewImage::BmpData(void) const
+const std::vector<byte_t> & OcBsDwgPreviewImage::BmpData() const
 {
+    VLOG_FUNC_NAME;
     return m_bmpData;
 }
 
-const std::vector<byte_t> & OcBsDwgPreviewImage::WmfData(void) const
+const std::vector<byte_t> & OcBsDwgPreviewImage::WmfData() const
 {
+    VLOG_FUNC_NAME;
     return m_wmfData;
 }
 
-OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
+OcApp::ErrorStatus OcBsDwgPreviewImage::ReadDwg(OcBsStreamIn & in)
 {
-    ASSERT_ARCHIVE_NOT_LOADING(in);
+    VLOG_FUNC_NAME;
+    VLOG(4) << "OcBsDwgPreviewImage::ReadDwg entered";
+
     bitcode::RC sentinelData[16];
     in.ReadRC(sentinelData, 16);
 
@@ -83,14 +91,14 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
         return OcApp::eInvalidImageDataSentinel;
     }
 
-    int32_t overallSize;
+    size_t overallSize;
     char imagesPresent;
     in >> ((bitcode::RL&) overallSize);
-    int32_t nextSentinel = in.FilePosition() + overallSize;
+    std::streamoff nextSentinel = in.FilePosition() + overallSize;
     in >> ((bitcode::RC&) imagesPresent);
-    int32_t headerDataBegin = 0, bmpDataBegin = 0, wmfDataBegin = 0;
+    std::streamoff headerDataBegin = 0, bmpDataBegin = 0, wmfDataBegin = 0;
 
-    for(int i = 0; i < imagesPresent; ++i)
+    for(auto i = 0; i < imagesPresent; ++i)
     {
         char code;
         int32_t dataSize;
@@ -128,8 +136,7 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
         }
 
         in.ReadRC((bitcode::RC*)&m_hdrData[0], m_hdrData.size());
-
-        if(!IsHeadDataAllNULL(m_hdrData))
+        if(!IsHeaderDataAllNULL(m_hdrData))
         {
             return OcApp::eUnknownHeaderDataValues;
         }
@@ -141,7 +148,6 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
         {
             return OcApp::eMismatchedFilePosition;
         }
-
         in.ReadRC((bitcode::RC*)&m_bmpData[0], m_bmpData.size());
     }
 
@@ -151,8 +157,7 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
         {
             return OcApp::eMismatchedFilePosition;
         }
-
-        in.ReadRC((bitcode::RC*)&m_wmfData[0], m_wmfData.size());
+        in.ReadRC((bitcode::RC*)&m_bmpData[0], m_wmfData.size());
     }
 
     if(nextSentinel != in.FilePosition())
@@ -161,33 +166,22 @@ OcApp::ErrorStatus OcBsDwgPreviewImage::DecodeData(DwgInArchive& in)
     }
 
     in.ReadRC(sentinelData, 16);
-
     if(!CompareSentinels(sentinelImageDataEnd, sentinelData))
     {
         return OcApp::eInvalidImageDataSentinel;
     }
-
     return OcApp::eOk;
 }
 
-bool OcBsDwgPreviewImage::IsHeadDataAllNULL(const std::vector<byte_t>& data) const
+bool OcBsDwgPreviewImage::IsHeaderDataAllNULL(const std::vector<byte_t>& data) const
 {
-    std::not_equal_to<int> comparator;
-
-    if(data.end() != std::find_if(data.begin(), data.end(),
-                                  boost::bind(comparator, _1, 0)))
+    VLOG_FUNC_NAME;
+    return data.end() != std::find_if(data.begin(), data.end(),
+                                      [](int x)
     {
-        return false;
-    }
-
-    return true;
+        return x == 0;
+    });
 }
 
-DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgPreviewImage & imgData)
-{
-    ASSERT_ARCHIVE_NOT_LOADING(in);
-    in.SetError(imgData.DecodeData(in));
-    return in;
-}
 
 END_OCTAVARIUM_NS

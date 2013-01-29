@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -38,135 +42,138 @@
 
 #include "OcCommon.h"
 #include "OcError.h"
-#include "OcCmColor.h"
-#include "OcGePoint2D.h"
-#include "OcGePoint3D.h"
-#include "OcDbHardOwnershipId.h"
-
-#include "OcDbDatabase.h"
 #include "OcDbDatabase_p.h"
-
-#include "../OcBs/OcBsStreamIn.h"
-#include "../OcBs/DwgInArchive.h"
-#include "../OcBs/OcBsDwgFileHeader.h"
-#include "../OcBs/OcBsDwgPreviewImage.h"
-
-#include "../OcDf/OcDfDatabaseHeaderVars.h"
-#include "../OcDf/OcDfDwgClass.h"
-#include "../OcDf/OcDfDwgClasses.h"
-#include "../OcDf/OcDfDwgObjectMap.h"
-#include "../OcDf/OcDfDwgSecondFileHeader.h"
-#include "../OcDf/OcDfDwgDataSection.h"
-
+#include "..\OcBs\OcBsStreamIn.h"
+#include "..\OcBs\OcBsDwgFileHeader.h"
+#include "..\OcBs\OcBsDwgPreviewImage.h"
+#include "..\OcBs\OcBsDatabaseHeaderVars.h"
+#include "..\OcBs\OcBsDwgClasses.h"
+#include "..\OcBs\OcBsDwgObjectMap.h"
+#include "..\OcBs\OcBsDwgSecondFileHeader.h"
+#include "..\OcBs\OcBsDwgDataSection.h"
 
 BEGIN_OCTAVARIUM_NS
 
-
-OcDbDatabasePimpl::OcDbDatabasePimpl( void )
-: m_qPtr(NULL), unknown1(412148564080.0), unknown2(1.0), unknown3(1.0), unknown4(1.0),
-unknown9(24)
-
+OcDbDatabasePrivate::OcDbDatabasePrivate(void)
 {
+    VLOG_FUNC_NAME;
 }
 
-OcDbDatabasePimpl::~OcDbDatabasePimpl(void)
+OcDbDatabasePrivate::OcDbDatabasePrivate(OcDbDatabase * q)
+    : OcObjectPrivate(q)
 {
-    VLOG(4) << "Destructor entered";
-    m_qPtr = NULL;
+    VLOG_FUNC_NAME;
 }
 
-OcApp::ErrorStatus OcDbDatabasePimpl::Open(const string_t & filename)
+
+OcDbDatabasePrivate::~OcDbDatabasePrivate(void)
 {
+    VLOG_FUNC_NAME;
+    m_qPtr = nullptr;
+}
+
+OcApp::ErrorStatus OcDbDatabasePrivate::ReadDwg(const std::string & sFilename)
+{
+    VLOG_FUNC_NAME;
+    VLOG(4) << "OcDbDatabasePrivate::ReadDwg entered";
+
     OcBsStreamIn in;
-    in.Open(filename);
-    if(!in) {
-        // OcBsStreamIn::Open will log any errors
+    in.Open(sFilename);
+    if(!in)
+    {
         return OcApp::eOpeningFile;
     }
-    DwgInArchive ar(in);
-    if(!ar) {
-        LOG(ERROR) << "Error opening archive stream";
-        return ar.Error();
-    }
-    // parse the dwgHdr
-    OcBsDwgFileHeader dwgHdr;
-    ar >> dwgHdr;
-    if(ar.Error() != OcApp::eOk) {
-        LOG(ERROR) << "Error processing drawing file header";
-        return ar.Error();
-    }
-    // Read R13c3 or higher file formats
-    if(dwgHdr.IsR13c3OrHigher()) {
-        // file position should match offset value stored in the IMAGE SEEKER
-        CHECK(dwgHdr.ImageSeeker() == ar.FilePosition())
-            << "IMAGE SEEKER offset does not match current file position";
-        OcBsDwgPreviewImage imgData;
-        ar >> imgData;
-        if(ar.Error() != OcApp::eOk) {
-            LOG(ERROR) << "Error processing data";
-            return ar.Error();
-        }
-        // current file position should match the offset stored in the
-        // section locater record 0, which is the "drawing variables"
-        CHECK(dwgHdr.Record(0).seeker == ar.FilePosition())
-            << "Section locater record 0 offset does not "
-            "match current file position";
 
-        OcDbDatabasePimpl * pThis = this;
-        OcDfDatabaseHeaderVars hdrVars(pThis);
-        ar >> hdrVars;
-        if(ar.Error() != OcApp::eOk) {
-            LOG(ERROR) << "Error processing drawing header variables";
-            return ar.Error();
+    OcBsDwgFileHeader dwgHdr;
+    OcApp::ErrorStatus es;
+    es = dwgHdr.ReadDwg(in);
+    if(es != OcApp::eOk)
+    {
+        LOG(ERROR) << "Error processing drawing file header";
+        return es;
+    }
+
+    if(dwgHdr.IsR13c3OrHigher())
+    {
+        // file position should match offset value in the IMAGE SEEKER
+        CHECK(dwgHdr.ImageSeeker() == in.FilePosition())
+                << "IMAGE SEEKER offset does not match current file position";
+        OcBsDwgPreviewImage imgData;
+        es = imgData.ReadDwg(in);
+        if(es != OcApp::eOk)
+        {
+            LOG(ERROR) << "Error processing image data";
+            return es;
         }
+
         // current file position should match the offset stored in the
-        // section locater record 1, which is the "classes section"
-        CHECK(dwgHdr.Record(1).seeker == ar.FilePosition())
-            << "Section locater record 1 offset does not "
-            "match current file position";
-        OcDfDwgClasses dwgClasses;
-        ar >> dwgClasses;
-        if(ar.Error() != OcApp::eOk) {
-            LOG(ERROR) << "Error processing classes section";
-            return ar.Error();
+        // section locator record 0, which is the "drawing variables"
+        CHECK(dwgHdr.Record(0).seeker == in.FilePosition())
+                << "Section locator record 0 offset does not match current file position";
+
+        OcDbDatabasePrivate * pThis = this;
+        OcBsDatabaseHeaderVars hdrVars;
+        es = hdrVars.ReadDwg(in, pThis);
+        if(es != OcApp::eOk)
+        {
+            LOG(ERROR) << "Error processing drawing header variables";
+            return es;
         }
+
+        // current file position should match the offset stored in the
+        // section locator record 1, which is the "classes section"
+        CHECK(dwgHdr.Record(1).seeker == in.FilePosition())
+                << "Section locator record 1 offset does not match current file position";
+
+        OcBsDwgClasses dwgClasses;
+        es = dwgClasses.ReadDwg(in);
+        if(es != OcApp::eOk)
+        {
+            LOG(ERROR) << "Error processing classes section";
+            return es;
+        }
+
         // The AcRxObject base type should not be in the drawing,
         // but need to know for sure. Log these other types too, to
         // see if they ever show up. Don't think they will.
-        bool bFound = false;
         CHECK(!dwgClasses.Has(L"AcRxObject")) <<
-            "Found suspicious class AcRxObject";
+                                              "Found suspicious class AcRxObject";
         CHECK(!dwgClasses.Has(L"AcRxClass")) <<
-            "Found suspicious class AcRxClass";
+                                             "Found suspicious class AcRxClass";
         CHECK(!dwgClasses.Has(L"AcDbObject")) <<
-            "Found suspicious class AcDbObject";
+                                              "Found suspicious class AcDbObject";
         CHECK(!dwgClasses.Has(L"AcObjectId")) <<
-            "Found suspicious class AcObjectId";
+                                              "Found suspicious class AcObjectId";
         CHECK(!dwgClasses.Has(L"AcDbHandle")) <<
-            "Found suspicious class AcDbHandle";
-        int32_t filePos = ar.FilePosition();
+                                              "Found suspicious class AcDbHandle";
+
+        auto filePos = in.FilePosition();
         // Read the Object Map portion from the file. When
         // done, OcDfDwgObjectMap will have a collection
         // that tells where in the dwg file objects are located.
-        OcDfDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
-            dwgHdr.Record(2).size);
-        ar >> dwgObjMap;
-        if(ar.Error() != OcApp::eOk) {
+        OcBsDwgObjectMap dwgObjMap(dwgHdr.Record(2).seeker,
+                                   dwgHdr.Record(2).size);
+        es = dwgObjMap.ReadDwg(in);
+        if(es != OcApp::eOk)
+        {
             LOG(ERROR) << "Error processing object map section";
-            return ar.Error();
+            return es;
         }
-        if(ar.Version() == R13 || ar.Version() == R14)
+
+        if(in.Version() == R13 || in.Version() == R14)
         {
             // Read the second file header section. Note, this sections is
             // located immediately after the OcDfDgObjectMap
-            OcDfDwgSecondFileHeader dwgSecondHeader;
-            ar >> dwgSecondHeader;
+            OcBsDwgSecondFileHeader dwgSecondHeader;
+            es = dwgSecondHeader.ReadDwg(in);
         }
-        OcDfDwgDataSection dwgDataSection(dwgHdr.Record(4).seeker, dwgHdr.Record(4).size);
-        ar >> dwgDataSection;
-        if(ar.Error() != OcApp::eOk) {
+
+        OcBsDwgDataSection dwgDataSection(dwgHdr.Record(4).seeker, dwgHdr.Record(4).size);
+        es = dwgDataSection.ReadDwg(in);
+        if(es != OcApp::eOk)
+        {
             LOG(ERROR) << "Error processing data section";
-            return ar.Error();
+            return es;
         }
         // Add code to read the Spec section 20, AcDb::Template.
         //
@@ -174,12 +181,14 @@ OcApp::ErrorStatus OcDbDatabasePimpl::Open(const string_t & filename)
         //
         // Decode all of the objects that are in the object map
         // collection.
-        dwgObjMap.DecodeObjects(ar, pThis, dwgClasses);
-        if(ar.Error() != OcApp::eOk) {
+        es = dwgObjMap.DecodeObjects(in, dwgClasses);
+        if(es != OcApp::eOk)
+        {
             LOG(ERROR) << "Error processing objects";
-            return ar.Error();
+            return es;
         }
     }
+
     return OcApp::eOk;
 }
 

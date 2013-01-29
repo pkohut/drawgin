@@ -16,7 +16,7 @@ class bounded
      *  Ensure template parameter min < template parameter max.
      */
 //#if defined(static_assert)
-    BOOST_STATIC_ASSERT(min < max);
+    static_assert(min < max, "invalid order.");
 //#else
     // stuff done here;
 //#endif
@@ -36,7 +36,9 @@ public:
     explicit bounded(const V & t): m_t(t)
     {
         if(t < min || t > max)
+        {
             throw std::out_of_range("Bounded value outside of valid range");
+        }
     }
 
     /**

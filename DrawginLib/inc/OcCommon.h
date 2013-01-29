@@ -46,58 +46,36 @@
 **
 ****************************************************************************/
 
-#ifndef OcCommon_h__
-#define OcCommon_h__
+#pragma once
 
-#if defined(_WIN32)
-// Enable CRT deubbing on Windows. Will report false positives for things
+#ifdef _WIN32
+// Enable CRT debugging on Windows. Will report false positives for things
 // like static or global instances of some types of objects.
 // For example, static member variables that are std::map will report
 // a memory leak, these can be ignored.
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
+#    define _CRTDBG_MAP_ALLOC
+#    include <stdlib.h>
+#    include <crtdbg.h>
+#    include <SDKDDKVer.h>
 #endif
 
 #include <algorithm>
+#include <array>
 #include <assert.h>
-#include <fstream>
-#include <functional>
-#include <map>
-#include <set>
+#include <memory>
+//#include <set>
 #include <sstream>
-#include <stdexcept>
-#include <string>
-#include <typeinfo>
-#include <utility>
-#include <vector>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-
-
-#include <boost/bind.hpp>
-#include <boost/foreach.hpp>
-#include <boost/intrusive_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
-
-
-// When GOOGLE_STRIP_LOG a VALUE is defined, the strings log strings below
-// the logging level of VALUE are removed from the compiled application.
-#ifdef NDEBUG
-//#define GOOGLE_STRIP_LOG 1
-#endif
-
-#if defined(WIN32)
+#include <stdio.h>
 #include <tchar.h>
+
+#if defined(DRAWGINLIB_EXPORTS)
+#  define DRAWGIN_API __declspec(dllexport)
+#  define EXPIMP_TEMPLATE
+#else
+#  define DRAWGIN_API __declspec(dllimport)
+#  define EXPIMP_TEMPLATE extern
 #endif
-
-// Google's logging library.
-#include <glog/logging.h>
-
-// Add wstring and wchar_t support to GLog.
-#include "wchar_logging.h"
 
 /**
  *	Macro that can be used in place of the ++ namespace keyword.<br>
@@ -123,9 +101,33 @@
  */
 #define USING_OCTAVARIUM_NS using namespace octavarium;
 
+// When GOOGLE_STRIP_LOG a VALUE is defined, the strings log strings below
+// the logging level of VALUE are removed from the compiled application.
+#ifdef NDEBUG
+#    define GOOGLE_STRIP_LOG 1
+#endif
+
+#include "OcObjectDef.h"
+#include "OcLogger.h"
+
+//#define  __FUNC__NAME__SIG__
+#ifdef _WIN32
+#    if (_MSC_VER <= 1700)
+#        ifdef __FUNC__NAME__SIG__
+#            define __FUNC__NAME__ __FUNCSIG__
+#        else
+#            define __FUNC__NAME__ __FUNCTION__
+#        endif
+#    endif
+#endif
+
+
+#ifndef NDEBUG
+#    define VLOG_FUNC_NAME VLOG(5) << __FUNC__NAME__
+#else
+#    define VLOG_FUNC_NAME
+#endif
+
+
+
 #include "OcTypes.h"
-#include "OcRxObject.h"
-
-#include "OcConfig.h"
-
-#endif // OcCommon_h__

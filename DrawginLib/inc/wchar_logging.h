@@ -1,3 +1,11 @@
+/**
+ *	@file
+ *  @brief Adds wstring logging capabilities to glog
+ *
+ *  Adds wstring logging capabilites to glog
+ */
+
+
 // from the GLOB forums
 
 #ifndef WCHAR_LOGGING_H_

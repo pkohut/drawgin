@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and

@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -37,12 +41,8 @@
 ****************************************************************************/
 
 #include "OcCommon.h"
-#include "OcTypes.h"
-#include "OcError.h"
 #include "OcGePoint2D.h"
 #include <iomanip>
-
-
 
 BEGIN_OCTAVARIUM_NS
 using namespace std;
@@ -57,6 +57,7 @@ OcGePoint2D::OcGePoint2D(double xx, double yy)
 {
 }
 
+
 std::ostream& operator <<(std::ostream& out, const OcGePoint2D & pt)
 {
     out << showpoint
@@ -64,7 +65,6 @@ std::ostream& operator <<(std::ostream& out, const OcGePoint2D & pt)
         << "y: = " << pt.Y();
     return out;
 }
-
 
 
 END_OCTAVARIUM_NS

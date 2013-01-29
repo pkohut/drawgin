@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcApp::ErrorStatus
+ *
+ *  Defines the OcApp::ErrorStatus error codes.
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,8 +43,7 @@
 **
 ****************************************************************************/
 
-#ifndef OcError_h__
-#define OcError_h__
+#pragma once
 
 BEGIN_OCTAVARIUM_NS
 
@@ -83,6 +89,7 @@ struct OcApp
         eInvalidCRCInFileHeader,
         eInvalidHeaderSentinal,
         eInvalidImageDataSentinel,
+        eInvalidClassesDataSentinel,
         eInvalidImageDataCode,
         eInvalidSecondHeaderSentinel,
         eUnknownHeaderDataValues,
@@ -99,4 +106,4 @@ struct OcApp
 }; // OcApp
 END_OCTAVARIUM_NS
 
-#endif // OcError_h__
+

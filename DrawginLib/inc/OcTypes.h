@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines additional types used by the library
+ *
+ *  Defines additional types used by the library
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,51 +43,16 @@
 **
 ****************************************************************************/
 
-#ifndef OcTypes_h__
-#define OcTypes_h__
-
-#include <string>
-#include <boost/cstdint.hpp>
+#pragma once
+#include <stdint.h>
 
 BEGIN_OCTAVARIUM_NS
 
-//typedef char                oc_char;
-//typedef short               oc_short;
-//typedef int                 oc_int;
-//typedef long                oc_long;
-
-typedef boost::int8_t       int8_t;
-typedef boost::int16_t      int16_t;
-typedef boost::int32_t      int32_t;
-typedef boost::int64_t      int64_t;
-
-typedef unsigned char       uchar_t;
-typedef unsigned char       byte_t;
-typedef unsigned short      ushort_t;
-typedef unsigned int        uint_t;
-typedef unsigned long       ulong_t;
-
-typedef boost::uint8_t      uint8_t;
-typedef boost::uint16_t     uint16_t;
-typedef boost::uint32_t     uint32_t;
-typedef boost::uint64_t     uint64_t;
-
-//typedef intptr_t            oc_intptr;
-//typedef uintptr_t           oc_uintptr;
-
-typedef boost::intmax_t     intmax_t;
-typedef boost::uintmax_t    uintmax_t;
-
-
-#if defined(_UNICODE)
-typedef std::wstring string_t;
-#define _OC(x) L ## x
-#else
-typedef std::string string_t;
-#define _OC
-#endif
+typedef unsigned char   uchar_t;
+typedef unsigned char   byte_t;
+typedef unsigned short  ushort_t;
+typedef unsigned int    uint_t;
+typedef unsigned long   ulong_t;
 
 
 END_OCTAVARIUM_NS
-
-#endif // OcTypes_h__

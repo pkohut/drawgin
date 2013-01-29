@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcBsStreamIn class
+ *
+ *  Support to read drawing files
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,10 +43,9 @@
 **
 ****************************************************************************/
 
-#ifndef OcBsStreamIn_h__
-#define OcBsStreamIn_h__
-
+#pragma once
 #include "OcBsStream.h"
+#include "OcDbObjectId.h"
 
 BEGIN_OCTAVARIUM_NS
 
@@ -47,29 +53,27 @@ class OcBsStreamIn : public OcBsStream
 {
 public:
     OcBsStreamIn(void);
-#if defined(WIN32) && (_UNICODE)
-    explicit OcBsStreamIn(const std::wstring & filename);
-#else
     explicit OcBsStreamIn(const std::string & filename);
-#endif
+
     virtual ~OcBsStreamIn(void);
 
-#if defined(WIN32) && (_UNICODE)
-    virtual void Open(const std::wstring & filename);
-#else
     virtual void Open(const std::string & filename);
-#endif
+
     virtual bool Good(void) const;
     virtual bool Eof(void) const;
     virtual bool Fail(void) const;
     virtual bool Bad(void) const;
-    byte_t * Buffer(void)
+    std::array<uint8_t, BUFSIZE> & Buffer(void)
     {
         return OcBsStream::Buffer();
     }
     virtual OcBsStreamIn & Seek(std::streamoff nPos, int nBit = 0);
     OcBsStreamIn & ReadHandle(OcDbObjectId & objId);
     OcBsStreamIn & ReadCRC(uint16_t & crc, bool bSkipCrcTracking = true);
+    OcBsStreamIn & ReadRC(bitcode::RC * pRc, size_t size, bool bSkipCrcTracking = false);
+    OcBsStreamIn & ReadRC(std::vector<bitcode::RC> & rc, size_t size, bool bSkipCrcTracking = false);
+    OcBsStreamIn & ReadRC(std::string & rc, size_t size, bool bSkipCrcTracking = false);
+
     void AdvanceToByteBoundary(void);
 
     virtual OcBsStreamIn & operator>>(OcDbObjectId & objId);
@@ -99,6 +103,118 @@ public:
 
 };
 
-END_OCTAVARIUM_NS
 
-#endif // OcBsStreamIn_h__
+// helper template function to ensure T is dereferenced before
+// calling stream in.
+template<typename BC, typename T>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const T & t)
+{
+    stream >> (BC&) t;
+    return stream;
+}
+
+
+template<typename BC, typename T>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const T & t, const char * pStr)
+{
+    StreamIn<BC, T>(stream, t);
+    VLOG(4) << pStr << ": " << t;
+    return stream;
+}
+
+// handle when t is a char and print t as an int
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const int8_t & t, const char * pStr)
+{
+    StreamIn<BC>(stream, t);
+    VLOG(4) << pStr << ": " << (int) t;
+    return stream;
+}
+
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const bool & t, const char * pStr)
+{
+    StreamIn<BC>(stream, t);
+    VLOG(4) << pStr << ": " << (t == true ? "true" : "false");
+    return stream;
+}
+
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const byte_t & t, const char * pStr)
+{
+    StreamIn<BC>(stream, t);
+    VLOG(4) << pStr << ": " << (int) t;
+    return stream;
+}
+
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const bitcode::CMC & t, const char * pStr)
+{
+    StreamIn<BC>(stream, t);
+    VLOG(4) << pStr << ": " << (bitcode::BCCMC&)t;
+    return stream;
+}
+
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const std::wstring & t, const char * pStr)
+{
+    // need to figure out why wstring and wchar_t can not be streamed directly.
+    // If it is streamed directly right now it prints the hex address of
+    // the string.
+    // Prior to adding the OcGePoint2d class this worked fined, and did not
+    // require this template specialization.
+    if(typeid(BC).name() == typeid(bitcode::T).name()
+            || (typeid(BC).name() == typeid(bitcode::TV).name()
+                && stream.Version() <= R2004))
+    {
+        //        if(ar.Version() <= R2004) {
+        StreamIn<bitcode::T>(stream, t);
+        VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
+    }
+    else
+    {
+        StreamIn<bitcode::TU>(stream, t);
+        VLOG(4) << pStr << ": U\"" << WStringToString(t.c_str()).c_str() << "\"";
+    }
+
+    //    StreamIn<BC>(ar, t);
+    //    VLOG(4) << pStr << ": \"" << WStringToString(t.c_str()).c_str() << "\"";
+    return stream;
+}
+
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const wchar_t * t, const char * pStr)
+{
+    StreamIn<BC>(stream, t);
+    VLOG(4) << pStr << ": \"" << t << "\"";
+    return stream;
+}
+
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const double & t, const char * pStr)
+{
+    StreamIn<BC>(stream, t);
+    VLOG(4) << std::showpoint << pStr << ": " << t;
+    return stream;
+}
+
+template<typename BC>
+OcBsStreamIn& StreamIn(OcBsStreamIn & stream, const OcDbObjectId & t, const char * pStr)
+{
+    StreamIn<BC>(stream, t);
+    VLOG(4) << std::showpoint << pStr << ": " << t;
+    return stream;
+}
+
+std::string RC2Hex(const std::vector<bitcode::RC> &bytes);
+
+// Help with dead string stripping for the StreamIn template, without this
+// DSS only occurred with gcc compiler setting of -O3
+#if GOOGLE_STRIP_LOG > 0
+// have compiler strip away STR from code
+#  define BS_STREAMIN(BC, STREAM, T, STR) StreamIn<BC>(STREAM, T, "");
+#else
+#  define BS_STREAMIN(BC, STREAM, T, STR) StreamIn<BC>(STREAM, T, #STR);
+#endif
+
+END_OCTAVARIUM_NS

@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,54 +40,50 @@
 **
 ****************************************************************************/
 
-#include <limits>
-
 #include "OcCommon.h"
-#include "OcDbObjectId.h"
-#include "../OcDf/OcDfDwgVersion.h"
+#include "OcError.h"
 #include "OcBsStreamIn.h"
 #include "OcBsDwgCrc.h"
 
-BEGIN_OCTAVARIUM_NS
-
 using namespace std;
+
+BEGIN_OCTAVARIUM_NS
 
 OcBsStreamIn::OcBsStreamIn(void)
 {
+    VLOG_FUNC_NAME;
 }
 
-#if defined(WIN32) && defined(_UNICODE)
-OcBsStreamIn::OcBsStreamIn(const std::wstring & filename)
-#else
 OcBsStreamIn::OcBsStreamIn(const std::string & filename)
-#endif
 {
+    VLOG_FUNC_NAME;
     Open(filename);
 }
 
 OcBsStreamIn::~OcBsStreamIn(void)
 {
+    VLOG_FUNC_NAME;
 }
 
-#if defined(WIN32) && defined(_UNICODE)
-void OcBsStreamIn::Open(const std::wstring & filename)
-#else
 void OcBsStreamIn::Open(const std::string & filename)
-#endif
 {
+    VLOG_FUNC_NAME;
     OcBsStream::Open(filename, fstream::in | fstream::binary);
 }
 
 OcBsStreamIn & OcBsStreamIn::Seek(std::streamoff nPos, int nBit)
 {
+    VLOG_FUNC_NAME;
     m_filePosition = nPos + (nBit / CHAR_BIT);
     std::streamoff pos = m_filePosition / BufferSize() * BufferSize();
 
     if(m_fs.eof())
+    {
         m_fs.clear();
+    }
 
     m_fs.seekg(pos, ios::beg);
-    m_fs.read((char *) m_pBuffer, BufferSize());
+    m_fs.read((char *) &m_buffer, BufferSize());
     m_indexSize = std::min(m_fs.gcount(), m_fileLength
                            - (std::streamsize)m_filePosition);
     m_bitPosition = nBit % CHAR_BIT;
@@ -99,6 +99,8 @@ OcBsStreamIn & OcBsStreamIn::Seek(std::streamoff nPos, int nBit)
 
 bool OcBsStreamIn::Good(void) const
 {
+    VLOG_FUNC_NAME;
+
     if(m_fs.good())
     {
         return true;
@@ -109,6 +111,8 @@ bool OcBsStreamIn::Good(void) const
 
 bool OcBsStreamIn::Eof(void) const
 {
+    VLOG_FUNC_NAME;
+
     if(m_fs.eof() && m_filePosition < m_fileLength)
     {
         return true;
@@ -119,16 +123,30 @@ bool OcBsStreamIn::Eof(void) const
 
 bool OcBsStreamIn::Fail(void) const
 {
+    VLOG_FUNC_NAME;
     return m_fs.fail();
 }
 
 bool OcBsStreamIn::Bad(void) const
 {
+    VLOG_FUNC_NAME;
     return m_fs.bad();
+}
+
+void OcBsStreamIn::AdvanceToByteBoundary(void)
+{
+    VLOG_FUNC_NAME;
+
+    if(m_bitPosition)
+    {
+        m_bitPosition = 0;
+        m_filePosition++;
+    }
 }
 
 OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
 {
+    VLOG_FUNC_NAME;
     bitcode::BBBB code;
     bitcode::BBBB counter;
     *this >> code;
@@ -146,8 +164,9 @@ OcBsStreamIn & OcBsStreamIn::ReadHandle(OcDbObjectId & objId)
     return *this;
 }
 
-OcBsStreamIn & OcBsStreamIn::ReadCRC(uint16_t & crc, bool bSkipCrcTracking)
+OcBsStreamIn & OcBsStreamIn::ReadCRC(uint16_t & crc, bool bSkipCrcTracking /*= true*/)
 {
+    VLOG_FUNC_NAME;
     uint16_t currentCrc = CalcedCRC();
     // CRC are located on byte boundaries within the file.
     // if m_bitPosition is not 0 then "advance" to next
@@ -163,31 +182,98 @@ OcBsStreamIn & OcBsStreamIn::ReadCRC(uint16_t & crc, bool bSkipCrcTracking)
     *this >> (bitcode::RS&) crc;
 
     if(bSkipCrcTracking == true)
+    {
         SetCalcedCRC(currentCrc);
+    }
+
+    return *this;
+}
+
+OcBsStreamIn & OcBsStreamIn::ReadRC(bitcode::RC * pRc, size_t size, bool bSkipCrcTracking /*= false*/)
+{
+    VLOG_FUNC_NAME;
+    uint16_t currentCrc = CalcedCRC();
+
+    for(size_t i = 0; i < size; ++i)
+    {
+        *this >> pRc[i];
+    }
+
+    if(bSkipCrcTracking == true)
+    {
+        SetCalcedCRC(currentCrc);
+    }
+
+    return *this;
+}
+
+OcBsStreamIn & OcBsStreamIn::ReadRC(std::vector<bitcode::RC> & rc, size_t size, bool bSkipCrcTracking /*= false*/)
+{
+    VLOG_FUNC_NAME;
+    uint16_t currentCrc = CalcedCRC();
+    rc.resize(size);
+
+    for(size_t i = 0; i < size; ++i)
+    {
+        *this >> rc[i];
+    }
+
+    if(bSkipCrcTracking == true)
+    {
+        SetCalcedCRC(currentCrc);
+    }
+
+    return *this;
+}
+
+OcBsStreamIn & OcBsStreamIn::ReadRC(std::string & rc, size_t size, bool bSkipCrcTracking /*= false*/)
+{
+    VLOG_FUNC_NAME;
+    uint16_t currentCrc = CalcedCRC();
+    rc.resize(size);
+
+    for(size_t i = 0; i < size; ++i)
+    {
+        *this >> (bitcode::RC*)&rc[i];
+    }
+
+    if(bSkipCrcTracking == true)
+    {
+        SetCalcedCRC(currentCrc);
+    }
 
     return *this;
 }
 
 
-void OcBsStreamIn::AdvanceToByteBoundary(void)
+std::string RC2Hex(const std::vector<bitcode::RC> &bytes)
 {
-    if(m_bitPosition)
+    VLOG_FUNC_NAME;
+    std::stringstream ss;
+
+    //ss << std::hex << std::setfill('0') << std::setw(4);
+    for(std::vector<bitcode::RC>::const_iterator it = bytes.begin(); it != bytes.end(); it++)
     {
-        m_bitPosition = 0;
-        m_filePosition++;
+        //ss << " 0x" << std::hex << std::setfill('0') << std::setw(2) << (int)*it;
+        ss << " " << std::hex << std::showbase << (int)*it;
     }
+
+    return ss.str();
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////
 
 OcBsStreamIn & OcBsStreamIn::operator>>(OcDbObjectId & objId)
 {
+    VLOG_FUNC_NAME;
     return ReadHandle(objId);
 }
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::B & b)
 {
+    VLOG_FUNC_NAME;
     b = 0;
 
     if(m_bitPosition == 0)
@@ -204,6 +290,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::B & b)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BB & bb)
 {
+    VLOG_FUNC_NAME;
     bitcode::B b;
     *this >> b;
     bb = b << 1;
@@ -214,6 +301,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BB & bb)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BBBB & bbbb)
 {
+    VLOG_FUNC_NAME;
     bitcode::BB bb;
     *this >> bb;
     bbbb = bb << 2;
@@ -224,6 +312,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BBBB & bbbb)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD & bd)
 {
+    VLOG_FUNC_NAME;
     bitcode::BB bb;
     *this >> bb;
 
@@ -252,6 +341,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD & bd)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD2 & bd)
 {
+    VLOG_FUNC_NAME;
     bitcode::BD * pBD2 = (bitcode::BD*)&bd;
     *this >> pBD2[0];
     *this >> pBD2[1];
@@ -260,6 +350,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD2 & bd)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD3 & bd)
 {
+    VLOG_FUNC_NAME;
     bitcode::BD * pBD3 = (bitcode::BD*)&bd;
     *this >> pBD3[0];
     *this >> pBD3[1];
@@ -269,6 +360,8 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BD3 & bd)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BE & be)
 {
+    VLOG_FUNC_NAME;
+
     if(m_version >= R2000)
     {
         be.t.set(0.0, 0.0, 1.0);
@@ -284,6 +377,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BE & be)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BL & bl)
 {
+    VLOG_FUNC_NAME;
     bitcode::BB bb;
     *this >> bb;
 
@@ -312,6 +406,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BL & bl)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BS & bs)
 {
+    VLOG_FUNC_NAME;
     bitcode::BB bb;
     *this >> bb;
 
@@ -340,6 +435,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BS & bs)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BT & bt)
 {
+    VLOG_FUNC_NAME;
     int flag = false;
 
     if(m_version >= R2000)
@@ -363,6 +459,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::BT & bt)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::CMC & cmc)
 {
+    VLOG_FUNC_NAME;
     *this >> (bitcode::BS&)cmc.t.index;
 
     if(m_version >= R2004)
@@ -385,6 +482,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::CMC & cmc)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MC & mc)
 {
+    VLOG_FUNC_NAME;
     mc = 0;
     bitcode::RC rc[4] =
     {
@@ -425,6 +523,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MC & mc)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MS & ms)
 {
+    VLOG_FUNC_NAME;
     ms = 0;
     bitcode::RS rs[2] = {(bitcode::RS) 0, (bitcode::RS)0} ;
 
@@ -452,6 +551,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::MS & ms)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RC & rc)
 {
+    VLOG_FUNC_NAME;
     rc = 0;
 
     if(m_bitPosition == 0)
@@ -478,11 +578,13 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RC & rc)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RC  rc[])
 {
+    VLOG_FUNC_NAME;
     return *this >> *rc;
 }
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD & rd)
 {
+    VLOG_FUNC_NAME;
     bitcode::RC rc;
     byte_t * rVal = (byte_t*)&rd;
 
@@ -497,6 +599,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD & rd)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD2 & rd2)
 {
+    VLOG_FUNC_NAME;
     bitcode::RD * prd2 = (bitcode::RD*)&rd2;
     *this >> prd2[0];
     *this >> prd2[1];
@@ -505,6 +608,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD2 & rd2)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD3 & rd3)
 {
+    VLOG_FUNC_NAME;
     bitcode::RD * prd3 = (bitcode::RD*)&rd3;
     *this >> prd3[0];
     *this >> prd3[1];
@@ -514,6 +618,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RD3 & rd3)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RL & rl)
 {
+    VLOG_FUNC_NAME;
     bitcode::RS rs;
     *this >> rs;
     rl = (uint16_t)rs;
@@ -524,6 +629,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RL & rl)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RS & rs)
 {
+    VLOG_FUNC_NAME;
     bitcode::RC rc;
     *this >> rc;
     rs = (uint8_t)rc;
@@ -534,6 +640,8 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::RS & rs)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TV & tv)
 {
+    VLOG_FUNC_NAME;
+
     if(m_version < R2007)
     {
         *this >> (bitcode::T&) tv;
@@ -548,6 +656,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TV & tv)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
 {
+    VLOG_FUNC_NAME;
     t.t.clear();
     bitcode::BS length;
     *this >> length;
@@ -587,6 +696,7 @@ OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::T & t)
 
 OcBsStreamIn & OcBsStreamIn::operator>>(bitcode::TU & tu)
 {
+    VLOG_FUNC_NAME;
     tu.t.clear();
     bitcode::BS length;
     *this >> length;

@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcBsDwgSentinels class
+ *
+ *  Used to encode the "sentinel" sections of drawing files
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and

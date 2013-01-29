@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcBsDwgPreviewImage class
+ *
+ *  Used to encode the "preview image" section of drawing files
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,29 +43,26 @@
 **
 ****************************************************************************/
 
-#ifndef OcBsDwgPreviewImage_h__
-#define OcBsDwgPreviewImage_h__
-
-//#include "DwgInArchive.h"
+#pragma once
 
 BEGIN_OCTAVARIUM_NS
 
-class DwgInArchive;
+class OcBsStreamIn;
 
 class OcBsDwgPreviewImage
 {
 public:
     OcBsDwgPreviewImage(void);
     virtual ~OcBsDwgPreviewImage(void);
+    OcApp::ErrorStatus ReadDwg(OcBsStreamIn & in);
 
-    const std::vector<byte_t> & HeaderData(void) const;
-    const std::vector<byte_t> & BmpData(void) const;
-    const std::vector<byte_t> & WmfData(void) const;
+    const std::vector<byte_t> & HeaderData() const;
+    const std::vector<byte_t> & BmpData() const;
+    const std::vector<byte_t> & WmfData() const;
 
 private:
-    friend DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgPreviewImage & imgData);
-    OcApp::ErrorStatus DecodeData(DwgInArchive& in);
-    bool IsHeadDataAllNULL(const std::vector<byte_t>& data) const;
+
+    bool IsHeaderDataAllNULL(const std::vector<byte_t>& data) const;
 
     std::vector<byte_t> m_hdrData;
     std::vector<byte_t> m_bmpData;
@@ -66,5 +70,3 @@ private:
 };
 
 END_OCTAVARIUM_NS
-
-#endif // OcBsDwgPreviewImage_h__

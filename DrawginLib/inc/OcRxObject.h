@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcRxObject base class
+ *
+ *  Defines the OcRxObject base class found in a drawing file.
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,78 +43,23 @@
 **
 ****************************************************************************/
 
-#ifndef OcRxObject_h__
-#define OcRxObject_h__
+#pragma once
 
-#include "ClassMacros.h"
-#include "OcConfig.h"
-
-BEGIN_OCTAVARIUM_NS
-class OcRxObject;
-END_OCTAVARIUM_NS
-
-namespace boost
-{
-void intrusive_ptr_add_ref(octavarium::OcRxObject * p);
-void intrusive_ptr_release(octavarium::OcRxObject * p);
-}
+//#include "OcObjectDef.h"
 
 BEGIN_OCTAVARIUM_NS
 
-class OcRxObject
+class DRAWGIN_API OcRxObject
 {
+    DISABLE_COPY(OcRxObject);
+
 protected:
     OcRxObject();
-    OcRxObject(const OcRxObject & other);
+
 public:
-    virtual ~OcRxObject();
+    virtual ~OcRxObject(void);
 
-    OcRxObject & operator=(const OcRxObject & other);
 
-private:
-    long    m_nReferences;
-
-    friend void ::boost::intrusive_ptr_add_ref(OcRxObject * p);
-    friend void ::boost::intrusive_ptr_release(OcRxObject * p);
 };
+
 END_OCTAVARIUM_NS
-
-namespace boost
-{
-inline void intrusive_ptr_add_ref(octavarium::OcRxObject * p)
-{
-    // increment reference count of object *p
-#if OC_THREAD_SAFE_INTRUSIVE_PTR == 1
-    _InterlockedIncrement(&(p->m_nReferences));;
-#else
-    ++(p->m_nReferences);
-#endif
-}
-
-inline void intrusive_ptr_release(octavarium::OcRxObject * p)
-{
-    DLOG_IF(ERROR, !p->m_nReferences)
-//            << p->ClassName() << " still has pointer references";
-            << typeid(*p).name() << " still has pointer references";
-    // decrement reference count, and delete object when reference count reaches 0
-#if OC_THREAD_SAFE_INTRUSIVE_PTR == 1
-
-    if(_InterlockedDecrement(&(p->m_nReferences)) == 0)
-    {
-        delete p;
-    }
-
-#else
-
-    if(--(p->m_nReferences) == 0)
-    {
-        delete p;
-    }
-
-#endif
-}
-} // namespace boost
-
-
-
-#endif // OcRxObject_h__

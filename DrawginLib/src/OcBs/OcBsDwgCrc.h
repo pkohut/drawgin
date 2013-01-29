@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcBsDwgCrc class
+ *
+ *  Used to encode the "crc" sections of drawing files
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and

@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -46,13 +50,15 @@ OcDbObjectId::OcDbObjectId(void)
 {
 }
 
+
 OcDbObjectId::~OcDbObjectId(void)
 {
 }
 
-std::wstring OcDbObjectId::ToString() const
+std::string OcDbObjectId::ToString() const
 {
-    return L"Function not implemented";
+    LOG(ERROR) << "Function not implemented";
+    return "Function not implemented";
 }
 
 void OcDbObjectId::Handle(const int64_t handle)
@@ -65,18 +71,10 @@ const int64_t & OcDbObjectId::Handle(void) const
     return m_handle;
 }
 
-
-
-
 std::ostream& operator <<(std::ostream& out, const OcDbObjectId& objId)
 {
-//    return LogWString(out, objId.ToString());
     out << std::hex << std::showbase << objId.Handle();
     return out;
 }
 
-
-
-
 END_OCTAVARIUM_NS
-

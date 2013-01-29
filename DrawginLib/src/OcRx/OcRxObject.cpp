@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,45 +40,20 @@
 **
 ****************************************************************************/
 
-
-
-/**************************************************************************/
-/*  Portions of code from the Visualization Library                       */
-/*  which used the "New BSD" license, see "LICENSE.MORE" for full license */
-/*  notice http://www.visualizationlibrary.com                            */
-/*                                                                        */
-/*  Copyright (c) 2005-2010, Michele Bosi                                 */
-/*  All rights reserved.                                                  */
-/**************************************************************************/
-
 #include "OcCommon.h"
-#include "OcError.h"
 #include "OcRxObject.h"
 
 BEGIN_OCTAVARIUM_NS
 
-
-OcRxObject::OcRxObject() : m_nReferences(0)
+OcRxObject::OcRxObject(void)
 {
+    VLOG_FUNC_NAME;
 }
 
-OcRxObject::OcRxObject(const OcRxObject & other) : m_nReferences(0)
-{
-}
 
 OcRxObject::~OcRxObject(void)
 {
-    DLOG_IF(ERROR, m_nReferences)
-            << "Object " << typeid(*this).name() << "is being deleted having still "
-            << m_nReferences << "references. Possible causes:\n"
-            << "- illegal use of the 'delete' operator on an object.h Use OcPtr<> instead.\n"
-            << "- explicit call to Object::incReference().\n\n";
+    VLOG_FUNC_NAME;
 }
-
-OcRxObject & OcRxObject::operator=(const OcRxObject & other)
-{
-    return *this;
-}
-
 
 END_OCTAVARIUM_NS

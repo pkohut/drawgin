@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcDbHardOwnershipId class
+ *
+ *  Defines the OcDbHardOwnershipId class found in a drawing file.
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,20 +43,18 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbHardOwnershipId_h__
-#define OcDbHardOwnershipId_h__
+#pragma once
 
 #include "OcDbObjectId.h"
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbHardOwnershipId : public OcDbObjectId
+class DRAWGIN_API OcDbHardOwnershipId : public OcDbObjectId
 {
+    //DISABLE_COPY(OcDbHardOwnershipId);
 public:
     OcDbHardOwnershipId(void);
-    virtual ~OcDbHardOwnershipId(void);
+    ~OcDbHardOwnershipId(void);
 };
 
 END_OCTAVARIUM_NS
-
-#endif // OcDbHardOwnershipId_h__

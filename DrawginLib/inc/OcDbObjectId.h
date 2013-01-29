@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcDbObjectId class
+ *
+ *  Defines the OcDbObjectId class found in a drawing file.
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,26 +43,26 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbObjectId_h__
-#define OcDbObjectId_h__
-
+#pragma once
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbObjectId
+class DRAWGIN_API OcDbObjectId
 {
+    //DISABLE_COPY(OcDbObjectId);
 public:
     OcDbObjectId(void);
     virtual ~OcDbObjectId(void);
-    std::wstring ToString() const;
+
+    std::string ToString() const;
     void Handle(const int64_t handle);
     const int64_t & Handle(void) const;
 
     friend std::ostream& operator<<(std::ostream& out, const OcDbObjectId& objId);
+
 private:
     int64_t m_handle;
+
 };
 
 END_OCTAVARIUM_NS
-
-#endif // OcDbObjectId_h__

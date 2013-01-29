@@ -1,3 +1,11 @@
+/**
+ *	@file
+ *  @brief Defines class types found in the drawing
+ *
+ *  Defines the classes found in a drawing file.
+ */
+
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,12 +44,13 @@
 **
 ****************************************************************************/
 
-#ifndef OcCmColor_h__
-#define OcCmColor_h__
+#pragma once
 
 BEGIN_OCTAVARIUM_NS
-class OcCmColor
+
+class DRAWGIN_API OcCmColor
 {
+    //DISABLE_COPY(OcCmColor);
 public:
     OcCmColor(void);
     virtual ~OcCmColor(void);
@@ -50,5 +59,3 @@ public:
 };
 
 END_OCTAVARIUM_NS
-
-#endif // OcCmColor_h__

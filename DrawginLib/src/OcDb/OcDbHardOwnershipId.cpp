@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -44,6 +48,7 @@ BEGIN_OCTAVARIUM_NS
 OcDbHardOwnershipId::OcDbHardOwnershipId(void)
 {
 }
+
 
 OcDbHardOwnershipId::~OcDbHardOwnershipId(void)
 {

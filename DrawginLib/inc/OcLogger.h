@@ -1,3 +1,12 @@
+/**
+ *	@file
+ *  @brief Logging library
+ *
+ *  A wrapper around the glog library.
+ *
+ */
+
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -7,20 +16,12 @@
 ** All rights reserved.
 ** Author: Paul Kohut (pkohut2@gmail.com)
 **
-** DrawGin library is free software; you can redistribute it and/or
-** modify it under the terms of either:
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Lesser General Public
+** License as published by the Free Software Foundation; either
+** version 3 of the License, or (at your option) any later version.
 **
-**   * the GNU Lesser General Public License as published by the Free
-**     Software Foundation; either version 3 of the License, or (at your
-**     option) any later version.
-**
-**   * the GNU General Public License as published by the free
-**     Software Foundation; either version 2 of the License, or (at your
-**     option) any later version.
-**
-** or both in parallel, as here.
-**
-** DrawGin library is distributed in the hope that it will be useful,
+** This library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Lesser General Public License for more details.
@@ -36,10 +37,13 @@
 **
 ****************************************************************************/
 
-#ifndef OcLogger_h__
-#define OcLogger_h__
+#pragma once
 
 #include <glog/logging.h>
+#include "OcCommon.h"
+#include "wchar_logging.h"
+
+BEGIN_OCTAVARIUM_NS
 
 class OcNullLogger : public google::base::Logger
 {
@@ -81,6 +85,148 @@ public:
     {
         google::ShutdownGoogleLogging();
     }
+
+    static void Init()
+    {
+#if !defined(NDEBUG)
+        // These global strings in GLOG are initially reserved with a small
+        // amount of storage space. Resizing the string larger than its
+        // initial size can be reported as a memory leak, which it is not.
+        // So for debug builds, where memory leak checking is performed,
+        // reserve a large enough space so the string will not be resized.
+        // For these variables, _MAX_PATH should be fine.
+        FLAGS_log_dir.reserve(_MAX_PATH);
+        FLAGS_log_link.reserve(_MAX_PATH);
+#endif
+    }
+
+    // (V)erbose logging level
+    static void SetVLOGLevel(int vLogLevel)
+    {
+        FLAGS_v = vLogLevel;
+    }
+    static int  VLOGLevel(void)
+    {
+        return FLAGS_v;
+    }
+
+    // If specified, logfiles are written into this directory instead of the
+    // default logging directory.
+    static void         SetLogDirectory(const std::string logDir)
+    {
+        FLAGS_log_dir = logDir;
+    }
+    static std::string  LogDirectory(void)
+    {
+        return FLAGS_log_dir;
+    }
+
+    // Sets the path of the directory into which to put additional links
+    // to the log files.
+    static void         SetLogLink(const std::string logLink)
+    {
+        FLAGS_log_link = logLink;
+    }
+    static std::string  LogLink(void)
+    {
+        return FLAGS_log_link;
+    }
+
+    // Set whether log messages go to stderr instead of logfiles
+    static void         SetLogToStdError(bool val = true)
+    {
+        FLAGS_logtostderr = val;
+    }
+    static bool         LogToStdError(void)
+    {
+        return FLAGS_logtostderr;
+    }
+
+    // Set whether log messages go to stderr in addition to logfiles.
+    static void         SetAlsoLogToStdError(bool val = true)
+    {
+        FLAGS_alsologtostderr = val;
+    }
+    static bool         AlsoLogToStdError(void)
+    {
+        return FLAGS_alsologtostderr;
+    }
+
+    // Log messages at or above this level are copied to stderr in addition to log files.
+    // Defaults to 2 (INFO = 0 WARNING = 1 ERROR = 2 FATAL = 3 Num_SEVERITIES = 4)
+    static void         SetStdErrorThreshold(int serverity = 2)
+    {
+        FLAGS_stderrthreshold = serverity;
+    }
+    static int          StdErrorThreshold(void)
+    {
+        return FLAGS_stderrthreshold;
+    }
+
+    // Prepend the log prefix to the start of each log line
+    static void         SetLogPrefix(bool val = true)
+    {
+        FLAGS_log_prefix = val;
+    }
+    static bool         LogPrefix(void)
+    {
+        return FLAGS_log_prefix;
+    }
+
+    // Messages logged at a lower level than this don't actually get logged anywhere
+    static void         SetMinLogLevel(int minLevel = 0)
+    {
+        FLAGS_minloglevel = minLevel;
+    }
+    static int          MinLogLevel(void)
+    {
+        return FLAGS_minloglevel;
+    }
+
+    // Buffer log messages logged at this level or lower
+    // (-1 means don't buffer; 0 means buffer INFO only ...)
+    static void         SetLogBufferLevel(int level = 0)
+    {
+        FLAGS_logbuflevel = level;
+    }
+    static int          LogBufferLevel(void)
+    {
+        return FLAGS_logbuflevel;
+    }
+
+    // Buffer log messages for at most this many seconds
+    static void         SetLogBufferSeconds(int seconds = 30)
+    {
+        FLAGS_logbufsecs = seconds;
+    }
+    static int          LogBufferSeconds(void)
+    {
+        return FLAGS_logbufsecs;
+    }
+
+
+    // approx. maximum log file size (in MB). A value of 0 will be silently
+    // overridden to 1.
+    static void         SetMaxLogSize(int logSize = 1800)
+    {
+        FLAGS_max_log_size = logSize;
+    }
+    static int          MaxLogSize(void)
+    {
+        return FLAGS_max_log_size;
+    }
+
+    // Stop attempting to log to disk if the disk is full.
+    static void         SetStopLoggingIfFullDisk(bool val = true)
+    {
+        FLAGS_stop_logging_if_full_disk = val;
+    }
+    static bool         StopLoggingIfFullDisk(void)
+    {
+        return FLAGS_stop_logging_if_full_disk;
+    }
+
 };
 
-#endif // OcLogger_h__
+
+END_OCTAVARIUM_NS

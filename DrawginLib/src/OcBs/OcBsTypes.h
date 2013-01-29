@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines bit stream types
+ *
+ *  Defines bit stream types used to encode drawing files
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -38,14 +45,26 @@
 
 
 
-#ifndef OcBsTypes_h__
-#define OcBsTypes_h__
+#pragma once
 
-#include <boost/strong_typedef.hpp>
+#ifndef STRONG_TYPEDEF
+#define STRONG_TYPEDEF(T, D)                                    \
+struct D                                                        \
+    {                                                           \
+    T t;                                                        \
+    explicit D(const T t_) : t(t_) {};                          \
+    D(){};                                                      \
+    D(const D & t_) : t(t_.t){}                                 \
+    D & operator=(const D & rhs) { t = rhs.t; return *this;}    \
+    D & operator=(const T & rhs) { t = rhs; return *this;}      \
+    operator const T & () const {return t; }                    \
+    operator T & () { return t; }                               \
+    bool operator==(const D & rhs) const { return t == rhs.t; } \
+    bool operator<(const D & rhs) const { return t < rhs.t; }   \
+    };
+#endif
 
 BEGIN_OCTAVARIUM_NS
-
-
 
 namespace bitcode
 {
@@ -100,18 +119,18 @@ struct BC3D
 
 struct BCCMC
 {
-//    BCCMC() : index(0), rgb(0), colorByte(0) {}
-//    int16_t index;
-//    int32_t rgb;
-//    byte_t colorByte;
-//    std::wstring name;
-//    std::wstring bookName;
+    //    BCCMC() : index(0), rgb(0), colorByte(0) {}
+    //    int16_t index;
+    //    int32_t rgb;
+    //    uint8_t colorByte;
+    //    std::wstring name;
+    //    std::wstring bookName;
     BCCMC() : rgb(0), index(0), colorByte(0) {}
     std::wstring name;
     std::wstring bookName;
     int32_t rgb;
     int16_t index;
-    byte_t colorByte;
+    uint8_t colorByte;
     bool operator==(const BCCMC & other) const
     {
         return index == other.index && rgb == other.rgb &&
@@ -135,37 +154,35 @@ struct BCCMC
 
 
 
-BOOST_STRONG_TYPEDEF(byte_t, B);
-BOOST_STRONG_TYPEDEF(byte_t, BB);
-BOOST_STRONG_TYPEDEF(byte_t, BBBB);
-BOOST_STRONG_TYPEDEF(int16_t, BS);
-BOOST_STRONG_TYPEDEF(int32_t, BL);
-BOOST_STRONG_TYPEDEF(double, BD);
-BOOST_STRONG_TYPEDEF(BC2D, BD2);
-BOOST_STRONG_TYPEDEF(BC3D, BD3);
+STRONG_TYPEDEF(uint8_t, B);
+STRONG_TYPEDEF(uint8_t, BB);
+STRONG_TYPEDEF(uint8_t, BBBB);
+STRONG_TYPEDEF(int16_t, BS);
+STRONG_TYPEDEF(int32_t, BL);
+STRONG_TYPEDEF(double, BD);
+STRONG_TYPEDEF(BC2D, BD2);
+STRONG_TYPEDEF(BC3D, BD3);
 
-BOOST_STRONG_TYPEDEF(byte_t, RC);
-BOOST_STRONG_TYPEDEF(int16_t, RS);
-BOOST_STRONG_TYPEDEF(int32_t, RL);
-BOOST_STRONG_TYPEDEF(double, RD);
-BOOST_STRONG_TYPEDEF(BC2D, RD2);
-BOOST_STRONG_TYPEDEF(BC3D, RD3);
+STRONG_TYPEDEF(uint8_t, RC);
+STRONG_TYPEDEF(int16_t, RS);
+STRONG_TYPEDEF(int32_t, RL);
+STRONG_TYPEDEF(double, RD);
+STRONG_TYPEDEF(BC2D, RD2);
+STRONG_TYPEDEF(BC3D, RD3);
 
-BOOST_STRONG_TYPEDEF(uint32_t, MC);
-BOOST_STRONG_TYPEDEF(uint32_t, MS);
+STRONG_TYPEDEF(uint32_t, MC);
+STRONG_TYPEDEF(uint32_t, MS);
 
-BOOST_STRONG_TYPEDEF(BC3D, BE);
-BOOST_STRONG_TYPEDEF(double, DD);
-BOOST_STRONG_TYPEDEF(double, BT);
+STRONG_TYPEDEF(BC3D, BE);
+STRONG_TYPEDEF(double, DD);
+STRONG_TYPEDEF(double, BT);
 
-BOOST_STRONG_TYPEDEF(BCCMC, CMC);
-BOOST_STRONG_TYPEDEF(std::wstring, TV);
-BOOST_STRONG_TYPEDEF(std::wstring, T);
-BOOST_STRONG_TYPEDEF(std::wstring, TU);
+STRONG_TYPEDEF(BCCMC, CMC);
+STRONG_TYPEDEF(std::wstring, TV);
+STRONG_TYPEDEF(std::wstring, T);
+STRONG_TYPEDEF(std::wstring, TU);
 
 
 } // bitcode
 
 END_OCTAVARIUM_NS
-
-#endif // OcBsTypes_h__

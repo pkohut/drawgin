@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -45,6 +49,7 @@ OcCmColor::OcCmColor(void)
 {
 }
 
+
 OcCmColor::~OcCmColor(void)
 {
 }
@@ -55,6 +60,5 @@ std::ostream& operator <<(std::ostream& out, const OcCmColor& color)
     out << std::hex << std::showbase << "OcCmColor:: Not implemented";
     return out;
 }
-
 
 END_OCTAVARIUM_NS

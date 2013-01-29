@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -47,6 +51,8 @@ BEGIN_OCTAVARIUM_NS
 
 bool CompareSentinels(const byte_t * pSentinel1, const byte_t * pSentinel2)
 {
+    VLOG_FUNC_NAME;
+
     for(int i = 0; i < 16; ++i)
     {
         if(pSentinel1[i] != pSentinel2[i])
@@ -60,6 +66,7 @@ bool CompareSentinels(const byte_t * pSentinel1, const byte_t * pSentinel2)
 
 bool CompareSentinels(const byte_t * pSentinel1, const bitcode::RC * pSentinel2)
 {
+    VLOG_FUNC_NAME;
     return CompareSentinels(pSentinel1, (const byte_t*) pSentinel2);
 }
 

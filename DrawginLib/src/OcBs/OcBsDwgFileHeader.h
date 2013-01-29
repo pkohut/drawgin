@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcBsDwgFileHeader class
+ *
+ *  Used to encode the "file header" section of drawing files
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,12 +43,11 @@
 **
 ****************************************************************************/
 
-#ifndef OcBsDwgFileHeader_h__
-#define OcBsDwgFileHeader_h__
+#pragma once
 
 BEGIN_OCTAVARIUM_NS
-class DwgInArchive;
-struct OcApp;
+
+class OcBsStreamIn;
 
 class OcBsDwgFileHeaderSection
 {
@@ -58,6 +64,7 @@ class OcBsDwgFileHeader
 public:
     OcBsDwgFileHeader(void);
     virtual ~OcBsDwgFileHeader(void);
+    OcApp::ErrorStatus ReadDwg(OcBsStreamIn & in);
 
     DWG_VERSION DwgVersion(void) const;
     bool IsPreR13c3(void) const;
@@ -67,9 +74,10 @@ public:
     int NumSectionRecords(void) const;
     const OcBsDwgFileHeaderSection& Record(int nRecord) const;
 private:
-    friend DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgFileHeader & hdr);
-    DWG_VERSION DecodeVersionData(DwgInArchive& in);
-    OcApp::ErrorStatus DecodeR13_R2000Header(DwgInArchive& in);
+//    friend DwgInArchive& operator>>(DwgInArchive& in, OcBsDwgFileHeader & hdr);
+    DWG_VERSION DecodeVersionData(OcBsStreamIn & in);
+    OcApp::ErrorStatus DecodeR13_R2000Header(OcBsStreamIn & in);
+
 
 private:
     DWG_VERSION m_dwgVersion;
@@ -86,5 +94,3 @@ private:
 };
 
 END_OCTAVARIUM_NS
-
-#endif // OcBsDwgFileHeader_h__

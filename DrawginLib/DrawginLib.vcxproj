@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8FE19B62-A4E6-47B9-95DA-81E89A6E7B28}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DrawginLib</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DRAWGINLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>inc;$(GLOG)\src\windows;$(GLOG)\src</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>OcCommon.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(GLOG)\debug</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;DRAWGINLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>inc;;$(GLOG)\src\windows;$(GLOG)\src</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>OcCommon.h</PrecompiledHeaderFile>
+      <AssemblerOutput>All</AssemblerOutput>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(GLOG)\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\OcCmColor.h" />
+    <ClInclude Include="inc\OcCommon.h" />
+    <ClInclude Include="inc\OcDbDatabase.h" />
+    <ClInclude Include="inc\OcDbHardOwnershipId.h" />
+    <ClInclude Include="inc\OcDbObjectId.h" />
+    <ClInclude Include="inc\OcError.h" />
+    <ClInclude Include="inc\OcGePoint2D.h" />
+    <ClInclude Include="inc\OcGePoint3D.h" />
+    <ClInclude Include="inc\OcGiDrawable.h" />
+    <ClInclude Include="inc\OcLogger.h" />
+    <ClInclude Include="inc\OcObjectDef.h" />
+    <ClInclude Include="inc\OcRxObject.h" />
+    <ClInclude Include="inc\OcTypes.h" />
+    <ClInclude Include="inc\templates\accessors.h" />
+    <ClInclude Include="inc\templates\bounded.h" />
+    <ClInclude Include="inc\wchar_logging.h" />
+    <ClInclude Include="src\OcBs\OcBsDatabaseHeaderVars.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgClass.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgClasses.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgCrc.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgDataSection.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgFileHeader.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgObjectMap.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgPreviewImage.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgSecondFileHeader.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgSentinels.h" />
+    <ClInclude Include="src\OcBs\OcBsDwgVersion.h" />
+    <ClInclude Include="src\OcBs\OcBsStream.h" />
+    <ClInclude Include="src\OcBs\OcBsStreamIn.h" />
+    <ClInclude Include="src\OcBs\OcBsTypes.h" />
+    <ClInclude Include="src\OcDb\OcDbDatabase_p.h" />
+    <ClInclude Include="src\OcDb\OcObject_p.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\OcBs\OcBsDatabaseHeaderVars.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgClass.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgClasses.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgCrc.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgDataSection.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgFileHeader.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgObjectMap.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgPreviewImage.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgSecondFileHeader.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgSentinels.cpp" />
+    <ClCompile Include="src\OcBs\OcBsDwgVersion.cpp" />
+    <ClCompile Include="src\OcBs\OcBsStream.cpp" />
+    <ClCompile Include="src\OcBs\OcBsStreamIn.cpp" />
+    <ClCompile Include="src\OcCm\OcCmColor.cpp" />
+    <ClCompile Include="src\OcDb\OcDbDatabase.cpp" />
+    <ClCompile Include="src\OcDb\OcDbDatabase_p.cpp" />
+    <ClCompile Include="src\OcDb\OcDbHardOwnershipId.cpp" />
+    <ClCompile Include="src\OcDb\OcDbObjectId.cpp" />
+    <ClCompile Include="src\OcDb\OcObject_p.cpp" />
+    <ClCompile Include="src\OcGe\OcGePoint2D.cpp" />
+    <ClCompile Include="src\OcGe\OcGePoint3D.cpp" />
+    <ClCompile Include="src\OcGi\OcGiDrawable.cpp" />
+    <ClCompile Include="src\OcMi\OcCommon.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\OcRx\OcRxObject.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

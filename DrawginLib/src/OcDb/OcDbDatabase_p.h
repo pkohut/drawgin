@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcDbDatabasePrivate class
+ *
+ *  Defines the OcDbDatabasePrivate class
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,22 +43,58 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbDatabase_p_h__
-#define OcDbDatabase_p_h__
+#pragma once
+
+#include "OcDbDatabase.h"
+#include "OcObject_p.h"
+#include "OcDbHardOwnershipId.h"
+#include "OcCmColor.h"
+#include "OcGePoint2D.h"
+#include "OcGePoint3D.h"
+
+#include "templates\accessors.h"
+
 
 BEGIN_OCTAVARIUM_NS
 
-class OcDbDatabaseHeaderImpl;
-//class OcDbDatabase;
-class OcDbDatabasePimpl
+class OcDbDatabasePrivate;
+
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<bool>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<byte_t>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<double>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<int16_t>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<int32_t>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<uint16_t>;
+
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<OcCmColor>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<OcDbHardOwnershipId>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<OcDbObjectId>;
+
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<OcGePoint2D>;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<OcGePoint3D>;
+
+EXPIMP_TEMPLATE template class DRAWGIN_API std::allocator<wchar_t>;
+EXPIMP_TEMPLATE template class DRAWGIN_API std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >;
+EXPIMP_TEMPLATE template class DRAWGIN_API accessors<std::wstring>;
+
+
+
+
+
+class OcObjectPrivate;
+
+class DRAWGIN_API OcDbDatabasePrivate : public OcObjectPrivate
 {
+    DISABLE_COPY(OcDbDatabasePrivate);
+
 public:
-    OcDbDatabasePimpl(void);
-    virtual ~OcDbDatabasePimpl(void);
+    OcDbDatabasePrivate(void);
+    OcDbDatabasePrivate(OcDbDatabase * q);
+    virtual ~OcDbDatabasePrivate(void);
 
-    OcApp::ErrorStatus Open(const string_t & filename);
+    OcApp::ErrorStatus ReadDwg(const std::string & sFilename);
 
-    OcDbDatabase * m_qPtr;
+    //OcDbDatabase * q_ptr;
 
     /*********************************************************************
      * As this class is to be reusable for all drawing versions, the
@@ -624,14 +667,6 @@ public:
     // sentinel. Use 0xC0C1 for the initial value.
 
 
-
-
-
-
-
-
 };
 
 END_OCTAVARIUM_NS
-
-#endif // OcDbDatabase_p_h__

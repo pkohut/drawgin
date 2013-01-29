@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\OcRx">
+      <UniqueIdentifier>{0d1ffac2-4c7d-43fb-a582-742b44b64a53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OcDb">
+      <UniqueIdentifier>{96180d9f-fbb1-4072-b0ab-b7a5d304b5f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OcGi">
+      <UniqueIdentifier>{e3976e0b-ced1-40e3-8103-c01ed465efef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OcMi">
+      <UniqueIdentifier>{937f56e0-67b0-4536-b55e-2c2260fd1657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OcBs">
+      <UniqueIdentifier>{6d1280d9-cf92-496e-ac05-9e831664ba08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OcCm">
+      <UniqueIdentifier>{2b5749e2-65b1-44ab-aa97-455cf9d30d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OcGe">
+      <UniqueIdentifier>{46199752-db7d-40da-8380-22e0797a8d93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\templates">
+      <UniqueIdentifier>{bfc65a7c-1979-4276-8892-f84eadb00732}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\OcCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcRxObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcGiDrawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcObjectDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcDbDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcDb\OcDbDatabase_p.h">
+      <Filter>Source Files\OcDb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsStream.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsTypes.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsStreamIn.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcDbObjectId.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgFileHeader.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgVersion.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgCrc.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgSentinels.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgPreviewImage.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDatabaseHeaderVars.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcDbHardOwnershipId.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcCmColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcGePoint2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OcGePoint3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\wchar_logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgClasses.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgClass.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgObjectMap.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgDataSection.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcBs\OcBsDwgSecondFileHeader.h">
+      <Filter>Source Files\OcBs</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\templates\accessors.h">
+      <Filter>Header Files\templates</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\templates\bounded.h">
+      <Filter>Header Files\templates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OcDb\OcObject_p.h">
+      <Filter>Source Files\OcDb</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\OcRx\OcRxObject.cpp">
+      <Filter>Source Files\OcRx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcGi\OcGiDrawable.cpp">
+      <Filter>Source Files\OcGi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcMi\OcCommon.cpp">
+      <Filter>Source Files\OcMi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcDb\OcDbDatabase.cpp">
+      <Filter>Source Files\OcDb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcDb\OcDbDatabase_p.cpp">
+      <Filter>Source Files\OcDb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsStream.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsStreamIn.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcDb\OcDbObjectId.cpp">
+      <Filter>Source Files\OcDb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgFileHeader.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgVersion.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgCrc.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgSentinels.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgPreviewImage.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDatabaseHeaderVars.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcDb\OcDbHardOwnershipId.cpp">
+      <Filter>Source Files\OcDb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcGe\OcGePoint3D.cpp">
+      <Filter>Source Files\OcGe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcGe\OcGePoint2D.cpp">
+      <Filter>Source Files\OcGe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcCm\OcCmColor.cpp">
+      <Filter>Source Files\OcCm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgClasses.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgClass.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgObjectMap.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgDataSection.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcBs\OcBsDwgSecondFileHeader.cpp">
+      <Filter>Source Files\OcBs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OcDb\OcObject_p.cpp">
+      <Filter>Source Files\OcDb</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

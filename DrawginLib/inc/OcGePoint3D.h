@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcGePoint3D class
+ *
+ *  Defines the OcGePoint3D class.
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,13 +43,12 @@
 **
 ****************************************************************************/
 
-#ifndef OcGePoint3D_h__
-#define OcGePoint3D_h__
-
+#pragma once
 BEGIN_OCTAVARIUM_NS
 
-class OcGePoint3D
+class DRAWGIN_API OcGePoint3D
 {
+    //DISABLE_COPY(OcGePoint3D);
 public:
     OcGePoint3D();
     OcGePoint3D(double xx, double yy, double zz);
@@ -91,6 +97,3 @@ private:
 };
 
 END_OCTAVARIUM_NS
-
-#endif // OcGePoint3D
-

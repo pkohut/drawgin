@@ -1,3 +1,10 @@
+/**
+ *	@file
+ *  @brief Defines OcDbObject class
+ *
+ *  Defines the OcDbObject base class found in a drawing file.
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -36,29 +43,36 @@
 **
 ****************************************************************************/
 
-#ifndef OcDbObject_h__
-#define OcDbObject_h__
+#pragma once
+
+#include "OcObjectDef.h"
+#include "OcGiDrawable.h"
 
 BEGIN_OCTAVARIUM_NS
 
-class OcRxObject;
-class DwgInArchive;
-class OcDbObjectImpl;
+class OcDbObjectPrivate;
+EXPIMP_TEMPLATE template class DRAWGIN_API std::unique_ptr<OcDbObjectPrivate>;
 
-class OcDbObject : public OcRxObject
+class DRAWGIN_API OcDbObject : public OcGiDrawable
 {
+    DISABLE_COPY(OcDbObject);
 public:
     OcDbObject(void);
     virtual ~OcDbObject(void);
 
-    virtual OcApp::ErrorStatus DecodeData(DwgInArchive& ar);
+    virtual OcGiDrawable * Drawable(void);
+    virtual bool isPersistent(void) const;
 
-    OcDbObjectId ObjectId() const;
+protected:
+    explicit OcDbObject(std::unique_ptr<OcDbObjectPrivate> d);
+    virtual OcDbObjectPrivate * d_func();
+    virtual const OcDbObjectPrivate * d_func() const;
 
-private:
-    OcDbObjectImpl * m_pObjectImpl;
+protected:
+    std::unique_ptr<OcDbObjectPrivate> m_pImpl;
+
 
 };
-END_OCTAVARIUM_NS
 
-#endif // OcDbObject_h__
+
+END_OCTAVARIUM_NS

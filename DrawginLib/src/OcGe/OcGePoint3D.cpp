@@ -1,3 +1,7 @@
+/**
+ *	@file
+ */
+
 /****************************************************************************
 **
 ** This file is part of DrawGin library. A C++ framework to read and
@@ -37,8 +41,6 @@
 ****************************************************************************/
 
 #include "OcCommon.h"
-#include "OcTypes.h"
-#include "OcError.h"
 #include "OcGePoint3D.h"
 #include <iomanip>
 
@@ -63,6 +65,5 @@ std::ostream& operator <<(std::ostream& out, const OcGePoint3D & pt)
         << "z: = " << pt.z;
     return out;
 }
-
 
 END_OCTAVARIUM_NS
