@@ -45,7 +45,7 @@
 
 #pragma once
 
-// Note: OcGePoint3d is a stub class and fully implemented. It is
+// Note: OcGePoint3d is a stub class and not fully implemented. It is
 // provided to support reading the drawing header section in OcBsDatabaseHeaderVars.
 
 

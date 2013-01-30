@@ -46,7 +46,7 @@
 
 #pragma once
 
-// Note: OcColor is a stub class and fully implemented. It is provided to
+// Note: OcColor is a stub class and not fully implemented. It is provided to
 // support reading the drawing header section in OcBsDatabaseHeaderVars.
 
 BEGIN_OCTAVARIUM_NS

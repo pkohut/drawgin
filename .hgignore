@@ -6,6 +6,7 @@ syntax: glob
 # Ignore Visual Studio 2012 files
 *.sdf
 *.ipch
+*.opensdf
 
 # Ignore Visual Studio 2008 files
 *.obj
