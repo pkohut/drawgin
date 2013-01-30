@@ -45,6 +45,10 @@
 
 #pragma once
 
+// Note: OcGePoint2D is a stub class and fully implemented. It is
+// provided to support reading the drawing header section in OcBsDatabaseHeaderVars.
+
+
 BEGIN_OCTAVARIUM_NS
 
 class DRAWGIN_API OcGePoint2D

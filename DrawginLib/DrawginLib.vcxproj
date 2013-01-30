@@ -96,7 +96,6 @@
     <ClInclude Include="inc\OcError.h" />
     <ClInclude Include="inc\OcGePoint2D.h" />
     <ClInclude Include="inc\OcGePoint3D.h" />
-    <ClInclude Include="inc\OcGiDrawable.h" />
     <ClInclude Include="inc\OcLogger.h" />
     <ClInclude Include="inc\OcObjectDef.h" />
     <ClInclude Include="inc\OcRxObject.h" />
@@ -143,7 +142,6 @@
     <ClCompile Include="src\OcDb\OcObject_p.cpp" />
     <ClCompile Include="src\OcGe\OcGePoint2D.cpp" />
     <ClCompile Include="src\OcGe\OcGePoint3D.cpp" />
-    <ClCompile Include="src\OcGi\OcGiDrawable.cpp" />
     <ClCompile Include="src\OcMi\OcCommon.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

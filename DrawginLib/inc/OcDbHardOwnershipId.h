@@ -45,6 +45,10 @@
 
 #pragma once
 
+// Note: OcDbHardOwnershipId is a stub class and fully implemented. It is
+// provided to support reading the drawing header section in OcBsDatabaseHeaderVars.
+
+
 #include "OcDbObjectId.h"
 
 BEGIN_OCTAVARIUM_NS

@@ -19,9 +19,6 @@
     <Filter Include="Source Files\OcDb">
       <UniqueIdentifier>{96180d9f-fbb1-4072-b0ab-b7a5d304b5f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\OcGi">
-      <UniqueIdentifier>{e3976e0b-ced1-40e3-8103-c01ed465efef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\OcMi">
       <UniqueIdentifier>{937f56e0-67b0-4536-b55e-2c2260fd1657}</UniqueIdentifier>
     </Filter>
@@ -49,9 +46,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\OcRxObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\OcGiDrawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\OcObjectDef.h">
@@ -142,9 +136,6 @@
   <ItemGroup>
     <ClCompile Include="src\OcRx\OcRxObject.cpp">
       <Filter>Source Files\OcRx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OcGi\OcGiDrawable.cpp">
-      <Filter>Source Files\OcGi</Filter>
     </ClCompile>
     <ClCompile Include="src\OcMi\OcCommon.cpp">
       <Filter>Source Files\OcMi</Filter>
